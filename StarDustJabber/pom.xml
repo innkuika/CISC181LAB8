@@ -46,7 +46,7 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>cisc.edu</groupId>
+			<groupId>cisc.udel.edu</groupId>
 			<artifactId>StarDustBLL</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
