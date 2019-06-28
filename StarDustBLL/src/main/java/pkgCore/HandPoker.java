@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import pkgEnum.eCardNo;
 //import pkgEnum.eCardNo;
 import pkgEnum.eHandStrength;
 import pkgEnum.eRank;
@@ -133,17 +134,24 @@ public class HandPoker extends Hand implements Comparable {
 		return iPos;
 	}
 
+	/**
+	 * @author BRG
+	 * @version Lab #1
+	 * @since Lab #1
+	 * @return 'true' if Hand is a Royal Flush
+	 * 
+	 */
 	private boolean isRoyalFlush() {
-		boolean bIsRoyalFlush = false;
 
-		if ((this.getCards().get(0).geteRank() == eRank.ACE) && (this.getCards().get(1).geteRank() == eRank.KING)
+		boolean bIsRoyalFlush = false;
+		if ((this.getCards().get(eCardNo.FIRST.getiCardNo()).geteRank() == eRank.ACE) && 
+				(this.getCards().get(eCardNo.SECOND.getiCardNo()).geteRank() == eRank.KING)
 				&& isStraightFlush()) {
 			bIsRoyalFlush = true;
 			HandScorePoker HSP = (HandScorePoker) this.getHS();
 			HSP.seteHandStrength(eHandStrength.RoyalFlush);
 			this.setHS(HSP);
 		}
-
 		return bIsRoyalFlush;
 	}
 
@@ -339,48 +347,35 @@ public class HandPoker extends Hand implements Comparable {
 	public int compareTo(Object o) {
 
 		HandPoker PassedHP = (HandPoker) o;
-		
+
 		HandScorePoker PassedHSP = PassedHP.getHandScorePoker();
 		HandScorePoker ThisHSP = this.getHandScorePoker();
-		
-		//	Sort on Hand Strength
-		if (PassedHSP.geteHandStrength().getHandStrength() - 
-				ThisHSP.geteHandStrength().getHandStrength() != 0)
-			return PassedHSP.geteHandStrength().getHandStrength() - 
-					ThisHSP.geteHandStrength().getHandStrength();
-		
-		//	Then Sort on High Card
-		if (PassedHSP.getHiCard().geteRank().getiRankNbr() -
-				ThisHSP.getHiCard().geteRank().getiRankNbr() != 0)
-			return PassedHSP.getHiCard().geteRank().getiRankNbr() -
-					ThisHSP.getHiCard().geteRank().getiRankNbr();
-		
-		//	Then Sort on Low Card
-		if ((PassedHSP.getLoCard() != null) && (ThisHSP.getLoCard() != null))
-		{
-			if (PassedHSP.getLoCard().geteRank().getiRankNbr() -
-					ThisHSP.getLoCard().geteRank().getiRankNbr() != 0)
-			{
-				return PassedHSP.getLoCard().geteRank().getiRankNbr() -
-						ThisHSP.getLoCard().geteRank().getiRankNbr();
-			}
-		}
-		
-		//	Then Sort on Kickers
-		for (int k = 0; k< 4; k++)
-		{
-			if ((PassedHSP.getKickers().get(k) != null) && (ThisHSP.getKickers().get(k) != null))
-			{
-				if (PassedHSP.getKickers().get(k).geteRank().getiRankNbr() -
-						PassedHSP.getKickers().get(k).geteRank().getiRankNbr() != 0)
-				{
-					return PassedHSP.getKickers().get(k).geteRank().getiRankNbr() -
-							PassedHSP.getKickers().get(k).geteRank().getiRankNbr();
-				}		
-			}
-		}
-		
 
+		// Sort on Hand Strength
+		if (PassedHSP.geteHandStrength().getHandStrength() - ThisHSP.geteHandStrength().getHandStrength() != 0)
+			return PassedHSP.geteHandStrength().getHandStrength() - ThisHSP.geteHandStrength().getHandStrength();
+
+		// Then Sort on High Card
+		if (PassedHSP.getHiCard().geteRank().getiRankNbr() - ThisHSP.getHiCard().geteRank().getiRankNbr() != 0)
+			return PassedHSP.getHiCard().geteRank().getiRankNbr() - ThisHSP.getHiCard().geteRank().getiRankNbr();
+
+		// Then Sort on Low Card
+		if ((PassedHSP.getLoCard() != null) && (ThisHSP.getLoCard() != null)) {
+			if (PassedHSP.getLoCard().geteRank().getiRankNbr() - ThisHSP.getLoCard().geteRank().getiRankNbr() != 0) {
+				return PassedHSP.getLoCard().geteRank().getiRankNbr() - ThisHSP.getLoCard().geteRank().getiRankNbr();
+			}
+		}
+
+		// Then Sort on Kickers
+		for (int k = 0; k < 4; k++) {
+			if ((PassedHSP.getKickers().get(k) != null) && (ThisHSP.getKickers().get(k) != null)) {
+				if (PassedHSP.getKickers().get(k).geteRank().getiRankNbr()
+						- PassedHSP.getKickers().get(k).geteRank().getiRankNbr() != 0) {
+					return PassedHSP.getKickers().get(k).geteRank().getiRankNbr()
+							- PassedHSP.getKickers().get(k).geteRank().getiRankNbr();
+				}
+			}
+		}
 
 		return 0;
 	}
