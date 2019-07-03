@@ -12,9 +12,10 @@ public class cMain {
 		System.out.println("Hello World");
 		day = Day.MONDAY;
 
-		NewSwitch_2();
+		//NewSwitch_2();
 	}
 
+	/*
 	public static void NewSwitch_1() {
 		switch (day) {
 		case MONDAY, FRIDAY, SUNDAY -> System.out.println(6);
@@ -36,7 +37,7 @@ public class cMain {
 
 		System.out.println(j);
 	}
-
+	*/
 	public static void OldSwitch() {
 
 		switch (day) {
