@@ -1,11 +1,14 @@
 package pkgCore;
 
 import java.util.ArrayList;
+import java.util.UUID;
+
 import pkgException.DeckException;
 import pkgException.HandException;
 
 public abstract class Hand {
 
+	private UUID HandID;
 	/**
 	 * cards - ArrayList of Cards
 	 */
@@ -27,6 +30,7 @@ public abstract class Hand {
 	 *        This constructor should initialize 'cards' ArrayList.
 	 */
 	public Hand() {
+		this.HandID = UUID.randomUUID();
 		cards = new ArrayList<Card>();
 	}
 
@@ -94,5 +98,11 @@ public abstract class Hand {
 	protected void AddCard(Card c) {
 		cards.add(c);
 	}
+
+	public UUID getHandID() {
+		return HandID;
+	}
+	
+	
 
 }
