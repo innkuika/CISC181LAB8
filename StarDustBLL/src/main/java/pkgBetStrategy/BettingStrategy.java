@@ -1,22 +1,25 @@
 package pkgBetStrategy;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 
+@XmlAccessorType(XmlAccessType.PROPERTY)
 public class BettingStrategy {
 
-	@XmlAttribute
+	@XmlElement
 	private int StrategyNbr;
-	@XmlAttribute
-	private String strCard1Rank;
-	@XmlAttribute
-	private String strCard2Rank;
-	@XmlAttribute
+	@XmlElement
+	private String Card1Rank;
+	@XmlElement
+	private String Card2Rank;
+	@XmlElement
 	private boolean isSameSuit;
-	@XmlAttribute
+	@XmlElement
 	private boolean isSameRank;
-	@XmlAttribute
+	@XmlElement
 	private String BetAction;
-	@XmlAttribute
-	private double BetAmount;
-	
+	@XmlElement
+	private BetAmount BetAmount;		
 }
