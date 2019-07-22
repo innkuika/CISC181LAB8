@@ -1,5 +1,6 @@
 package pkgCore;
 
+import pkgBet.DeckTwoCard;
 import pkgEnum.*;
 
 /**
@@ -101,4 +102,32 @@ public class Card implements Comparable {
 		Card c = (Card) o;
 		return c.geteRank().compareTo(this.geteRank());
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		// If the object is compared with itself then return true
+		if (o == this) {
+			return true;
+		}
+
+		/*
+		 * Check if o is an instance of Complex or not "null instanceof [type]" also
+		 * returns false
+		 */
+		if (!(o instanceof Card)) {
+			return false;
+		}
+
+		// typecast o to Complex so that we can compare data members
+		Card c = (Card) o;
+
+		if ((c.geteRank().equals(this.geteRank())) && (c.geteSuit().equals(this.geteSuit())))
+
+			return true;
+
+		return false;
+	}
+	
+	
+	
 }

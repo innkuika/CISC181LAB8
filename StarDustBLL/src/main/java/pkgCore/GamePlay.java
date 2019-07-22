@@ -12,10 +12,10 @@ public class GamePlay {
 	private HashMap<UUID, Hand> GameHand = new HashMap<UUID, Hand>();
 	private Deck GameDeck;
 	
-	public GamePlay(ArrayList<Player> players)
-	{
-		GamePlayers.addAll(players);
-		GameDeck = new Deck();
+	public GamePlay(Table t)
+	{		
+		GamePlayers.addAll(t.getTablePlayers());
+		GameDeck = t.setTableDeck(new Deck());
 	}
 	
 	public void Draw (Player p) throws DeckException

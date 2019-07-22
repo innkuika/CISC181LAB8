@@ -8,10 +8,11 @@ public class Table {
 	private UUID TableID;
 	private String TableName;
 	private ArrayList<Player> TablePlayers = new ArrayList<Player>();
+	private Deck TableDeck;
 	
 	public Table(UUID tableID, String tableName) {
 		TableID = tableID;
-		TableName = tableName;
+		TableName = tableName;		
 	}
 	
 	public Table(String tableName) {
@@ -33,4 +34,18 @@ public class Table {
 	{
 		TablePlayers.remove(p);
 	}
+	public ArrayList<Player> getTablePlayers()
+	{
+		return TablePlayers;
+	}
+
+	public Deck getTableDeck() {
+		return TableDeck;
+	}
+
+	public Deck setTableDeck(Deck tableDeck) {
+		TableDeck = tableDeck;
+		return TableDeck;
+	}
+	
 }
