@@ -9,18 +9,18 @@ import javax.xml.bind.annotation.*;
 public class PlayerPosition {
 
 	@XmlAttribute
-	private int BetPosition;
+	private int BetPositionNbr;
  
 	@XmlElement
 	private LinkedList<BettingStrategy> BettingStrategy = new LinkedList<BettingStrategy>();
 
-	public int getBetPosition() {
-		return BetPosition;
+	public int getBetPositionNbr() {
+		return BetPositionNbr;
 	}
 
 
-	public void setBetPosition(int betPosition) {
-		BetPosition = betPosition;
+	public void setBetPositionNbr(int betPositionNbr) {
+		BetPositionNbr = betPositionNbr;
 	}
 
 

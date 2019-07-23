@@ -12,11 +12,11 @@ import pkgEnum.eBetRound;
 import pkgEnum.eBetType;
 import pkgEnum.eRank;
 
-public class LoadStrategy {
+public class LoadStrategy {  
 
 	public static void main(String[] args) {
 
-		LoadBettingStrategy();
+		BetEngine be2 = LoadBettingStrategy();
 
 		BetAmount ba = new BetAmount();
 		ba.setiBetMaxPct(99);
@@ -33,21 +33,23 @@ public class LoadStrategy {
 		bs.setStrategyNbr(1);
 
 		PlayerPosition pp = new PlayerPosition();
-		pp.setBetPosition(1);
+		pp.setBetPositionNbr(1);
 		pp.addBettingStrategy(bs);
 
 		BetRound br = new BetRound();
-
-		br.setiBetRound(1);
+		br.setBetRoundNumber(1);
 		br.seteBetRound(eBetRound.PREFLOP);
 		br.addPlayerPostiion(pp);
+		
+		BetEngine be = new BetEngine();
+		be.addBetRound(br);
 
-		WriteXMLFile(br);
+		WriteXMLFile(be);
 	}
 
-	private static BetRound LoadBettingStrategy() {
+	private static BetEngine LoadBettingStrategy() {
 
-		BetRound ebr = null;
+		BetEngine be = null;
 
 		String basePath = new File("").getAbsolutePath();
 		basePath = basePath + "\\src\\main\\resources\\PlayerStrategy\\BetStrategy.xml";
@@ -55,33 +57,33 @@ public class LoadStrategy {
 
 		System.out.println(file.getAbsolutePath());
 		try {
-			JAXBContext jaxbContext = JAXBContext.newInstance(BetRound.class);
+			JAXBContext jaxbContext = JAXBContext.newInstance(BetEngine.class);
 			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-			ebr = (BetRound) jaxbUnmarshaller.unmarshal(file);
-			System.out.println(ebr);
+			be = (BetEngine) jaxbUnmarshaller.unmarshal(file);
+			System.out.println(be);
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
 
-		return ebr;
+		return be;
 
 	}
 
-	private static void WriteXMLFile(BetRound ebr) {
+	private static void WriteXMLFile(BetEngine be) {
 		try {
 
 			String basePath = new File("").getAbsolutePath();
 			basePath = basePath + "\\src\\main\\resources\\PlayerStrategy\\BetStrategyOutput.xml";
 			File file = new File(basePath);
 
-			JAXBContext jaxbContext = JAXBContext.newInstance(BetRound.class);
+			JAXBContext jaxbContext = JAXBContext.newInstance(BetEngine.class);
 			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
 			// output pretty printed
 			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
-			jaxbMarshaller.marshal(ebr, file);
-			jaxbMarshaller.marshal(ebr, System.out);
+			jaxbMarshaller.marshal(be, file);
+			jaxbMarshaller.marshal(be, System.out);
 
 		} catch (JAXBException e) {
 			e.printStackTrace();
