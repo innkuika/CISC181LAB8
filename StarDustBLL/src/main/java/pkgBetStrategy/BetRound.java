@@ -17,12 +17,42 @@ import pkgEnum.eBetRound;
 public class BetRound {
 	
 	@XmlAttribute
-	private String strBetRound;
+	private int iBetRound;
 	
-	@XmlTransient
-	private eBetRound ebr;
+	@XmlElement
+	private eBetRound eBetRound;
  
 	@XmlElement
-	private ArrayList<PlayerPosition> PlayerPosition;
+	private ArrayList<PlayerPosition> PlayerPosition = new ArrayList<PlayerPosition>();
+
+	public int getiBetRound() {
+		return iBetRound;
+	}
+
+	public void setiBetRound(int iBetRound) {
+		this.iBetRound = iBetRound;
+	}
+
+	public eBetRound geteBetRound() {
+		return eBetRound;
+	}
+
+	public void seteBetRound(eBetRound eBetRound) {
+		this.eBetRound = eBetRound;
+	}
+
+	public ArrayList<PlayerPosition> getPlayerPosition() {
+		return PlayerPosition;
+	}
+
+	public void setPlayerPosition(ArrayList<PlayerPosition> playerPosition) {
+		PlayerPosition = playerPosition;
+	}
+	
+	public void addPlayerPostiion(PlayerPosition playerPosition)
+	{
+		PlayerPosition.add(playerPosition);
+	}
  
+	
 }

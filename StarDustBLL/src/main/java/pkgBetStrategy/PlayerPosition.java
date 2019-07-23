@@ -22,6 +22,23 @@ public class PlayerPosition {
 	public void setBetPosition(int betPosition) {
 		BetPosition = betPosition;
 	}
+
+
+	public LinkedList<BettingStrategy> getBettingStrategy() {
+		return BettingStrategy;
+	}
+
+
+	public void setBettingStrategy(LinkedList<BettingStrategy> bettingStrategy) {
+		BettingStrategy = bettingStrategy;
+	}
+	
+	public void addBettingStrategy(BettingStrategy bettingStrategy)
+	{
+		BettingStrategy.add(bettingStrategy);
+	}
+	
+	
 	
 	
 }

@@ -5,57 +5,60 @@ import java.util.Objects;
 import pkgCore.Card;
 import pkgCore.HandPoker;
 import pkgCore.HandScorePoker;
+import pkgEnum.eRank;
 
 public class DeckTwoCard implements Comparable {
 
-	private Card c1;
-	private Card c2;
+	private eRank er1;
+	private eRank er2;
 	private boolean bSameSuit;
 	private boolean bSameRank;
 
 	public DeckTwoCard(Card card1, Card card2) {
 		if (card1.geteRank().getiRankNbr() <= card2.geteRank().getiRankNbr()) {
-			this.c1 = card1;
-			this.c2 = card2;
+			this.er1 = card1.geteRank();
+			this.er2 = card2.geteRank();
 		} else {
-			this.c1 = card2;
-			this.c2 = card1;
+			this.er1 = card2.geteRank();
+			this.er2 = card1.geteRank();
 		}
 
-		if (this.c1.geteSuit().equals(this.c2.geteSuit())) {
+		if (card1.geteSuit().equals(card2.geteSuit())) {
 			this.bSameSuit = true;
 		} else {
 			this.bSameSuit = false;
 		}
-		
-		this.bSameRank = (this.c1.geteRank().equals(this.c2.geteRank()));
+
+		this.bSameRank = (card1.geteRank().equals(card2.geteRank()));
 	}
 
-	
-	public Card getC1() {
-		return c1;
+	public eRank getEr1() {
+		return er1;
 	}
 
-
-	public Card getC2() {
-		return c2;
+	public void setEr1(eRank er1) {
+		this.er1 = er1;
 	}
 
+	public eRank getEr2() {
+		return er2;
+	}
+
+	public void setEr2(eRank er2) {
+		this.er2 = er2;
+	}
 
 	public boolean isbSameSuit() {
 		return bSameSuit;
 	}
-	
-
 
 	public boolean isbSameRank() {
 		return bSameRank;
 	}
 
-
 	@Override
 	public int hashCode() {
-		return Objects.hash(c1.geteRank(), c2.geteRank(), bSameSuit);
+		return Objects.hash(er1, er2, bSameSuit);
 	}
 
 	@Override
@@ -76,7 +79,7 @@ public class DeckTwoCard implements Comparable {
 		// typecast o to Complex so that we can compare data members
 		DeckTwoCard c = (DeckTwoCard) o;
 
-		if ((c.c1.geteRank().equals(this.c1.geteRank())) && (c.c2.geteRank().equals(this.c2.geteRank()))
+		if ((c.er1.equals(this.er1)) && (c.er2.equals(this.er2))
 				&& (c.bSameSuit == this.bSameSuit))
 
 			return true;
@@ -89,11 +92,11 @@ public class DeckTwoCard implements Comparable {
 
 		DeckTwoCard dtc = (DeckTwoCard) o;
 
-		if (dtc.c1.geteRank().getiRankNbr() - this.c1.geteRank().getiRankNbr() != 0)
-			return dtc.c1.geteRank().getiRankNbr() - this.c1.geteRank().getiRankNbr();
+		if (dtc.er1.getiRankNbr() - this.er1.getiRankNbr() != 0)
+			return dtc.er1.getiRankNbr() - this.er1.getiRankNbr();
 
-		if (dtc.c2.geteRank().getiRankNbr() - this.c2.geteRank().getiRankNbr() != 0)
-			return dtc.c2.geteRank().getiRankNbr() - this.c2.geteRank().getiRankNbr();
+		if (dtc.er2.getiRankNbr() - this.er2.getiRankNbr() != 0)
+			return dtc.er2.getiRankNbr() - this.er2.getiRankNbr();
 
 		return 0;
 	}

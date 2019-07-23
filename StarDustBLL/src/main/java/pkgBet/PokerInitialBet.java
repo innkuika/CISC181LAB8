@@ -109,10 +109,10 @@ public class PokerInitialBet extends Bet implements Comparable {
 		Collections.sort(dtcList);
 		
 		for (DeckTwoCard d : dtcList) {
-			System.out.print(d.getC1().geteRank() + " ");
-			System.out.print(d.getC1().geteSuit() + " ");
-			System.out.print(d.getC2().geteRank() + " ");
-			System.out.println(d.getC2().geteSuit() + " ");
+			System.out.print(d.getEr1() + " ");
+			System.out.print(d.getEr2() + " ");
+			System.out.print(d.isbSameRank() + " ");
+			System.out.println(d.isbSameSuit() + " ");
 		}
 		System.out.println(dtcList.size());
 	}
