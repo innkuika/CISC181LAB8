@@ -10,7 +10,7 @@
 				<Card2Rank>SEVEN</Card2Rank>
 				<isSameSuit>false</isSameSuit>
 				<isSameRank>true</isSameRank>
-				<BetAction>CHECK</BetAction>
+				<eBetAction>CHECK</eBetAction>
 				<BetAmount>
 					<iBetMinPct>0.0</iBetMinPct>
 					<iBetMaxPct>0.0</iBetMaxPct>
@@ -23,7 +23,7 @@
 				<Card2Rank>EIGHT</Card2Rank>
 				<isSameSuit>false</isSameSuit>
 				<isSameRank>true</isSameRank>
-				<BetAction>BET</BetAction>
+				<eBetAction>BET</eBetAction>
 				<BetAmount>
 					<iBetMinPct>5.0</iBetMinPct>
 					<iBetMaxPct>10.0</iBetMaxPct>
@@ -36,7 +36,7 @@
 				<Card2Rank>JACK</Card2Rank>
 				<isSameSuit>false</isSameSuit>
 				<isSameRank>true</isSameRank>
-				<BetAction>BET</BetAction>
+				<eBetAction>BET</eBetAction>
 				<BetAmount>
 					<iBetMinPct>20.0</iBetMinPct>
 					<iBetMaxPct>50.0</iBetMaxPct>
@@ -49,7 +49,7 @@
 				<Card2Rank>QUEEN</Card2Rank>
 				<isSameSuit>false</isSameSuit>
 				<isSameRank>true</isSameRank>
-				<BetAction>BET</BetAction>
+				<eBetAction>BET</eBetAction>
 				<BetAmount>
 					<iBetMinPct>40.0</iBetMinPct>
 					<iBetMaxPct>50.0</iBetMaxPct>
@@ -62,7 +62,7 @@
 				<Card2Rank>KING</Card2Rank>
 				<isSameSuit>false</isSameSuit>
 				<isSameRank>true</isSameRank>
-				<BetAction>BET</BetAction>
+				<eBetAction>BET</eBetAction>
 				<BetAmount>
 					<iBetMinPct>60.0</iBetMinPct>
 					<iBetMaxPct>70.0</iBetMaxPct>
@@ -75,7 +75,7 @@
 				<Card2Rank>ACE</Card2Rank>
 				<isSameSuit>false</isSameSuit>
 				<isSameRank>true</isSameRank>
-				<BetAction>BET</BetAction>
+				<eBetAction>BET</eBetAction>
 				<BetAmount>
 					<iBetMinPct>70.0</iBetMinPct>
 					<iBetMaxPct>80.0</iBetMaxPct>

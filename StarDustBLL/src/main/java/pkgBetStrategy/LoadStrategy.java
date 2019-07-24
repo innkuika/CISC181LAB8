@@ -2,10 +2,19 @@ package pkgBetStrategy;
 
 import java.io.File;
 
+import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
+
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+import org.xml.sax.helpers.DefaultHandler;
 
 import pkgEnum.eBetAction;
 import pkgEnum.eBetRound;
@@ -16,6 +25,10 @@ public class LoadStrategy {
 
 	public static void main(String[] args) {
 
+		boolean bValidate = validate("BetStrategy.xml", "BetStrategy.xsd");
+		System.out.println(bValidate);
+		
+		/*
 		BetEngine be2 = LoadBettingStrategy();
 
 		BetAmount ba = new BetAmount();
@@ -45,6 +58,7 @@ public class LoadStrategy {
 		be.addBetRound(br);
 
 		WriteXMLFile(be);
+		*/
 	}
 
 	private static BetEngine LoadBettingStrategy() {
@@ -68,6 +82,75 @@ public class LoadStrategy {
 		return be;
 
 	}
+	
+	
+	
+	private static boolean validate(String xmlFile, String schemaFile) {
+
+		String basePathXML = new File("").getAbsolutePath();
+		basePathXML = basePathXML + "\\src\\main\\resources\\PlayerStrategy\\" + xmlFile;		
+			
+		File fileXML = new File(basePathXML);
+
+		String basePathXSD = new File("").getAbsolutePath();
+		basePathXSD = basePathXSD + "\\src\\main\\resources\\PlayerStrategy\\" + schemaFile;
+		File fileXSD = new File(basePathXSD);
+
+		SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+		try {
+
+			Schema schema = schemaFactory.newSchema(fileXSD);
+			Validator validator = schema.newValidator();
+			validator.setErrorHandler(new MyErrorHandler());
+			validator.validate(new StreamSource(fileXML));
+			return true;
+		} catch (SAXException se) {
+	
+
+			System.out.println("   Message: " + se.getMessage());
+			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}	
+	
+	
+	
+	private static class MyErrorHandler extends DefaultHandler {
+		public void warning(SAXParseException e) throws SAXException {
+			System.out.println("Warning: ");
+			printInfo(e);
+			throw e;
+		}
+
+		public void error(SAXParseException e) throws SAXException {
+			System.out.println("Error: ");
+			printInfo(e);
+			throw e;
+		}
+
+		public void fatalError(SAXParseException e) throws SAXException {
+			System.out.println("Fattal error: ");
+			printInfo(e);
+			throw e;
+		}
+
+		private void printInfo(SAXParseException e) {
+			System.out.println("   Public ID: " + e.getPublicId());
+			System.out.println("   System ID: " + e.getSystemId());
+			System.out.println("   Line number: " + e.getLineNumber());
+			System.out.println("   Column number: " + e.getColumnNumber());
+			System.out.println("   Message: " + e.getMessage());
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
 
 	private static void WriteXMLFile(BetEngine be) {
 		try {

@@ -9,7 +9,7 @@ public enum eBetAction {
 	CHECK("CHECK"), 
 	@XmlEnumValue("BET")
 	BET("BET"), 
-	@XmlEnumValue("V")
+	@XmlEnumValue("RAISE")
 	RAISE("RAISE"), 
 	@XmlEnumValue("CALL")
 	CALL("CALL"), 

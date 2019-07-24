@@ -25,7 +25,7 @@ public class BettingStrategy {
 	private boolean isSameRank;
 
 	@XmlElement
-	private eBetAction BetAction;
+	private eBetAction eBetAction;
 
 	@XmlElement
 	private BetAmount BetAmount;
@@ -70,12 +70,14 @@ public class BettingStrategy {
 		this.isSameRank = isSameRank;
 	}
 
-	public eBetAction getBetAction() {
-		return BetAction;
+
+
+	public eBetAction geteBetAction() {
+		return eBetAction;
 	}
 
-	public void setBetAction(eBetAction betAction) {
-		BetAction = betAction;
+	public void seteBetAction(eBetAction eBetAction) {
+		this.eBetAction = eBetAction;
 	}
 
 	public BetAmount getBetAmount() {
