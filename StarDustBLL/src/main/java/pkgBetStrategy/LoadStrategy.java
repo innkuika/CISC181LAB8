@@ -25,6 +25,7 @@ public class LoadStrategy {
 
 	public static void main(String[] args) {
 
+		LoadBettingStrategy();
 		boolean bValidate = validate("BetStrategy.xml", "BetStrategy.xsd");
 		System.out.println(bValidate);
 		

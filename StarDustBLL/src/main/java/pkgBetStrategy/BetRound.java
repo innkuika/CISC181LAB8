@@ -55,14 +55,12 @@ public class BetRound {
 	public static BetRound getBetRound(int BettingRoundNumber, eBetRound eBR)
 	{
 		BetEngine be = BetEngine.LoadBettingEngine();
-		//ArrayList<BetRound> br = (ArrayList<pkgBetStrategy.BetRound>) be.getBetRound().stream().filter(x -> x.getBetRoundNumber() == 2).collect(Collectors.toList());		
-
 		BetRound br =  be.getBetRound()
 				.stream()
 				.filter(x -> x.getBetRoundNumber() == BettingRoundNumber)
 				.filter(x -> x.geteBetRound() == eBR)
-				.findAny().orElse(null);
-		
+				.findAny()
+				.orElse(null);		
 		return br;
 
 	}

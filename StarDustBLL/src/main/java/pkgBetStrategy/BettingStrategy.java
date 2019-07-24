@@ -4,6 +4,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import pkgCore.Card;
 import pkgEnum.eBetAction;
@@ -24,7 +25,7 @@ public class BettingStrategy {
 	@XmlElement
 	private boolean isSameRank;
 
-	@XmlElement
+	@XmlTransient
 	private eBetAction eBetAction;
 
 	@XmlElement
@@ -88,8 +89,14 @@ public class BettingStrategy {
 		BetAmount = betAmount;
 	}
 
-	public static BettingStrategy getBettingStrategy(int BetRoundNbr, int BetPositionNbr, eBetRound eBR, Card c1,
-			Card c2) {
+	public static BettingStrategy getBettingStrategy(int BetRoundNbr, 
+			int BetPositionNbr, 
+			eBetRound eBR, 
+			Card c1,
+			Card c2,
+			int CurrentBetAmount,
+			int CurrentPotAmount,
+			int CurrentStakeAmount) {
 
 		BettingStrategy bsFound = null;
 
@@ -99,11 +106,17 @@ public class BettingStrategy {
 		for (BettingStrategy bs : pp.getBettingStrategy()) {
 			if ((c1.geteRank().getiRankNbr() >= bs.getCard1Rank().getiRankNbr())
 					&& (c2.geteRank().getiRankNbr() >= bs.getCard2Rank().getiRankNbr())) {
-				// ba = bs.getBetAmount();
 				bsFound = bs;			
 			}
 		}
-
+		
+		bsFound.getBetAmount().GetBetAmt(CurrentBetAmount, PotAmount, StakeAmount);
+		
+		public int GetBetAmt(
+				int CurrentBetAmount, 
+				int PotAmount, 
+				int StakeAmount)
+		
 		return bsFound;
 	}
 
