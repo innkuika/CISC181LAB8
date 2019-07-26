@@ -10,13 +10,26 @@
 				<Card2Rank>SEVEN</Card2Rank>
 				<isSameSuit>false</isSameSuit>
 				<isSameRank>true</isSameRank>
-				<eBetAction>CHECK</eBetAction>
+                <eBetCurrentAction>CHECK</eBetCurrentAction>
 				<BetAmount>
 					<iBetMinPct>0.0</iBetMinPct>
 					<iBetMaxPct>0.0</iBetMaxPct>
 					<eBetType>POT</eBetType>
 				</BetAmount>
 			</BettingStrategy>
+			<BettingStrategy>
+				<StrategyNbr>2</StrategyNbr>
+				<Card1Rank>SEVEN</Card1Rank>
+				<Card2Rank>SEVEN</Card2Rank>
+				<isSameSuit>false</isSameSuit>
+				<isSameRank>true</isSameRank>
+                <eBetCurrentAction>BET</eBetCurrentAction>
+				<BetAmount>
+					<iBetMinPct>10.0</iBetMinPct>
+					<iBetMaxPct>15.0</iBetMaxPct>
+					<eBetType>POT</eBetType>
+				</BetAmount>
+			</BettingStrategy>			
 		</PlayerPosition>
 	</BetRound>
 </betEngine>

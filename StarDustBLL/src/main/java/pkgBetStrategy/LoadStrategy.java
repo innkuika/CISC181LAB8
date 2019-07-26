@@ -25,9 +25,11 @@ public class LoadStrategy {
 
 	public static void main(String[] args) {
 
+	 
 		LoadBettingStrategy();
 		boolean bValidate = validate("BetStrategy.xml", "BetStrategy.xsd");
 		System.out.println(bValidate);
+	 
 		
 		/*
 		BetEngine be2 = LoadBettingStrategy();
@@ -38,7 +40,7 @@ public class LoadStrategy {
 		ba.seteBetType(eBetType.POT);
 
 		BettingStrategy bs = new BettingStrategy();
-		bs.setBetAction(eBetAction.CHECK);
+		bs.seteBetCurrentAction(eBetAction.CHECK);
 		bs.setBetAmount(ba);
 		bs.setCard1Rank(eRank.JACK);
 		bs.setCard2Rank(eRank.JACK);
@@ -59,7 +61,7 @@ public class LoadStrategy {
 		be.addBetRound(br);
 
 		WriteXMLFile(be);
-		*/
+	 	*/
 	}
 
 	private static BetEngine LoadBettingStrategy() {

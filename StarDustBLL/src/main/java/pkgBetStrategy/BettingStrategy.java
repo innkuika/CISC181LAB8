@@ -26,10 +26,10 @@ public class BettingStrategy {
 	private boolean isSameSuit;
 	@XmlElement
 	private boolean isSameRank;
-
+	@XmlElement
+	private eBetAction eBetCurrentAction;
 	@XmlTransient
-	private eBetAction eBetAction;
-
+	private eBetAction eBetPlayerAction;
 	@XmlElement
 	private BetAmount BetAmount;
 
@@ -73,13 +73,6 @@ public class BettingStrategy {
 		this.isSameRank = isSameRank;
 	}
 
-	public eBetAction geteBetAction() {
-		return eBetAction;
-	}
-
-	public void seteBetAction(eBetAction eBetAction) {
-		this.eBetAction = eBetAction;
-	}
 
 	public BetAmount getBetAmount() {
 		return BetAmount;
@@ -87,6 +80,22 @@ public class BettingStrategy {
 
 	public void setBetAmount(BetAmount betAmount) {
 		BetAmount = betAmount;
+	}	
+
+	public eBetAction geteBetCurrentAction() {
+		return eBetCurrentAction;
+	}
+
+	public void seteBetCurrentAction(eBetAction eBetCurrentAction) {
+		this.eBetCurrentAction = eBetCurrentAction;
+	}
+
+	public eBetAction geteBetPlayerAction() {
+		return eBetPlayerAction;
+	}
+
+	public void seteBetPlayerAction(eBetAction eBetPlayerAction) {
+		this.eBetPlayerAction = eBetPlayerAction;
 	}
 
 	/**
@@ -133,10 +142,14 @@ public class BettingStrategy {
 			int BetPositionNbr, 
 			eBetRound eBR, 
 			Card c1,
-			Card c2) {
+			Card c2,
+			int iCurrentBetAmt,
+			int iCurrentPotAmt,
+			int iCurrentStakeAmt) {
 		
 		BettingStrategy bsFound = null;
-		
+		eBetAction eCurrentBetAction = (iCurrentBetAmt > 0) ? eBetAction.BET : eBetAction.CHECK;
+
 		//	This code will ensure c1 is the higher rank.		
 		if (c1.geteRank().getiRankNbr() < c2.geteRank().getiRankNbr())
 		{	
@@ -154,11 +167,37 @@ public class BettingStrategy {
 		for (BettingStrategy bs : lstBS) {
 			if ((c1.geteRank().getiRankNbr() >= bs.getCard1Rank().getiRankNbr())
 					&& (c2.geteRank().getiRankNbr() >= bs.getCard2Rank().getiRankNbr())
-					&& (bSameSuit = bs.isSameSuit)
-					&& (bSameRank = bs.isSameRank)) {
-				bsFound = bs;			
+					&& (bSameSuit == bs.isSameSuit)
+					&& (bSameRank == bs.isSameRank)) {
+				
+				bsFound = bs;
+				bsFound.seteBetPlayerAction(bs.geteBetCurrentAction());
+				if (eCurrentBetAction == bs.geteBetCurrentAction())
+				{					
+					break;
+				}				
 			}
 		}
+		
+		if (bsFound != null)
+		{
+			//	If the player's action is a check, don't set the values for
+			//	bet amon, return
+			if (bsFound.geteBetPlayerAction() == eBetAction.CHECK)
+				return bsFound;
+			
+			BetAmount ba = bsFound.getBetAmount().DetermineBet(bsFound, iCurrentBetAmt, iCurrentPotAmt, iCurrentStakeAmt);
+			
+			if (ba == null)
+			{
+				bsFound.seteBetPlayerAction(eBetAction.FOLD);					
+			}
+			else
+			{
+				bsFound.setBetAmount(ba);
+			}							
+		}
+
 		return bsFound;
 	}
 
