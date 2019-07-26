@@ -1,5 +1,7 @@
 package pkgBetStrategy;
 
+import java.util.LinkedList;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -71,8 +73,6 @@ public class BettingStrategy {
 		this.isSameRank = isSameRank;
 	}
 
-
-
 	public eBetAction geteBetAction() {
 		return eBetAction;
 	}
@@ -89,34 +89,76 @@ public class BettingStrategy {
 		BetAmount = betAmount;
 	}
 
+	/**
+	 * getBettingStrategy - return a LinkedList of BettingStrategy 
+	 * for given BetRoundNbr, BetPosition and eBetRound 
+	 * 
+	 * If no strategy(s) are found, return null
+	 * 
+	 * @version Lab #3
+	 * @since Lab #3
+	 * @param BetRoundNbr
+	 * @param BetPositionNbr
+	 * @param eBR
+	 * @return
+	 */
+	public static LinkedList<BettingStrategy> getBettingStrategy(int BetRoundNbr, 
+			int BetPositionNbr,
+			eBetRound eBR)
+	{
+		LinkedList<BettingStrategy> lstBS = null;
+		
+		PlayerPosition pp = BetRound.getBetRound(BetRoundNbr, eBR).getPlayerPosition().stream()
+				.filter(x -> x.getBetPositionNbr() == BetPositionNbr).findAny().orElse(null);
+
+		lstBS = pp.getBettingStrategy();
+		
+		return lstBS;
+	}
+	
+	/**
+	 * getBettingStrategy - return a single BettingStrategy for a 
+	 * given BetRoundNbr, BetPositionNbr, eBetRound and two Cards
+	 * 
+	 * If no BetStrategy is found, return null
+	 * 
+	 * @param BetRoundNbr
+	 * @param BetPositionNbr
+	 * @param eBR
+	 * @param c1
+	 * @param c2
+	 * @return
+	 */
 	public static BettingStrategy getBettingStrategy(int BetRoundNbr, 
 			int BetPositionNbr, 
 			eBetRound eBR, 
 			Card c1,
-			Card c2,
-			int CurrentBetAmount,
-			int CurrentPotAmount,
-			int CurrentStakeAmount) {
-
+			Card c2) {
+		
 		BettingStrategy bsFound = null;
+		
+		//	This code will ensure c1 is the higher rank.		
+		if (c1.geteRank().getiRankNbr() < c2.geteRank().getiRankNbr())
+		{	
+			Card c0 = c1;
+			c1=c2;
+			c2=c0;
+			c0 = null;
+		}
 
-		PlayerPosition pp = BetRound.getBetRound(BetRoundNbr, eBR).getPlayerPosition().stream()
-				.filter(x -> x.getBetPositionNbr() == BetPositionNbr).findAny().orElse(null);
-
-		for (BettingStrategy bs : pp.getBettingStrategy()) {
+		boolean bSameSuit = (c1.geteSuit().equals(c2.geteSuit()) ? true : false);
+		boolean bSameRank = (c1.geteRank().equals(c2.geteRank()) ? true : false);
+		
+		LinkedList<BettingStrategy> lstBS = getBettingStrategy(BetRoundNbr, BetPositionNbr, eBR);
+		
+		for (BettingStrategy bs : lstBS) {
 			if ((c1.geteRank().getiRankNbr() >= bs.getCard1Rank().getiRankNbr())
-					&& (c2.geteRank().getiRankNbr() >= bs.getCard2Rank().getiRankNbr())) {
+					&& (c2.geteRank().getiRankNbr() >= bs.getCard2Rank().getiRankNbr())
+					&& (bSameSuit = bs.isSameSuit)
+					&& (bSameRank = bs.isSameRank)) {
 				bsFound = bs;			
 			}
 		}
-		
-		bsFound.getBetAmount().GetBetAmt(CurrentBetAmount, PotAmount, StakeAmount);
-		
-		public int GetBetAmt(
-				int CurrentBetAmount, 
-				int PotAmount, 
-				int StakeAmount)
-		
 		return bsFound;
 	}
 
