@@ -52,12 +52,11 @@ public class BetRound {
 		PlayerPosition.add(playerPosition);
 	}
 	
-	public static BetRound getBetRound(int BettingRoundNumber, eBetRound eBR)
+	public static BetRound getBetRound(eBetRound eBR)
 	{
 		BetEngine be = BetEngine.LoadBettingEngine();
 		BetRound br =  be.getBetRound()
 				.stream()
-				.filter(x -> x.getBetRoundNumber() == BettingRoundNumber)
 				.filter(x -> x.geteBetRound() == eBR)
 				.findAny()
 				.orElse(null);		

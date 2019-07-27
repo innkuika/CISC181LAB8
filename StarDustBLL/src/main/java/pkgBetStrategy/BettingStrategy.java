@@ -111,13 +111,13 @@ public class BettingStrategy {
 	 * @param eBR
 	 * @return
 	 */
-	public static LinkedList<BettingStrategy> getBettingStrategy(int BetRoundNbr, 
+	public static LinkedList<BettingStrategy> getBettingStrategy( 
 			int BetPositionNbr,
 			eBetRound eBR)
 	{
 		LinkedList<BettingStrategy> lstBS = null;
 		
-		PlayerPosition pp = BetRound.getBetRound(BetRoundNbr, eBR).getPlayerPosition().stream()
+		PlayerPosition pp = BetRound.getBetRound(eBR).getPlayerPosition().stream()
 				.filter(x -> x.getBetPositionNbr() == BetPositionNbr).findAny().orElse(null);
 
 		lstBS = pp.getBettingStrategy();
@@ -138,7 +138,7 @@ public class BettingStrategy {
 	 * @param c2
 	 * @return
 	 */
-	public static BettingStrategy getBettingStrategy(int BetRoundNbr, 
+	public static BettingStrategy getBettingStrategy( 
 			int BetPositionNbr, 
 			eBetRound eBR, 
 			Card c1,
@@ -162,7 +162,7 @@ public class BettingStrategy {
 		boolean bSameSuit = (c1.geteSuit().equals(c2.geteSuit()) ? true : false);
 		boolean bSameRank = (c1.geteRank().equals(c2.geteRank()) ? true : false);
 		
-		LinkedList<BettingStrategy> lstBS = getBettingStrategy(BetRoundNbr, BetPositionNbr, eBR);
+		LinkedList<BettingStrategy> lstBS = getBettingStrategy(BetPositionNbr, eBR);
 		
 		for (BettingStrategy bs : lstBS) {
 			if ((c1.geteRank().getiRankNbr() >= bs.getCard1Rank().getiRankNbr())
