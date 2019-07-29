@@ -16,12 +16,14 @@
 											<xs:complexType>
 												<xs:sequence>
 													<xs:element type="xs:byte" name="StrategyNbr" />
-													<xs:element type="xs:string" name="Card1Rank" />
-													<xs:element type="xs:string" name="Card2Rank" />
+													<xs:element type="enum-eHandStrength"
+														name="eHandStrength" minOccurs="0" maxOccurs="1" />
+													<xs:element type="xs:string" name="lstCardRank"
+														maxOccurs="unbounded" minOccurs="0" />
 													<xs:element type="xs:boolean" name="isSameSuit" />
 													<xs:element type="xs:boolean" name="isSameRank" />
 													<xs:element type="enum-eBetAction"
-														name="eBetCurrentAction" />			
+														name="eBetCurrentAction" />
 													<xs:element name="BetAmount">
 														<xs:complexType>
 															<xs:sequence>
@@ -39,8 +41,6 @@
 																<xs:element name="iBetMaxPct">
 																	<xs:simpleType>
 																		<xs:restriction base="xs:float">
-
-
 																			<xs:maxInclusive value="100">
 																			</xs:maxInclusive>
 																			<xs:minInclusive value="0">
@@ -81,13 +81,28 @@
 			<xs:enumeration value="PREFLOP" />
 			<xs:enumeration value="RAISE" />
 			<xs:enumeration value="FOLD" />
+			<xs:enumeration value="CALL" />
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="enum-eBetType">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="POT" />
 			<xs:enumeration value="STAKE" />
-			<xs:enumeration value="NONE" />			
+			<xs:enumeration value="NONE" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="enum-eHandStrength">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="RoyalFlush" />
+			<xs:enumeration value="StraightFlush" />
+			<xs:enumeration value="FourOfAKind" />
+			<xs:enumeration value="FullHouse" />
+			<xs:enumeration value="Flush" />
+			<xs:enumeration value="Straight" />
+			<xs:enumeration value="ThreeOfAKind" />
+			<xs:enumeration value="TwoPair" />
+			<xs:enumeration value="Pair" />
+			<xs:enumeration value="HighCard" />
 		</xs:restriction>
 	</xs:simpleType>
 </xs:schema>

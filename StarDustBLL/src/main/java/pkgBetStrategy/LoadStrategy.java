@@ -17,21 +17,29 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import pkgEnum.eBetAction;
+import pkgEnum.eBetOperator;
 import pkgEnum.eBetRound;
 import pkgEnum.eBetType;
+import pkgEnum.eHandStrength;
 import pkgEnum.eRank;
 
 public class LoadStrategy {  
 
 	public static void main(String[] args) {
 
-	 
+		// SaveBettingEngine();
 		LoadBettingStrategy();
-		boolean bValidate = validate("BetStrategy.xml", "BetStrategy.xsd");
-		System.out.println(bValidate);
+		boolean bValidate = BetEngine.validate("BetStrategy.xml", "BetStrategy.xsd");
+		if (bValidate)
+			System.out.println("BetStrategy.xml is valid");
 	 
 		
-		/*
+
+	}
+	
+	public static void SaveBettingEngine()
+	{
+		 
 		BetEngine be2 = LoadBettingStrategy();
 
 		BetAmount ba = new BetAmount();
@@ -42,11 +50,13 @@ public class LoadStrategy {
 		BettingStrategy bs = new BettingStrategy();
 		bs.seteBetCurrentAction(eBetAction.CHECK);
 		bs.setBetAmount(ba);
-		bs.setCard1Rank(eRank.JACK);
-		bs.setCard2Rank(eRank.JACK);
+		
+		bs.addCardRank(eRank.JACK);
+		bs.addCardRank(eRank.JACK);
 		bs.setSameRank(true);
 		bs.setSameSuit(false);
 		bs.setStrategyNbr(1);
+		bs.seteHandStrength(null);
 
 		PlayerPosition pp = new PlayerPosition();
 		pp.setBetPositionNbr(1);
@@ -61,7 +71,7 @@ public class LoadStrategy {
 		be.addBetRound(br);
 
 		WriteXMLFile(be);
-	 	*/
+	  
 	}
 
 	private static BetEngine LoadBettingStrategy() {
@@ -71,13 +81,10 @@ public class LoadStrategy {
 		String basePath = new File("").getAbsolutePath();
 		basePath = basePath + "\\src\\main\\resources\\PlayerStrategy\\BetStrategy.xml";
 		File file = new File(basePath);
-
-		System.out.println(file.getAbsolutePath());
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(BetEngine.class);
 			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 			be = (BetEngine) jaxbUnmarshaller.unmarshal(file);
-			System.out.println(be);
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
@@ -88,65 +95,8 @@ public class LoadStrategy {
 	
 	
 	
-	private static boolean validate(String xmlFile, String schemaFile) {
 
-		String basePathXML = new File("").getAbsolutePath();
-		basePathXML = basePathXML + "\\src\\main\\resources\\PlayerStrategy\\" + xmlFile;		
-			
-		File fileXML = new File(basePathXML);
-
-		String basePathXSD = new File("").getAbsolutePath();
-		basePathXSD = basePathXSD + "\\src\\main\\resources\\PlayerStrategy\\" + schemaFile;
-		File fileXSD = new File(basePathXSD);
-
-		SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-		try {
-
-			Schema schema = schemaFactory.newSchema(fileXSD);
-			Validator validator = schema.newValidator();
-			validator.setErrorHandler(new MyErrorHandler());
-			validator.validate(new StreamSource(fileXML));
-			return true;
-		} catch (SAXException se) {
-	
-
-			System.out.println("   Message: " + se.getMessage());
-			return false;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-	}	
-	
-	
-	
-	private static class MyErrorHandler extends DefaultHandler {
-		public void warning(SAXParseException e) throws SAXException {
-			System.out.println("Warning: ");
-			printInfo(e);
-			throw e;
-		}
-
-		public void error(SAXParseException e) throws SAXException {
-			System.out.println("Error: ");
-			printInfo(e);
-			throw e;
-		}
-
-		public void fatalError(SAXParseException e) throws SAXException {
-			System.out.println("Fattal error: ");
-			printInfo(e);
-			throw e;
-		}
-
-		private void printInfo(SAXParseException e) {
-			System.out.println("   Public ID: " + e.getPublicId());
-			System.out.println("   System ID: " + e.getSystemId());
-			System.out.println("   Line number: " + e.getLineNumber());
-			System.out.println("   Column number: " + e.getColumnNumber());
-			System.out.println("   Message: " + e.getMessage());
-		}
-	}
+ 
 	
 	
 	

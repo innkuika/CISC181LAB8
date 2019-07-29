@@ -52,7 +52,7 @@ public class BetRound {
 		PlayerPosition.add(playerPosition);
 	}
 	
-	public static BetRound getBetRound(eBetRound eBR)
+	public static BetRound getBetRound(eBetRound eBR) throws Exception
 	{
 		BetEngine be = BetEngine.LoadBettingEngine();
 		BetRound br =  be.getBetRound()

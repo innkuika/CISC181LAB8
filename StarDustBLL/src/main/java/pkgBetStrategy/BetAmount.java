@@ -24,10 +24,9 @@ public class BetAmount {
 	private double iBetMaxPct;
 	@XmlElement
 	private eBetType eBetType;
-	
+
 	@XmlTransient
 	private int BetAmt;
-	
 
 	public double getiBetMinPct() {
 		return iBetMinPct;
@@ -73,37 +72,41 @@ public class BetAmount {
 		BetAmt = betAmt;
 	}
 
-	public BetAmount DetermineBet(BettingStrategy bs,
-			int CurrentBetAmount, 
-			int PotAmount, 
-			int StakeAmount)
-	{
+	public BetAmount DetermineBet(BettingStrategy bs, int CurrentBetAmount, int PotAmount, int StakeAmount) {
 		int BetAmt = 0;
 		double BetMinPct = this.getiBetMinPct();
 		double BetMaxPct = this.getiBetMaxPct();
 		int iBetMinAmount = 0;
 		int iBetMaxAmount = 0;
-		
+
 		SecureRandom random = new SecureRandom();
 
-		if (this.geteBetType() == pkgEnum.eBetType.POT) {
-			iBetMinAmount = (int) (PotAmount * (BetMinPct * 0.01));			
-			iBetMaxAmount = (int) (PotAmount * (BetMaxPct * 0.01));
-		} else if (this.geteBetType() == pkgEnum.eBetType.STAKE) {
-			iBetMinAmount = (int) (StakeAmount * (BetMinPct * 0.01));
-			iBetMaxAmount = (int) (StakeAmount * (BetMaxPct * 0.01));
+		if (bs.geteBetCurrentAction() == eBetAction.CALL) {
+			if (CurrentBetAmount <= StakeAmount) {
+				this.BetAmt = CurrentBetAmount;
+			}
+			else
+			{
+				this.BetAmt = StakeAmount;
+			}
+		} else {
+
+			if (this.geteBetType() == pkgEnum.eBetType.POT) {
+				iBetMinAmount = (int) (PotAmount * (BetMinPct * 0.01));
+				iBetMaxAmount = (int) (PotAmount * (BetMaxPct * 0.01));
+			} else if (this.geteBetType() == pkgEnum.eBetType.STAKE) {
+				iBetMinAmount = (int) (StakeAmount * (BetMinPct * 0.01));
+				iBetMaxAmount = (int) (StakeAmount * (BetMaxPct * 0.01));
+			}
+			if (iBetMinAmount < CurrentBetAmount)
+				iBetMinAmount = CurrentBetAmount;
+
+			if (iBetMinAmount > iBetMaxAmount)
+				return null;
+			this.BetAmt = (random.nextInt(iBetMaxAmount - iBetMinAmount + 1) + iBetMinAmount);
 		}
-		
-		if (iBetMinAmount < CurrentBetAmount)
-			iBetMinAmount = CurrentBetAmount;
-		
-		if (iBetMinAmount > iBetMaxAmount)
-			return null;
-		
-		this.BetAmt = (random.nextInt(iBetMaxAmount - iBetMinAmount + 1) + iBetMinAmount);
-		
+
 		return this;
 	}
-
 
 }
