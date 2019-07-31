@@ -56,8 +56,9 @@ public abstract class Hand {
 	 *                       a card to the 'cards' ArrayList, drawing from given
 	 *                       deck.
 	 */
-	public void Draw(Deck d) throws DeckException {
+	public Hand Draw(Deck d) throws DeckException {
 		cards.add(d.Draw());
+		return this;
 	}
 
 	/**

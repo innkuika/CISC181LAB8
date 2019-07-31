@@ -42,9 +42,17 @@ public class HandPoker extends Hand implements Comparable {
 	 * 
 	 */
 	private ArrayList<CardRankCount> CRC = null;
-
+	
+	private GamePlay gp = null;
+	
 	public HandPoker() {
 		this.setHS(new HandScorePoker());
+	}
+	
+	public HandPoker(GamePlay GP)
+	{
+		this();
+		this.gp = GP;		
 	}
 
 	protected ArrayList<CardRankCount> getCRC() {
