@@ -2,6 +2,7 @@ package pkgCore;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 
 import pkgEnum.eRank;
 import pkgEnum.eSuit;
@@ -45,8 +46,8 @@ public class Deck {
 	public Deck(int iNbrOfDecks) {
 
 		for (int a = 0; a < iNbrOfDecks; a++) {
-			for (eSuit eSuit : eSuit.values()) {
-				for (eRank eRank : eRank.values()) {
+			for (eSuit eSuit : EnumSet.range(eSuit.HEARTS, eSuit.SPADES)) {
+				for (eRank eRank : EnumSet.range(eRank.TWO,  eRank.ACE)) {
 					cardsInDeck.add(new Card(eSuit, eRank));
 				}
 			}
@@ -83,4 +84,10 @@ public class Deck {
 	public int getiDeckCount() {
 		return cardsInDeck.size();
 	}
+
+	ArrayList<Card> getCardsInDeck() {
+		return cardsInDeck;
+	}
+	
+	
 }

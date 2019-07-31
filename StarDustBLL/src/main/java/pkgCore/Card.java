@@ -33,6 +33,8 @@ public class Card implements Comparable {
 	 */
 	private eRank eRank;
 
+	private boolean Wild;
+	
 	/**
 	 * @version Lab #1
 	 * @since Lab #1
@@ -41,10 +43,14 @@ public class Card implements Comparable {
 	 * 
 	 *              Create an instance of the Card class
 	 */
+	
+
+	
 	public Card(pkgEnum.eSuit eSuit, pkgEnum.eRank eRank) {
 		super();
 		this.eSuit = eSuit;
 		this.eRank = eRank;
+		this.Wild = false;
 	}
 
 	/**
@@ -89,6 +95,12 @@ public class Card implements Comparable {
 	 */
 	private void seteRank(eRank eRank) {
 		this.eRank = eRank;
+	}
+
+	
+	
+	public boolean isWild() {
+		return Wild;
 	}
 
 	/**

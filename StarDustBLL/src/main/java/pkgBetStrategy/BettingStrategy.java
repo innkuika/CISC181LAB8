@@ -9,6 +9,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.xml.sax.SAXException;
+
 import pkgCore.Card;
 import pkgEnum.eBetAction;
 import pkgEnum.eBetRound;
@@ -117,9 +119,10 @@ public class BettingStrategy {
 	 * @param BetPositionNbr
 	 * @param eBR
 	 * @return
+	 * @throws SAXException 
 	 * @throws Exception 
 	 */
-	public static LinkedList<BettingStrategy> getBettingStrategy(int BetPositionNbr, eBetRound eBR) throws Exception {
+	public static LinkedList<BettingStrategy> getBettingStrategy(int BetPositionNbr, eBetRound eBR) throws SAXException  {
 		LinkedList<BettingStrategy> lstBS = null;
 
 		PlayerPosition pp = BetRound.getBetRound(eBR).getPlayerPosition().stream()

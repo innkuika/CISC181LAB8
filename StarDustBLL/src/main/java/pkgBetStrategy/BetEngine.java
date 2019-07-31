@@ -38,14 +38,14 @@ public class BetEngine {
 		//LoadBettingEngine();
 	}
 
-	public static BetEngine LoadBettingEngine() throws Exception {
+	public static BetEngine LoadBettingEngine() throws SAXException  {
 
 		BetEngine be = null;
 
 		boolean bValidate = BetEngine.validate("BetStrategy.xml", "BetStrategy.xsd");
-		if (!bValidate) {
-			throw new Exception("XSD validation not successful");
-		}
+//		if (!bValidate) {
+//			throw new Exception("XSD validation not successful");
+//		}
 		String basePath = new File("").getAbsolutePath();
 		basePath = basePath + "\\src\\main\\resources\\PlayerStrategy\\BetStrategy.xml";
 		File file = new File(basePath);
@@ -60,7 +60,7 @@ public class BetEngine {
 		return be;
 	}
 
-	public static boolean validate(String xmlFile, String schemaFile) {
+	public static boolean validate(String xmlFile, String schemaFile) throws SAXException {
 
 		String basePathXML = new File("").getAbsolutePath();
 		basePathXML = basePathXML + "\\src\\main\\resources\\PlayerStrategy\\" + xmlFile;
@@ -82,7 +82,7 @@ public class BetEngine {
 		} catch (SAXException se) {
 
 			System.out.println("   Message: " + se.getMessage());
-			return false;
+			throw se;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;

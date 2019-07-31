@@ -8,7 +8,7 @@ public class HandScorePoker extends HandScore {
 	private Card HiCard;
 	private Card LoCard;
 	private ArrayList<Card> kickers = new ArrayList<Card>();
-
+	private boolean Natural;
 	
 	protected eHandStrength geteHandStrength() {
 		return eHandStrength;
@@ -34,4 +34,12 @@ public class HandScorePoker extends HandScore {
 	protected void setKickers(ArrayList<Card> kickers) {
 		this.kickers = kickers;
 	}
+	public boolean isNatural() {
+		return Natural;
+	}
+	public void setNatural(boolean natural) {
+		Natural = natural;
+	}
+	
+	
 }

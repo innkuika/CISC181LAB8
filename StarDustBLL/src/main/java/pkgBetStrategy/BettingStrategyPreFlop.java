@@ -2,6 +2,8 @@ package pkgBetStrategy;
 
 import java.util.Collections;
 
+import org.xml.sax.SAXException;
+
 import pkgCore.Card;
 import pkgEnum.eBetAction;
 import pkgEnum.eBetRound;
@@ -20,10 +22,11 @@ public class BettingStrategyPreFlop extends BettingStrategy {
 	 * @param c1
 	 * @param c2
 	 * @return
+	 * @throws SAXException 
 	 * @throws Exception 
 	 */
 	public static BettingStrategy getBettingStrategy(int BetPositionNbr, eBetRound eBR, Card c1, Card c2,
-			int iCurrentBetAmt, int iCurrentPotAmt, int iCurrentStakeAmt) throws Exception {
+			int iCurrentBetAmt, int iCurrentPotAmt, int iCurrentStakeAmt) throws SAXException  {
 
 		BettingStrategy bsFound = null;
 		eBetAction eCurrentBetAction = (iCurrentBetAmt > 0) ? eBetAction.BET : eBetAction.CHECK;

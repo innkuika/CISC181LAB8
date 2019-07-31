@@ -1,5 +1,5 @@
 package pkgEnum;
 
 public enum eSuit {
-	HEARTS, CLUBS, DIAMONDS, SPADES;
+	HEARTS, CLUBS, DIAMONDS, SPADES, JOKER;
 }

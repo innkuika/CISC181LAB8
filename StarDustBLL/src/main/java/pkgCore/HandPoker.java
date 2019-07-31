@@ -21,38 +21,34 @@ public class HandPoker extends Hand implements Comparable {
 	 * @version Lab #1
 	 * @since Lab #1
 	 * 
-	 * CRC - Each hand score has a private attribute of an Array of CardRankCount.  Each instance
-	 * of CardRankCount shows the Card, it's ranking and the number of instances.  
-	 * Example:
+	 *        CRC - Each hand score has a private attribute of an Array of
+	 *        CardRankCount. Each instance of CardRankCount shows the Card, it's
+	 *        ranking and the number of instances. Example:
 	 * 
-	 * If Hand was 5H-2K-5D-AH-KH
-	 * There would be three rows in the CRC matrix
-	 * Card 2, position 1, count 1
-	 * Card 5, position 2, count 2
-	 * Card K, position 4, count 1
-	 * Card A, position 5, count 1
+	 *        If Hand was 5H-2K-5D-AH-KH There would be three rows in the CRC matrix
+	 *        Card 2, position 1, count 1 Card 5, position 2, count 2 Card K,
+	 *        position 4, count 1 Card A, position 5, count 1
 	 * 
-	 * From this we can determine that the hand should be a pair, and card that makes the pair is a
-	 * 5, and that the first 5 is found in position 2 in the hand.  
+	 *        From this we can determine that the hand should be a pair, and card
+	 *        that makes the pair is a 5, and that the first 5 is found in position
+	 *        2 in the hand.
 	 * 
-	 * CRC works great with high card, pair, two pair, three of a kind, four of a kind, full house
-	 * CRC doesn't work great for straight, straight flush, flush, royal flush
+	 *        CRC works great with high card, pair, two pair, three of a kind, four
+	 *        of a kind, full house CRC doesn't work great for straight, straight
+	 *        flush, flush, royal flush
 	 * 
-	 * CRC works when the frequency of the cards matter.  
+	 *        CRC works when the frequency of the cards matter.
 	 * 
 	 */
 	private ArrayList<CardRankCount> CRC = null;
-	
-	private GamePlay gp = null;
-	
+
 	public HandPoker() {
-		this.setHS(new HandScorePoker());
+		this(null);
 	}
-	
-	public HandPoker(GamePlay GP)
-	{
-		this();
-		this.gp = GP;		
+
+	public HandPoker(GamePlay GP) {
+		super(GP);
+		this.setHS(new HandScorePoker());
 	}
 
 	protected ArrayList<CardRankCount> getCRC() {
@@ -61,6 +57,75 @@ public class HandPoker extends Hand implements Comparable {
 
 	public HandScorePoker getHandScorePoker() {
 		return (HandScorePoker) this.getHS();
+	}
+
+	@Override
+	protected void setCards(ArrayList<Card> cards) {
+		super.setCards(cards);
+	}
+
+	public HandPoker EvaluateHand() throws HandException {
+
+		HandPoker h = null;
+
+		ArrayList<HandPoker> ExplodedHands = ExplodeHands(this);
+
+		for (HandPoker hand : ExplodedHands) {
+			hand.ScoreHand();
+		}
+
+		// Figure out best hand
+		Collections.sort(ExplodedHands);
+
+		// Return best hand.
+		return ExplodedHands.get(0);
+	}
+
+	private static ArrayList<HandPoker> ExplodeHands(HandPoker h) {
+		ArrayList<HandPoker> HandsToReturn = new ArrayList<HandPoker>();
+
+		HandsToReturn.add(h);
+
+		// Create 13 card deck by suit
+		// Deck dSuit = new
+		// Deck(h.CardsInHand.get(eCardNo.FifthCard.getCardNo()).geteSuit());
+		Deck dSuit = new Deck();
+
+		// Call the method that will substitute each card if it's a joker
+		for (int a = 0; a < h.getCards().size(); a++) {
+			HandsToReturn = SubstituteHand(HandsToReturn, a, dSuit);
+		}
+		return HandsToReturn;
+	}
+
+	private static ArrayList<HandPoker> SubstituteHand(ArrayList<HandPoker> inHands, int SubCardNo, Deck dSuit) {
+
+		ArrayList<HandPoker> SubHands = new ArrayList<HandPoker>();
+
+		for (HandPoker h : inHands) {
+			ArrayList<Card> c = h.getCards();
+			if (c.get(SubCardNo).geteRank() == eRank.JOKER || c.get(SubCardNo).isWild()) {
+
+				for (Card JokerSub : dSuit.getCardsInDeck()) {
+					ArrayList<Card> SubCards = new ArrayList<Card>();
+					SubCards.add(JokerSub);
+					for (int a = 0; a < 5; a++) {
+						if (SubCardNo != a) {
+							SubCards.add(h.getCards().get(a));
+						}
+					}
+					HandPoker sub = new HandPoker(h.getGP());
+					for (Card subCard : SubCards) {
+						sub.AddCard(subCard);
+					}
+					sub.getHandScorePoker().setNatural(false);
+					SubHands.add(sub);
+				}
+			} else {
+				SubHands.add(h);
+			}
+		}
+		return SubHands;
 	}
 
 	@Override
@@ -395,18 +460,50 @@ public class HandPoker extends Hand implements Comparable {
 			}
 		}
 
-		// Then Sort on Kickers
-		for (int k = 0; k < 4; k++) {
-			if ((PassedHSP.getKickers().get(k) != null) && (ThisHSP.getKickers().get(k) != null)) {
+		for (int k = 0; k< 4; k++)
+		{
+			if (PassedHSP.getKickers().size() > k) {
 				if (PassedHSP.getKickers().get(k).geteRank().getiRankNbr()
-						- PassedHSP.getKickers().get(k).geteRank().getiRankNbr() != 0) {
+						- ThisHSP.getKickers().get(k).geteRank().getiRankNbr() != 0) {
 					return PassedHSP.getKickers().get(k).geteRank().getiRankNbr()
-							- PassedHSP.getKickers().get(k).geteRank().getiRankNbr();
+							- ThisHSP.getKickers().get(k).geteRank().getiRankNbr();
 				}
-			}
+			}	
 		}
 
-		return 0;
-	}
+/*
+		if (PassedHSP.getKickers().size() > 1) {
+			if (PassedHSP.getKickers().get(1).geteRank().getiRankNbr()
+					- ThisHSP.getKickers().get(1).geteRank().getiRankNbr() != 0) {
+				return PassedHSP.getKickers().get(1).geteRank().getiRankNbr()
+						- ThisHSP.getKickers().get(1).geteRank().getiRankNbr();
+			}
+		}		
+		if (PassedHSP.getKickers().size() > 2) {
+			if (PassedHSP.getKickers().get(2).geteRank().getiRankNbr()
+					- ThisHSP.getKickers().get(2).geteRank().getiRankNbr() != 0) {
+				return PassedHSP.getKickers().get(2).geteRank().getiRankNbr()
+						- ThisHSP.getKickers().get(2).geteRank().getiRankNbr();
+			}
+		}		
+		if (PassedHSP.getKickers().size() > 3) {
+			if (PassedHSP.getKickers().get(3).geteRank().getiRankNbr()
+					- ThisHSP.getKickers().get(3).geteRank().getiRankNbr() != 0) {
+				return PassedHSP.getKickers().get(3).geteRank().getiRankNbr()
+						- ThisHSP.getKickers().get(3).geteRank().getiRankNbr();
+			}
+		}			
+		*/
+		/*
+		 * // Then Sort on Kickers for (int k = 0; k< 4; k++) { if
+		 * ((PassedHSP.getKickers().size() < k) && (ThisHSP.getKickers().size() < k))
+		 * //if ((PassedHSP.getKickers().get(k) != null) && (ThisHSP.getKickers().get(k)
+		 * != null)) { if (PassedHSP.getKickers().get(k).geteRank().getiRankNbr() -
+		 * ThisHSP.getKickers().get(k).geteRank().getiRankNbr() != 0) { return
+		 * PassedHSP.getKickers().get(k).geteRank().getiRankNbr() -
+		 * ThisHSP.getKickers().get(k).geteRank().getiRankNbr(); } } }
+		 */
+	return 0;
+}
 
 }
