@@ -6,6 +6,8 @@ import java.util.UUID;
 
 import pkgEnum.eCardDestination;
 import pkgEnum.eDrawCount;
+import pkgEnum.eRank;
+import pkgEnum.eSuit;
 import pkgException.DeckException;
 
 public class GamePlay {
@@ -28,6 +30,26 @@ public class GamePlay {
 		GamePlayers.addAll(t.getTablePlayers());
 		GameDeck = t.setTableDeck(new Deck());
 	}
+	
+	
+
+	public ArrayList<Card> getCommonCards() {
+		int iSize = CommonCards.size();
+		ArrayList<Card> commonCards = (ArrayList<Card>) CommonCards.clone();
+		for (int i = iSize; i < 5; i++)
+		{
+			commonCards.add(new Card(eSuit.JOKER, eRank.JOKER));
+		}
+		return commonCards;
+	}
+
+
+
+	public Rule getRle() {
+		return Rle;
+	}
+
+
 
 	public void StartGame() throws DeckException {
 		for (Player p : GamePlayers) {
@@ -46,5 +68,10 @@ public class GamePlay {
 				GameHand.get(p.getPlayerID()).Draw(GameDeck);
 			}
 		}
+	}
+	
+	public HandPoker GetPlayersHand(Player p)
+	{
+		return GameHand.get(p.getPlayerID());
 	}
 }

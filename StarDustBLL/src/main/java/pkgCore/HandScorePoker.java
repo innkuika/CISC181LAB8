@@ -8,7 +8,7 @@ public class HandScorePoker extends HandScore {
 	private Card HiCard;
 	private Card LoCard;
 	private ArrayList<Card> kickers = new ArrayList<Card>();
-	private boolean Natural;
+	private boolean Natural = true;
 	
 	protected eHandStrength geteHandStrength() {
 		return eHandStrength;

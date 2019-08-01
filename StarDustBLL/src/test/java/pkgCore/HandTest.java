@@ -123,7 +123,7 @@ class HandTest {
 		h = SetHand(FourOfAKind, h);
 		
 		try {
-			h = h.EvaluateHand();
+			h = h.EvaluateHand(h);
 		} catch (HandException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -164,7 +164,7 @@ class HandTest {
 		h = SetHand(FullHouse, h);
 		
 		try {
-			h = h.EvaluateHand();
+			h = h.EvaluateHand(h);
 		} catch (HandException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

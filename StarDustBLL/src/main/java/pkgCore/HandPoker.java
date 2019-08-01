@@ -3,7 +3,11 @@ package pkgCore;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
+
+import org.apache.commons.math3.util.CombinatoricsUtils;
 
 import pkgEnum.eCardNo;
 //import pkgEnum.eCardNo;
@@ -51,6 +55,11 @@ public class HandPoker extends Hand implements Comparable {
 		this.setHS(new HandScorePoker());
 	}
 
+	private HandPoker(GamePlay GP, ArrayList<Card> InitialCards) {
+		this(GP);
+		this.setCards(InitialCards);
+	}
+
 	protected ArrayList<CardRankCount> getCRC() {
 		return CRC;
 	}
@@ -64,11 +73,74 @@ public class HandPoker extends Hand implements Comparable {
 		super.setCards(cards);
 	}
 
-	public HandPoker EvaluateHand() throws HandException {
+	public HandPoker FindBestHand(ArrayList<HandPoker> PossibleHands, boolean bMadeHand) {
+		Collections.sort(PossibleHands);
 
-		HandPoker h = null;
+		HandPoker BestMadeHand = PossibleHands.stream().filter(x -> x.getHandScorePoker().isNatural() == true).findAny()
+				.orElse(null);
 
-		ArrayList<HandPoker> ExplodedHands = ExplodeHands(this);
+		HandPoker BestPossibleHand = PossibleHands.stream().filter(x -> x.getHandScorePoker().isNatural() == false)
+				.findAny().orElse(null);
+
+		if (bMadeHand) {
+			return BestMadeHand;
+		} else {
+			if (BestPossibleHand == null) {
+				return BestMadeHand;
+			} else {
+				return BestPossibleHand;
+			}
+		}
+	}
+
+	public ArrayList<HandPoker> GetTexasHoldemHands() throws HandException {
+
+		ArrayList<HandPoker> CombinationHands = new ArrayList<HandPoker>();
+
+		ArrayList<Card> GameCards = this.getGP().getCommonCards();
+		ArrayList<Card> HandCards = this.getCards();
+		Rule rle = this.getGP().getRle();
+
+		int iMinPlayerCards = rle.getPlayerCardsMin();
+		int iMaxPlayerCards = rle.getPlayerCardsMax();
+		int iMinCommonCards = rle.getCommunityCardsMin();
+		int iMaxCommonCards = rle.getCommunityCardsMax();
+
+		for (int i = 0; i < (iMaxPlayerCards - iMinPlayerCards + 1); i++) {
+
+			Iterator<int[]> iterPlayer = CombinatoricsUtils.combinationsIterator(iMaxPlayerCards, i + iMinPlayerCards);
+			while (iterPlayer.hasNext()) {
+
+				final int[] cmbPlayer = iterPlayer.next();
+				Iterator<int[]> iterCommon = CombinatoricsUtils.combinationsIterator(iMaxCommonCards,
+						iMaxCommonCards - i);
+				while (iterCommon.hasNext()) {
+					ArrayList<Card> cards = new ArrayList<Card>();
+					final int[] cmbCommon = iterCommon.next();
+
+					for (int iPlayerCard : cmbPlayer) {
+						cards.add(this.getCards().get(iPlayerCard));
+					}
+					for (int iCommonCard : cmbCommon) {
+						cards.add(this.getGP().getCommonCards().get(iCommonCard));
+					}
+					HandPoker hp = new HandPoker(this.getGP(), cards);
+
+					hp = EvaluateHand(hp);
+					CombinationHands.add(hp);
+
+					System.out.print(Arrays.toString(cmbPlayer));
+					System.out.println(Arrays.toString(cmbCommon));
+				}
+			}
+		}
+
+		return CombinationHands;
+	}
+
+	public HandPoker EvaluateHand(HandPoker hp) throws HandException {
+
+		ArrayList<HandPoker> ExplodedHands = ExplodeHands(hp);
 
 		for (HandPoker hand : ExplodedHands) {
 			hand.ScoreHand();
@@ -86,9 +158,7 @@ public class HandPoker extends Hand implements Comparable {
 
 		HandsToReturn.add(h);
 
-		// Create 13 card deck by suit
-		// Deck dSuit = new
-		// Deck(h.CardsInHand.get(eCardNo.FifthCard.getCardNo()).geteSuit());
+		// Create a new deck to substitute for Jokers
 		Deck dSuit = new Deck();
 
 		// Call the method that will substitute each card if it's a joker
@@ -460,50 +530,28 @@ public class HandPoker extends Hand implements Comparable {
 			}
 		}
 
-		for (int k = 0; k< 4; k++)
-		{
-			if (PassedHSP.getKickers().size() > k) {
-				if (PassedHSP.getKickers().get(k).geteRank().getiRankNbr()
-						- ThisHSP.getKickers().get(k).geteRank().getiRankNbr() != 0) {
-					return PassedHSP.getKickers().get(k).geteRank().getiRankNbr()
-							- ThisHSP.getKickers().get(k).geteRank().getiRankNbr();
+		for (int k = 0; k < 4; k++) {
+			if ((PassedHSP.getKickers() != null) && (ThisHSP.getKickers() != null)) {
+				if ((PassedHSP.getKickers().size() > k) && (ThisHSP.getKickers().size() > k)) {
+					if (PassedHSP.getKickers().get(k).geteRank().getiRankNbr()
+							- ThisHSP.getKickers().get(k).geteRank().getiRankNbr() != 0) {
+						return PassedHSP.getKickers().get(k).geteRank().getiRankNbr()
+								- ThisHSP.getKickers().get(k).geteRank().getiRankNbr();
+					}
 				}
-			}	
+			}
 		}
 
-/*
-		if (PassedHSP.getKickers().size() > 1) {
-			if (PassedHSP.getKickers().get(1).geteRank().getiRankNbr()
-					- ThisHSP.getKickers().get(1).geteRank().getiRankNbr() != 0) {
-				return PassedHSP.getKickers().get(1).geteRank().getiRankNbr()
-						- ThisHSP.getKickers().get(1).geteRank().getiRankNbr();
-			}
-		}		
-		if (PassedHSP.getKickers().size() > 2) {
-			if (PassedHSP.getKickers().get(2).geteRank().getiRankNbr()
-					- ThisHSP.getKickers().get(2).geteRank().getiRankNbr() != 0) {
-				return PassedHSP.getKickers().get(2).geteRank().getiRankNbr()
-						- ThisHSP.getKickers().get(2).geteRank().getiRankNbr();
-			}
-		}		
-		if (PassedHSP.getKickers().size() > 3) {
-			if (PassedHSP.getKickers().get(3).geteRank().getiRankNbr()
-					- ThisHSP.getKickers().get(3).geteRank().getiRankNbr() != 0) {
-				return PassedHSP.getKickers().get(3).geteRank().getiRankNbr()
-						- ThisHSP.getKickers().get(3).geteRank().getiRankNbr();
-			}
-		}			
-		*/
 		/*
-		 * // Then Sort on Kickers for (int k = 0; k< 4; k++) { if
-		 * ((PassedHSP.getKickers().size() < k) && (ThisHSP.getKickers().size() < k))
-		 * //if ((PassedHSP.getKickers().get(k) != null) && (ThisHSP.getKickers().get(k)
-		 * != null)) { if (PassedHSP.getKickers().get(k).geteRank().getiRankNbr() -
+		 * for (int k = 0; k < 4; k++) { if (PassedHSP.getKickers() != null) {
+		 * 
+		 * if (PassedHSP.getKickers().size() > k) { if
+		 * (PassedHSP.getKickers().get(k).geteRank().getiRankNbr() -
 		 * ThisHSP.getKickers().get(k).geteRank().getiRankNbr() != 0) { return
 		 * PassedHSP.getKickers().get(k).geteRank().getiRankNbr() -
-		 * ThisHSP.getKickers().get(k).geteRank().getiRankNbr(); } } }
+		 * ThisHSP.getKickers().get(k).geteRank().getiRankNbr(); } } } }
 		 */
-	return 0;
-}
+		return 0;
+	}
 
 }
