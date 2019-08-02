@@ -27,9 +27,8 @@ public class Rule implements Serializable {
 		private int CommunityCardsMax;
 		private int PossibleHandCombinations;
 		private ArrayList<Card> WildCards = new ArrayList<Card>();
-		private HashMap hmCardDraw = new HashMap<Integer, CardDraw>();
-		
-		private LinkedList<CardDraw> CardDraw = new LinkedList<CardDraw>();
+		private HashMap<eDrawCount, CardDraw> hmCardDraw = new HashMap<eDrawCount, CardDraw>();
+				
 		private eGame Game;
 
 		public Rule(eGame gme) {
@@ -54,7 +53,7 @@ public class Rule implements Serializable {
 			case FiveStudOneJoker: {
 				this.MaxNumberOfPlayers = 4;
 				this.PlayerNumberOfCards = 5;
-				this.NumberOfJokers = 21;
+				this.NumberOfJokers = 1;
 				this.PlayerCardsMin = 5;
 				this.PlayerCardsMax = 5;			
 				this.CommunityCardsMin = 0;

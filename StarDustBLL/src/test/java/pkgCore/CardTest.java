@@ -10,9 +10,17 @@ import org.junit.jupiter.api.Test;
 import pkgEnum.eRank;
 import pkgEnum.eSuit;
 
-public class CardsTest {
+public class CardTest {
 
-	
+	@Test
+	public void CreateCard_Test()
+	{
+		Card c = new Card(eSuit.CLUBS, eRank.EIGHT);
+		assertNotNull(c);
+		assertEquals(eSuit.CLUBS, c.geteSuit());
+		assertEquals(eRank.EIGHT, c.geteRank());
+		assertFalse(c.isWild());
+	}
 	
 	@Test
 	public void CardEqual_Test()

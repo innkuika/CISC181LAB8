@@ -86,7 +86,16 @@ public class Deck {
 	}
 
  
-	ArrayList<Card> getCardsInDeck() {
+	/**
+	 * getCardsInDeck - getter for cardsInDeck.  It's private, must be invoked
+	 * with reflections.
+	 * 
+	 * @author BRG
+	 * @version Lab #3
+	 * @since Lab #3
+	 * @return - the cards in the deck.
+	 */
+	private ArrayList<Card> getCardsInDeck() {
 		return cardsInDeck;
 	}
  

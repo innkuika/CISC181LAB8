@@ -6,7 +6,7 @@ public class Player {
 
 	private UUID PlayerID;
 	private String PlayerName;
-	
+	 
 	public Player(UUID playerID, String playerName) {
 		super();
 		PlayerID = playerID;

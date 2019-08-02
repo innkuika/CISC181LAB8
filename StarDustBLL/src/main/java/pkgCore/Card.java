@@ -59,59 +59,6 @@ public class Card implements Comparable {
 	/**
 	 * @version Lab #1
 	 * @since Lab #1
-	 * @return eRank of Card instance
-	 * 
-	 *         geteRank - get the eRank of the Card
-	 */
-	public eRank geteRank() {
-		return eRank;
-	}
-
-	/**
-	 * @version Lab #1
-	 * @since Lab #1
-	 * @return eSuit of Card instance
-	 * 
-	 *         geteSuit - get the eSuit of the Card
-	 */
-	public eSuit geteSuit() {
-		return eSuit;
-	}
-
-	/**
-	 * @version Lab #1
-	 * @since Lab #1
-	 * @param eSuit - set to a given Suit
-	 * 
-	 *              seteSuit - Set the eSuit of the Card
-	 */
-	private void seteSuit(eSuit eSuit) {
-		this.eSuit = eSuit;
-	}
-
-	/**
-	 * @version Lab #1
-	 * @since Lab #1
-	 * @param eRank - set to a given Rank
-	 * 
-	 *              seteRank - set the eRank of the Card
-	 */
-	private void seteRank(eRank eRank) {
-		this.eRank = eRank;
-	}
-
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public boolean isWild() {
-		return Wild;
-	}
-
-	/**
-	 * @version Lab #1
-	 * @since Lab #1
 	 * 
 	 *        compareTo - set the generic sort order to sort by rank ascending
 	 */
@@ -150,6 +97,59 @@ public class Card implements Comparable {
 			return true;
 
 		return false;
+	}
+
+	/**
+	 * @version Lab #1
+	 * @since Lab #1
+	 * @return eRank of Card instance
+	 * 
+	 *         geteRank - get the eRank of the Card
+	 */
+	public eRank geteRank() {
+		return eRank;
+	}
+
+	/**
+	 * @version Lab #1
+	 * @since Lab #1
+	 * @return eSuit of Card instance
+	 * 
+	 *         geteSuit - get the eSuit of the Card
+	 */
+	public eSuit geteSuit() {
+		return eSuit;
+	}
+
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean isWild() {
+		return Wild;
+	}
+
+	/**
+	 * @version Lab #1
+	 * @since Lab #1
+	 * @param eRank - set to a given Rank
+	 * 
+	 *              seteRank - set the eRank of the Card
+	 */
+	private void seteRank(eRank eRank) {
+		this.eRank = eRank;
+	}
+
+	/**
+	 * @version Lab #1
+	 * @since Lab #1
+	 * @param eSuit - set to a given Suit
+	 * 
+	 *              seteSuit - Set the eSuit of the Card
+	 */
+	private void seteSuit(eSuit eSuit) {
+		this.eSuit = eSuit;
 	}
 	
 	

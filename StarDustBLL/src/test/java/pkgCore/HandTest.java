@@ -82,6 +82,7 @@ class HandTest {
 		return bReturn;
 	}
 
+
 	@Test
 	public void TestFourOfAKind1() {
 
@@ -106,7 +107,7 @@ class HandTest {
 				  eRank.KING);
 
 	}
-	
+
 	@Test
 	public void TestFourOfAKind_2() {
 
@@ -146,7 +147,7 @@ class HandTest {
 				  eRank.KING);
 
 	}
-	
+ 
 	
 	@Test
 	public void TestFullHouse_1() {
@@ -162,7 +163,7 @@ class HandTest {
 		HandPoker h = new HandPoker();
 		
 		h = SetHand(FullHouse, h);
-		
+		 
 		try {
 			h = h.EvaluateHand(h);
 		} catch (HandException e) {
@@ -187,4 +188,5 @@ class HandTest {
 		assertTrue(HSP.getKickers().size() == 0);
 
 	}
+ 
 }

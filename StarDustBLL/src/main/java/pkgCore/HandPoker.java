@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.math3.util.CombinatoricsUtils;
 
 import pkgEnum.eCardNo;
+import pkgEnum.eGame;
 //import pkgEnum.eCardNo;
 import pkgEnum.eHandStrength;
 import pkgEnum.eRank;
@@ -60,7 +61,7 @@ public class HandPoker extends Hand implements Comparable {
 	 * HandPoker - Create an instance of HandPoker
 	 */
 	public HandPoker() {
-		this(null, null);
+		this(new Player("Test Player"), new GamePlay(new Table("Test Table"), new Rule(eGame.FiveStud)));
 	}
 
 	/**
@@ -120,37 +121,50 @@ public class HandPoker extends Hand implements Comparable {
 	 */
 	public void SetBestHand(ArrayList<HandPoker> PossibleHands) {
 	
-		Collections.sort(PossibleHands);
+		//Collections.sort(PossibleHands);		
 		
 		HandPoker BestMadeHand = PossibleHands.stream()
 				.filter(x -> x.getHandScorePoker().isNatural() == true).findAny()
 				.orElse(null);
+		
 		HandPoker BestPossibleHand = PossibleHands.stream()
 				.filter(x -> x.getHandScorePoker().isNatural() == false).findAny()
-				.orElse(null);		
+				.orElse(null);	
+		
+		ArrayList<HandPoker> BestPossibleHands = new ArrayList<HandPoker>();
+		
 		if (BestPossibleHand == null)
 			BestPossibleHand = BestMadeHand;
 		
+		if (BestPossibleHand != null)
+		{
+			HandScorePoker bestHSP = BestPossibleHand.getHandScorePoker();
+			
+			BestPossibleHands.addAll((ArrayList<HandPoker>) PossibleHands.stream()
+					.filter(x -> x.getHandScorePoker().equals(bestHSP))
+					.collect(Collectors.toList()));	
+			
+			System.out.println("Total best possible hands: " + BestPossibleHands.size());
+			
+		}
+
 		
-		this.getGP().SetBestPossibleHand(this.getPlayer().getPlayerID(), BestPossibleHand);
+
 		
+	
+
+		
+		
+		this.getGP().SetBestPossibleHands(this.getPlayer().getPlayerID(), BestPossibleHands);		
 		this.getGP().SetBestMadeHand(this.getPlayer().getPlayerID(), BestMadeHand);
-		
-		
-//		TopHands.addAll(PossibleHands.stream().filter(x -> x.getHandScorePoker().isNatural() == true).limit(10).collect(Collectors.toList()));
-//		
-//		TopHands.addAll(PossibleHands.stream().filter(x -> x.getHandScorePoker().isNatural() == false).limit(10).collect(Collectors.toList()));
-//		
+			
 
 	}
 	
 	
  
 
-	/*
-	 * public HandPoker FindBestHand(boolean bMadeHand) { if (bMadeHand) return
-	 * getBestMadeHand(); else return getBestPossibleHand(); }
-	 */
+ 
 
 
 	public ArrayList<HandPoker> GetPossibleHands() throws HandException {
@@ -192,9 +206,13 @@ public class HandPoker extends Hand implements Comparable {
 			}
 		}
 
+		if (this.getGP().getRle().getPossibleHandCombinations() != CombinationHands.size())
+		{
+			throw new HandException(this);
+		}
 		return CombinationHands;
 	}
-
+ 
 	public HandPoker EvaluateHand(HandPoker hp) throws HandException {
 
 		ArrayList<HandPoker> CombinationHands = GetPossibleHands();		
@@ -216,7 +234,8 @@ public class HandPoker extends Hand implements Comparable {
 		SetBestHand(ExplodedHands);
 		
 		// Return best hand.
-		return ExplodedHands.get(0);
+		return this;
+		//return ExplodedHands.get(0);
 	}
 
 	private static ArrayList<HandPoker> ExplodeHands(HandPoker h) {
@@ -238,11 +257,11 @@ public class HandPoker extends Hand implements Comparable {
 
 		ArrayList<HandPoker> SubHands = new ArrayList<HandPoker>();
 
-		for (HandPoker h : inHands) {
+		for (HandPoker h : inHands) { 
 			ArrayList<Card> c = h.getCards();
 			if (c.get(SubCardNo).geteRank() == eRank.JOKER || c.get(SubCardNo).isWild()) {
 
-				for (Card JokerSub : dSubstitute.getCardsInDeck()) {
+				for (Card JokerSub : HandPoker.GeneratedDeckCards(dSubstitute)) {
 					ArrayList<Card> SubCards = new ArrayList<Card>();
 					SubCards.add(JokerSub);
 					for (int a = 0; a < 5; a++) {
@@ -264,6 +283,50 @@ public class HandPoker extends Hand implements Comparable {
 		return SubHands;
 	}
 
+	
+	
+	private static ArrayList<Card> GeneratedDeckCards(Deck d) {
+
+		Object o = new ArrayList<Card>();
+		try {
+
+			// c = structure of class 'Hand'
+			Class<?> c = Class.forName("pkgCore.Deck");
+			Method mGetCardsInDeck = c.getDeclaredMethod("getCardsInDeck", null);
+			mGetCardsInDeck.setAccessible(true);
+			o = mGetCardsInDeck.invoke(d, null);
+
+
+		} catch (ClassNotFoundException x) {
+			x.printStackTrace();
+		} catch (IllegalAccessException x) {
+			x.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+
+		return (ArrayList<Card>) o;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@Override
 	public HandScore ScoreHand() throws HandException {
 

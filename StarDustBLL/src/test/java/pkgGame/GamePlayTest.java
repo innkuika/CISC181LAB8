@@ -10,9 +10,10 @@ import pkgCore.Rule;
 import pkgCore.Table;
 import pkgEnum.eGame;
 import pkgException.DeckException;
+import pkgException.HandException;
 
 class GamePlayTest {
-
+ 
 	@Test
 	void GamePlay_Test1() {
 		Table t = new Table("Table 1");
@@ -26,7 +27,7 @@ class GamePlayTest {
 		GamePlay gp = new GamePlay(t, rle);
 		try {
 			gp.StartGame();
-		} catch (DeckException e) {
+		} catch (DeckException | HandException e) {
 			fail("Couldnt' execute gp.StartGame");
 		}
 	}
