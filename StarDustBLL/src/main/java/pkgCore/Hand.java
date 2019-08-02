@@ -26,6 +26,9 @@ public abstract class Hand {
 	 */
 	private GamePlay GP = null;
 	
+	private Player player = null; 
+	
+	
 	/**
 	 * @author BRG
 	 * @version Lab #1
@@ -49,10 +52,11 @@ public abstract class Hand {
 	 * 
 	 *        This constructor passes in the instance of GamePlay
 	 */	
-	public Hand(GamePlay gp)
+	public Hand(Player p, GamePlay gp)
 	{
 		this();
 		this.GP = gp;
+		this.player = p;
 	}
 
 	/**
@@ -134,6 +138,10 @@ public abstract class Hand {
 		return GP;
 	}
 	
+	protected Player getPlayer()
+	{
+		return this.player;
+	}
 	
 	
 	

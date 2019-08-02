@@ -10,10 +10,23 @@ import org.junit.jupiter.api.Test;
 import pkgEnum.eRank;
 import pkgEnum.eSuit;
 
-class CardsTest {
+public class CardsTest {
 
+	
+	
 	@Test
-	void test() {
+	public void CardEqual_Test()
+	{
+		Card c1 = new Card(eSuit.HEARTS, eRank.TWO);
+		Card c2 = new Card(eSuit.HEARTS, eRank.TWO);
+		
+		assertTrue(c1.equals(c2));
+		
+		Card c3 = new Card(eSuit.HEARTS, eRank.THREE);
+		assertFalse(c1.equals(c3));
+	}
+	@Test
+	void CardSort_Test() {
  
 		
 		ArrayList<Card> cards = new ArrayList<Card>();

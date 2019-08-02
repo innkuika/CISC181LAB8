@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.stream.Collectors;
 
 import org.apache.commons.math3.util.CombinatoricsUtils;
 
@@ -45,18 +46,49 @@ public class HandPoker extends Hand implements Comparable {
 	 * 
 	 */
 	private ArrayList<CardRankCount> CRC = null;
+	
+	//private HandPoker BestMadeHand = null;
+	//private HandPoker BestPossibleHand = null;
+			
+	//private ArrayList<HandPoker> TopHands = new ArrayList<HandPoker>();
 
+	/**
+	 * @author BRG
+	 * @version Lab #1
+	 * @since Lab #1
+	 * 
+	 * HandPoker - Create an instance of HandPoker
+	 */
 	public HandPoker() {
-		this(null);
+		this(null, null);
 	}
 
-	public HandPoker(GamePlay GP) {
-		super(GP);
+	/**
+	 * @author BRG
+	 * @version Lab #3
+	 * @since Lab #3
+	 * 
+	 * HandPoker - Create an instance of GamePoker with a link back to GamePoker that's handling it.
+	 * @param GP
+	 */
+	public HandPoker(Player p, GamePlay GP) {
+		super(p, GP);
 		this.setHS(new HandScorePoker());
 	}
 
-	private HandPoker(GamePlay GP, ArrayList<Card> InitialCards) {
-		this(GP);
+	/**
+	 * @author BRG
+	 * @version Lab #3
+	 * @since Lab #3
+	 * 
+	 * HandPoker - Create an instance of GamePoker passing in initial cards.  It's private because 
+	 * it should only be used for testing purposes. 
+	 * 
+	 * @param GP
+	 * @param InitialCards
+	 */
+	private HandPoker(Player p, GamePlay GP, ArrayList<Card> InitialCards) {
+		this(p, GP);
 		this.setCards(InitialCards);
 	}
 
@@ -73,32 +105,57 @@ public class HandPoker extends Hand implements Comparable {
 		super.setCards(cards);
 	}
 
-	public HandPoker FindBestHand(ArrayList<HandPoker> PossibleHands, boolean bMadeHand) {
+	/**
+	 * @author BRG
+	 * @version Lab #4
+	 * @since Lab #4
+	 * 
+	 * FindBestHand - will return you the best possible hand.  If you're passing in 'true' for
+	 * bMadeHand, and the best possible hand is null, that means there's no jokers in the hands.  In 
+	 * that case, return the best made hand.
+	 * 
+	 * @param PossibleHands - All the possible hands.  
+	 * @param bMadeHand - If any of the hands are made with a joker, it's not a made hand
+	 * @return
+	 */
+	public void SetBestHand(ArrayList<HandPoker> PossibleHands) {
+	
 		Collections.sort(PossibleHands);
-
-		HandPoker BestMadeHand = PossibleHands.stream().filter(x -> x.getHandScorePoker().isNatural() == true).findAny()
+		
+		HandPoker BestMadeHand = PossibleHands.stream()
+				.filter(x -> x.getHandScorePoker().isNatural() == true).findAny()
 				.orElse(null);
+		HandPoker BestPossibleHand = PossibleHands.stream()
+				.filter(x -> x.getHandScorePoker().isNatural() == false).findAny()
+				.orElse(null);		
+		if (BestPossibleHand == null)
+			BestPossibleHand = BestMadeHand;
+		
+		
+		this.getGP().SetBestPossibleHand(this.getPlayer().getPlayerID(), BestPossibleHand);
+		
+		this.getGP().SetBestMadeHand(this.getPlayer().getPlayerID(), BestMadeHand);
+		
+		
+//		TopHands.addAll(PossibleHands.stream().filter(x -> x.getHandScorePoker().isNatural() == true).limit(10).collect(Collectors.toList()));
+//		
+//		TopHands.addAll(PossibleHands.stream().filter(x -> x.getHandScorePoker().isNatural() == false).limit(10).collect(Collectors.toList()));
+//		
 
-		HandPoker BestPossibleHand = PossibleHands.stream().filter(x -> x.getHandScorePoker().isNatural() == false)
-				.findAny().orElse(null);
-
-		if (bMadeHand) {
-			return BestMadeHand;
-		} else {
-			if (BestPossibleHand == null) {
-				return BestMadeHand;
-			} else {
-				return BestPossibleHand;
-			}
-		}
 	}
+	
+	
+ 
 
-	public ArrayList<HandPoker> GetTexasHoldemHands() throws HandException {
+	/*
+	 * public HandPoker FindBestHand(boolean bMadeHand) { if (bMadeHand) return
+	 * getBestMadeHand(); else return getBestPossibleHand(); }
+	 */
+
+
+	public ArrayList<HandPoker> GetPossibleHands() throws HandException {
 
 		ArrayList<HandPoker> CombinationHands = new ArrayList<HandPoker>();
-
-		ArrayList<Card> GameCards = this.getGP().getCommonCards();
-		ArrayList<Card> HandCards = this.getCards();
 		Rule rle = this.getGP().getRle();
 
 		int iMinPlayerCards = rle.getPlayerCardsMin();
@@ -124,13 +181,13 @@ public class HandPoker extends Hand implements Comparable {
 					for (int iCommonCard : cmbCommon) {
 						cards.add(this.getGP().getCommonCards().get(iCommonCard));
 					}
-					HandPoker hp = new HandPoker(this.getGP(), cards);
+					HandPoker hp = new HandPoker(this.getPlayer(), this.getGP(), cards);
 
-					hp = EvaluateHand(hp);
+					//hp = EvaluateHand(hp);
 					CombinationHands.add(hp);
 
-					System.out.print(Arrays.toString(cmbPlayer));
-					System.out.println(Arrays.toString(cmbCommon));
+					//System.out.print(Arrays.toString(cmbPlayer));
+					//System.out.println(Arrays.toString(cmbCommon));
 				}
 			}
 		}
@@ -140,7 +197,13 @@ public class HandPoker extends Hand implements Comparable {
 
 	public HandPoker EvaluateHand(HandPoker hp) throws HandException {
 
-		ArrayList<HandPoker> ExplodedHands = ExplodeHands(hp);
+		ArrayList<HandPoker> CombinationHands = GetPossibleHands();		
+		ArrayList<HandPoker> ExplodedHands = new ArrayList<HandPoker>();
+		
+		for (HandPoker Combination : CombinationHands)
+		{
+			ExplodedHands.addAll(ExplodeHands(Combination));
+		}
 
 		for (HandPoker hand : ExplodedHands) {
 			hand.ScoreHand();
@@ -149,6 +212,9 @@ public class HandPoker extends Hand implements Comparable {
 		// Figure out best hand
 		Collections.sort(ExplodedHands);
 
+		//	Set the best hand
+		SetBestHand(ExplodedHands);
+		
 		// Return best hand.
 		return ExplodedHands.get(0);
 	}
@@ -159,16 +225,16 @@ public class HandPoker extends Hand implements Comparable {
 		HandsToReturn.add(h);
 
 		// Create a new deck to substitute for Jokers
-		Deck dSuit = new Deck();
+		Deck dSubstitute = new Deck();
 
 		// Call the method that will substitute each card if it's a joker
 		for (int a = 0; a < h.getCards().size(); a++) {
-			HandsToReturn = SubstituteHand(HandsToReturn, a, dSuit);
+			HandsToReturn = SubstituteHand(HandsToReturn, a, dSubstitute);
 		}
 		return HandsToReturn;
 	}
 
-	private static ArrayList<HandPoker> SubstituteHand(ArrayList<HandPoker> inHands, int SubCardNo, Deck dSuit) {
+	private static ArrayList<HandPoker> SubstituteHand(ArrayList<HandPoker> inHands, int SubCardNo, Deck dSubstitute) {
 
 		ArrayList<HandPoker> SubHands = new ArrayList<HandPoker>();
 
@@ -176,7 +242,7 @@ public class HandPoker extends Hand implements Comparable {
 			ArrayList<Card> c = h.getCards();
 			if (c.get(SubCardNo).geteRank() == eRank.JOKER || c.get(SubCardNo).isWild()) {
 
-				for (Card JokerSub : dSuit.getCardsInDeck()) {
+				for (Card JokerSub : dSubstitute.getCardsInDeck()) {
 					ArrayList<Card> SubCards = new ArrayList<Card>();
 					SubCards.add(JokerSub);
 					for (int a = 0; a < 5; a++) {
@@ -184,7 +250,7 @@ public class HandPoker extends Hand implements Comparable {
 							SubCards.add(h.getCards().get(a));
 						}
 					}
-					HandPoker sub = new HandPoker(h.getGP());
+					HandPoker sub = new HandPoker(h.getPlayer(), h.getGP());
 					for (Card subCard : SubCards) {
 						sub.AddCard(subCard);
 					}
@@ -209,13 +275,21 @@ public class HandPoker extends Hand implements Comparable {
 		// Sort the hand by rank
 		Collections.sort(super.getCards());
 
-		// Count the frequence of cards, store in CRC ArrayList
+		// Count the Frequency of cards, store in CRC ArrayList
 		Frequency();
 
 		// Score the hand using Java Reflections
 		return ScoreHandReflections();
 	}
 
+	/**
+	 * @author BRG
+	 * @version Lab #3
+	 * @since Lab #3
+	 * 
+	 * ScoreHandReflections - Using reflections, score the hand.  
+	 * @return
+	 */
 	private HandScorePoker ScoreHandReflections() {
 
 		HandScorePoker HSP = null;
@@ -507,6 +581,38 @@ public class HandPoker extends Hand implements Comparable {
 		return kickers;
 	}
 
+	
+	/**
+	 * equals - return 'true' if the cards are the same.
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		
+		HandPoker hp = (HandPoker)obj;
+		ArrayList<Card> PassedCards = hp.getCards();
+		ArrayList<Card> ThisCards = this.getCards();
+		
+		boolean isEqual = PassedCards.equals(ThisCards);
+		
+		return isEqual;
+		
+	}
+
+	/**
+	 * @author BRG
+	 * @version Lab #3
+	 * @since Lab #3
+	 * 
+	 * compareTo - This is the default sort for HandPoker.  Sorted by...
+	 * 
+	 * HandStrength
+	 * HiHand
+	 * LoHand
+	 * Kickers
+	 * 
+	 * 
+	 * 
+	 */
 	@Override
 	public int compareTo(Object o) {
 
@@ -530,6 +636,7 @@ public class HandPoker extends Hand implements Comparable {
 			}
 		}
 
+		//	Then Sort by kickers. 
 		for (int k = 0; k < 4; k++) {
 			if ((PassedHSP.getKickers() != null) && (ThisHSP.getKickers() != null)) {
 				if ((PassedHSP.getKickers().size() > k) && (ThisHSP.getKickers().size() > k)) {
@@ -541,16 +648,6 @@ public class HandPoker extends Hand implements Comparable {
 				}
 			}
 		}
-
-		/*
-		 * for (int k = 0; k < 4; k++) { if (PassedHSP.getKickers() != null) {
-		 * 
-		 * if (PassedHSP.getKickers().size() > k) { if
-		 * (PassedHSP.getKickers().get(k).geteRank().getiRankNbr() -
-		 * ThisHSP.getKickers().get(k).geteRank().getiRankNbr() != 0) { return
-		 * PassedHSP.getKickers().get(k).geteRank().getiRankNbr() -
-		 * ThisHSP.getKickers().get(k).geteRank().getiRankNbr(); } } } }
-		 */
 		return 0;
 	}
 

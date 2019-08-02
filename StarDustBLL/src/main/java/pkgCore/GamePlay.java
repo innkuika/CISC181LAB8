@@ -16,6 +16,33 @@ public class GamePlay {
 	private ArrayList<Player> GamePlayers = new ArrayList<Player>();
 	private HashMap<UUID, HandPoker> GameHand = new HashMap<UUID, HandPoker>();
 	private ArrayList<Card> CommonCards = new ArrayList<Card>();
+	
+	private HashMap<UUID, HandPoker> BestMadeHand = new HashMap<UUID, HandPoker>();
+	private HashMap<UUID, HandPoker> BestPossibleHand = new HashMap<UUID, HandPoker>();
+	
+	
+	protected void SetBestMadeHand(UUID PlayerID, HandPoker HandPoker)
+	{
+		BestMadeHand.put(PlayerID,  HandPoker);
+	}
+	
+	protected void SetBestPossibleHand(UUID PlayerID, HandPoker HandPoker)
+	{
+		BestPossibleHand.put(PlayerID,  HandPoker);
+	}
+	
+	
+	public HandPoker getBestMadeHand(Player p) {
+		return BestMadeHand.get(p.getPlayerID());
+	}
+
+	public HandPoker getBestPossibleHand(Player p) {
+		return BestPossibleHand.get(p.getPlayerID());
+	}
+
+
+
+
 	private Deck GameDeck;
 
 	/**
@@ -53,7 +80,7 @@ public class GamePlay {
 
 	public void StartGame() throws DeckException {
 		for (Player p : GamePlayers) {
-			HandPoker hp = new HandPoker(this);
+			HandPoker hp = new HandPoker(p, this);
 			GameHand.put(p.getPlayerID(), hp);
 			Draw(p, this.Rle.getCardDraw(eDrawCount.FIRST));
 		}
@@ -74,4 +101,8 @@ public class GamePlay {
 	{
 		return GameHand.get(p.getPlayerID());
 	}
+
+
+	
+	
 }

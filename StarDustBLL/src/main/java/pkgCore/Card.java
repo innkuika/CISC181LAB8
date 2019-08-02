@@ -1,7 +1,7 @@
 package pkgCore;
 
-import pkgBet.DeckTwoCard;
-import pkgEnum.*;
+import pkgEnum.eRank;
+import pkgEnum.eSuit;
 
 /**
  * @author BRG
@@ -33,6 +33,12 @@ public class Card implements Comparable {
 	 */
 	private eRank eRank;
 
+	/**
+	 * @version Lab #3
+	 * @since Lab #3
+	 * 
+	 * Wild - signifies if the card is 'Wild' or not.  If Wild, it can be substituted by any other card
+	 */
 	private boolean Wild;
 	
 	/**
@@ -43,9 +49,6 @@ public class Card implements Comparable {
 	 * 
 	 *              Create an instance of the Card class
 	 */
-	
-
-	
 	public Card(pkgEnum.eSuit eSuit, pkgEnum.eRank eRank) {
 		super();
 		this.eSuit = eSuit;
@@ -98,7 +101,10 @@ public class Card implements Comparable {
 	}
 
 	
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public boolean isWild() {
 		return Wild;
 	}
@@ -115,6 +121,12 @@ public class Card implements Comparable {
 		return c.geteRank().compareTo(this.geteRank());
 	}
 
+	/**
+	 * @version Lab #1
+	 * @since Lab #1
+	 * 
+	 * equals - return 'true' if eSuit and eRank are the same. 
+	 */
 	@Override
 	public boolean equals(Object o) {
 		// If the object is compared with itself then return true
