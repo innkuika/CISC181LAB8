@@ -234,8 +234,8 @@ public class HandPoker extends Hand implements Comparable {
 		SetBestHand(ExplodedHands);
 		
 		// Return best hand.
-		return this;
-		//return ExplodedHands.get(0);
+		//return this;
+		return ExplodedHands.get(0);
 	}
 
 	private static ArrayList<HandPoker> ExplodeHands(HandPoker h) {
@@ -490,7 +490,7 @@ public class HandPoker extends Hand implements Comparable {
 			HSP.seteHandStrength(eHandStrength.FullHouse);
 			HSP.setHiCard(this.getCards().get(CRC.get(eRow.ONE.ordinal()).getiCardPosition()));
 			HSP.setLoCard(this.getCards().get(CRC.get(eRow.TWO.ordinal()).getiCardPosition()));
-			HSP.setKickers(FindTheKickers(this.getCRC()));
+			HSP.setKickers(null);
 			this.setHS(HSP);
 		}
 
@@ -517,9 +517,14 @@ public class HandPoker extends Hand implements Comparable {
 		if (iSuitCnt == iCardCnt) {
 			HandScorePoker HSP = (HandScorePoker) this.getHS();
 			HSP.seteHandStrength(eHandStrength.Flush);
-			HSP.setHiCard(this.getCards().get(this.getCRC().get(eRow.ONE.ordinal()).getiCardPosition()));
+			HSP.setHiCard(this.getCards().get(0));
 			HSP.setLoCard(null);
-			HSP.setKickers(FindTheKickers(this.getCRC()));
+			ArrayList<Card> kickers = new ArrayList<Card>();
+			for (int i = 1; i<super.getCards().size(); i++)
+			{
+				kickers.add(super.getCards().get(i));
+			}
+			HSP.setKickers(kickers);
 			this.setHS(HSP);
 			bisFlush = true;
 		} else

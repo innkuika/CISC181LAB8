@@ -39,17 +39,6 @@ public class GamePlay {
 		this.Rle = rle;
 		GamePlayers.addAll(t.getTablePlayers());
 		GameDeck = new Deck();
-		SecureRandom random = new SecureRandom();
-		
-		int iPlayer = random.nextInt(t.getTablePlayers().size()-1);
-		for (int i = 0; i < t.getTablePlayers().size(); i++)
-		{
-			if (i == iPlayer)
-			{
-				this.PlayerButton = t.getTablePlayers().get(i);
-				break;
-			}
-		}
 	}
 
 	public void Draw(Player p, CardDraw CD) throws DeckException, HandException {
