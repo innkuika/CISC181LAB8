@@ -1,6 +1,9 @@
 package pkgCore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.UUID;
 
 public class Table {
@@ -81,7 +84,7 @@ public class Table {
 	 * @param p
 	 */
 	public void RemovePlayerFromTable(Player p)
-	{
+	{		
 		TablePlayers.remove(p);
 	}
 	
@@ -97,5 +100,5 @@ public class Table {
 	{
 		return TablePlayers;
 	}
-
+	
 }
