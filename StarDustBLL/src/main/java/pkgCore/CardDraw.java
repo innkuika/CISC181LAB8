@@ -5,8 +5,12 @@ import pkgEnum.eCardDestination;
 import pkgEnum.eCardVisibility;
 
 /**
- * CardDraw - The purpose of this class it to keep track of the count,
- * destination and visibility of cards when they are drawn.
+ * @author BRG
+ * @version Lab #3
+ * @since Lab #3
+ * 
+ *        CardDraw - The purpose of this class it to keep track of the count,
+ *        destination and visibility of cards when they are drawn.
  * 
  * @author Dad
  *
@@ -14,22 +18,32 @@ import pkgEnum.eCardVisibility;
 public class CardDraw {
 
 	/**
-	 * CardCount - How many cards to draw.
+	 * @author BRG
+	 * @version Lab #3
+	 * @since Lab #3 CardCount - How many cards to draw.
 	 */
 	private eCardCount CardCount;
-	
+
 	/**
-	 * CardDestination - Where the card belongs- player or common/community
+	 * @author BRG
+	 * @version Lab #3
+	 * @since Lab #3 CardDestination - Where the card belongs- player or
+	 *        common/community
 	 */
 	private eCardDestination CardDestination;
-	
+
 	/**
-	 * CardVisibility - How visible is the card?  Can the other player(s) see the card?
+	 * @author BRG
+	 * @version Lab #3
+	 * @since Lab #3 CardVisibility - How visible is the card? Can the other
+	 *        player(s) see the card?
 	 */
 	private eCardVisibility CardVisibility;
 
 	/**
-	 * CardDraw - Constructor.  You need all three parameters.
+	 * @author BRG
+	 * @version Lab #3
+	 * @since Lab #3 CardDraw - Constructor. You need all three parameters.
 	 * 
 	 * @param cardCount
 	 * @param cardDestination
@@ -37,9 +51,9 @@ public class CardDraw {
 	 */
 	public CardDraw(eCardCount cardCount, eCardDestination cardDestination, eCardVisibility cardVisiblity) {
 		super();
-		CardCount = cardCount;
-		CardDestination = cardDestination;
-		CardVisibility = CardVisibility;
+		this.CardCount = cardCount;
+		this.CardDestination = cardDestination;
+		this.CardVisibility = cardVisiblity;
 	}
 
 	public eCardCount getCardCount() {

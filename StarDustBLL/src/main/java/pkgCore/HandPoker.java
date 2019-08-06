@@ -106,6 +106,7 @@ public class HandPoker extends Hand implements Comparable {
 		super.setCards(cards);
 	}
 
+
 	/**
 	 * @author BRG
 	 * @version Lab #4
@@ -114,14 +115,11 @@ public class HandPoker extends Hand implements Comparable {
 	 * FindBestHand - will return you the best possible hand.  If you're passing in 'true' for
 	 * bMadeHand, and the best possible hand is null, that means there's no jokers in the hands.  In 
 	 * that case, return the best made hand.
-	 * 
 	 * @param PossibleHands - All the possible hands.  
-	 * @param bMadeHand - If any of the hands are made with a joker, it's not a made hand
-	 * @return
 	 */
+	
 	public void SetBestHand(ArrayList<HandPoker> PossibleHands) {
 	
-		//Collections.sort(PossibleHands);		
 		
 		HandPoker BestMadeHand = PossibleHands.stream()
 				.filter(x -> x.getHandScorePoker().isNatural() == true).findAny()
@@ -147,25 +145,9 @@ public class HandPoker extends Hand implements Comparable {
 			System.out.println("Total best possible hands: " + BestPossibleHands.size());
 			
 		}
-
-		
-
-		
-	
-
-		
-		
 		this.getGP().SetBestPossibleHands(this.getPlayer().getPlayerID(), BestPossibleHands);		
 		this.getGP().SetBestMadeHand(this.getPlayer().getPlayerID(), BestMadeHand);
-			
-
 	}
-	
-	
- 
-
- 
-
 
 	public ArrayList<HandPoker> GetPossibleHands() throws HandException {
 

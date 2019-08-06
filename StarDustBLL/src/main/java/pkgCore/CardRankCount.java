@@ -8,7 +8,7 @@ import pkgEnum.eRank;
  * @author Dad
  *
  */
-public class CardRankCount implements Comparable {
+public class CardRankCount implements Comparable<CardRankCount> {
 
 	private eRank eRank;
 	private int iCnt;
@@ -46,7 +46,7 @@ public class CardRankCount implements Comparable {
 	}
 
 	@Override
-	public int compareTo(Object o) {
+	public int compareTo(CardRankCount o) {
 		CardRankCount crc = (CardRankCount) o;
 		if (crc.getiCnt() - this.getiCnt() != 0)
 			return crc.getiCnt() - this.getiCnt();

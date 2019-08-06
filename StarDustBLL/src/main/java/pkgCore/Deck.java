@@ -54,15 +54,13 @@ public class Deck {
 		}
 		Collections.shuffle(cardsInDeck);
 	}
-
+	
 	/**
 	 * @author BRG
 	 * @version Lab #1
 	 * @since Lab #1
-	 * @return Card object
-	 * @throws DeckException.  If the deck is empty, return an excpetion
-	 * 
-	 * Draw - The deck is already shuffled, draw the next card in the deck.
+	 * @return - Return a Card object
+	 * @throws DeckException
 	 */
 	public Card Draw() throws DeckException {
 
