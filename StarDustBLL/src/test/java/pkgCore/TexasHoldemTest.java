@@ -57,7 +57,7 @@ public class TexasHoldemTest {
 			hp2 = hp2.EvaluateHand(hp2);
 			hp3 = hp3.EvaluateHand(hp3);
 		} catch (HandException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 */

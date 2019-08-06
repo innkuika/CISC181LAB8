@@ -24,8 +24,6 @@ public class GamePlay {
 	private ArrayList<Card> CommonCards = new ArrayList<Card>();
 	private HashMap<UUID, HandPoker> BestMadeHand = new HashMap<UUID, HandPoker>();
 	private HashMap<UUID, ArrayList<HandPoker>> BestPossibleHands = new HashMap<UUID, ArrayList<HandPoker>>();
-	private Player PlayerButton;
-	private LinkedList PlayerBetPosition;
 	private Deck GameDeck;
 
 	/**
