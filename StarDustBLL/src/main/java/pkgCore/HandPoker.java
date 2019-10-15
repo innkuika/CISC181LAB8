@@ -103,6 +103,7 @@ public class HandPoker extends Hand implements Comparable {
 
 	@Override
 	protected void setCards(ArrayList<Card> cards) {
+		super.getCards().clear();
 		super.setCards(cards);
 	}
 

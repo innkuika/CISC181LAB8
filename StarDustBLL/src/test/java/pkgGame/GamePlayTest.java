@@ -38,6 +38,7 @@ public class GamePlayTest {
 		//	Create a new GamePlay with Rule for Texas Hold 'em
 		Rule rle = new Rule(eGame.TexasHoldEm);
 		GamePlay gp = new GamePlay(t, rle);
+		
 		try {
 			gp.StartGame();
 		} catch (DeckException e1) {
