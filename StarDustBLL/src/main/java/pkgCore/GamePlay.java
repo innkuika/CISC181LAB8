@@ -258,5 +258,33 @@ public class GamePlay {
 		
 		return WinningPlayers;
 	}
+	
+	/**
+	 * @author BRG
+	 * @version Lab #4
+	 * @since Lab #4
+	 * 
+	 * PutGameHand - puts a hand to the GameHand map
+	 * @return
+	 */
+
+	private void PutGameHand(UUID PlayerID, HandPoker hp)
+	{
+		GameHand.put(PlayerID,  hp);
+	}
+	
+	/**
+	 * @author BRG
+	 * @version Lab #4
+	 * @since Lab #4
+	 * 
+	 * setCommonCards - set the common cards.
+	 * @param cards
+	 */
+	private void setCommonCards(ArrayList<Card> cards)
+	{
+		this.CommonCards.clear();
+		this.CommonCards.addAll(cards);
+	}
 
 }
