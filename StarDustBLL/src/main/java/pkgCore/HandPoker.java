@@ -109,47 +109,40 @@ public class HandPoker extends Hand implements Comparable {
 
 
 	/**
-	 * @author BRG
-	 * @version Lab #4
-	 * @since Lab #4
-	 * 
-	 * FindBestHand - will return you the best possible hand.  If you're passing in 'true' for
-	 * bMadeHand, and the best possible hand is null, that means there's no jokers in the hands.  In 
-	 * that case, return the best made hand.
-	 * @param PossibleHands - All the possible hands.  
+	 * EvaluateHand - This method will generate all the possible hands:
+	 * 					* All combinations
+	 * 					* All wild substitution
+	 * 					* Evaluate each hand
+	 * 					* Sort the hand by HSP
+	 * 					* return sorted array
+	 * @param hp
+	 * @return
+	 * @throws HandException
 	 */
-	
-	public void SetBestHand(ArrayList<HandPoker> PossibleHands) {
-	
-		
-		HandPoker BestMadeHand = PossibleHands.stream()
-				.filter(x -> x.getHandScorePoker().isNatural() == true).findAny()
-				.orElse(null);
-		
-		HandPoker BestPossibleHand = PossibleHands.stream()
-				.filter(x -> x.getHandScorePoker().isNatural() == false).findAny()
-				.orElse(null);	
-		
-		ArrayList<HandPoker> BestPossibleHands = new ArrayList<HandPoker>();
-		
-		if (BestPossibleHand == null)
-			BestPossibleHand = BestMadeHand;
-		
-		if (BestPossibleHand != null)
-		{
-			HandScorePoker bestHSP = BestPossibleHand.getHandScorePoker();
-			
-			BestPossibleHands.addAll((ArrayList<HandPoker>) PossibleHands.stream()
-					.filter(x -> x.getHandScorePoker().equals(bestHSP))
-					.collect(Collectors.toList()));	
-			
-			System.out.println("Total best possible hands: " + BestPossibleHands.size());
-			
-		}
-		this.getGP().SetBestPossibleHands(this.getPlayer().getPlayerID(), BestPossibleHands);		
-		this.getGP().SetBestMadeHand(this.getPlayer().getPlayerID(), BestMadeHand);
-	}
+	public ArrayList<HandPoker> EvaluateHand(HandPoker hp) throws HandException {
 
+		ArrayList<HandPoker> CombinationHands = GetPossibleHands();		
+		ArrayList<HandPoker> ExplodedHands = new ArrayList<HandPoker>();
+		
+		for (HandPoker Combination : CombinationHands)
+		{
+			ExplodedHands.addAll(ExplodeHands(Combination));
+		}
+
+		for (HandPoker hand : ExplodedHands) {
+			hand.ScoreHand();
+		}
+		
+		return ExplodedHands;
+	}
+	
+	/**
+	 * GetPossibleHands - Generate the hands possible depending on game.
+	 * Texas Hold'em will yield 21 hands, Omaha 60 hands.
+	 * 
+	 * @return
+	 * @throws HandException
+	 */
 	public ArrayList<HandPoker> GetPossibleHands() throws HandException {
 
 		ArrayList<HandPoker> CombinationHands = new ArrayList<HandPoker>();
@@ -180,11 +173,7 @@ public class HandPoker extends Hand implements Comparable {
 					}
 					HandPoker hp = new HandPoker(this.getPlayer(), this.getGP(), cards);
 
-					//hp = EvaluateHand(hp);
 					CombinationHands.add(hp);
-
-					//System.out.print(Arrays.toString(cmbPlayer));
-					//System.out.println(Arrays.toString(cmbCommon));
 				}
 			}
 		}
@@ -195,31 +184,7 @@ public class HandPoker extends Hand implements Comparable {
 		}
 		return CombinationHands;
 	}
- 
-	public HandPoker EvaluateHand(HandPoker hp) throws HandException {
-
-		ArrayList<HandPoker> CombinationHands = GetPossibleHands();		
-		ArrayList<HandPoker> ExplodedHands = new ArrayList<HandPoker>();
-		
-		for (HandPoker Combination : CombinationHands)
-		{
-			ExplodedHands.addAll(ExplodeHands(Combination));
-		}
-
-		for (HandPoker hand : ExplodedHands) {
-			hand.ScoreHand();
-		}
-
-		// Figure out best hand
-		Collections.sort(ExplodedHands);
-
-		//	Set the best hand
-		SetBestHand(ExplodedHands);
-		
-		// Return best hand.
-		//return this;
-		return ExplodedHands.get(0);
-	}
+	
 
 	private static ArrayList<HandPoker> ExplodeHands(HandPoker h) {
 		ArrayList<HandPoker> HandsToReturn = new ArrayList<HandPoker>();

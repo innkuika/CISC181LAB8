@@ -68,11 +68,17 @@ public class TexasHoldemTest {
 		
 		PrintHand(gp.getCommonCards(),"Common Cards");
 		ArrayList<HandPoker> BestPossibleHands = hp1.getGP().getBestPossibleHands(p1);
+		assertEquals(0,BestPossibleHands.size());
+		
+		ArrayList<HandPoker> BestMadeHands = hp1.getGP().getBestMadeHands(p1);
+		assertEquals(21,BestMadeHands.size());
+		
+		PrintHand(BestMadeHands.get(0).getCards(), "Best Possible Hand");
 		
 		/* 
 		PrintHand(BestPossibleHand.getCards(), "Best Possible Hand");
 		*/
-				
+			/*	
 		PrintHand(hp1.getGP().getBestMadeHand(p1).getCards(), "Best Made Hand Player 1");
 		PrintHand(hp2.getGP().getBestMadeHand(p2).getCards(), "Best Made Hand Player 2");
 		PrintHand(hp3.getGP().getBestMadeHand(p3).getCards(), "Best Made Hand Player 3");
@@ -88,7 +94,7 @@ public class TexasHoldemTest {
 		{
 			System.out.println(p.getPlayerName() + " is the winner");
 		}
- 
+ **/
 		
 	}
 

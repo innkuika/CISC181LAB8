@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import pkgEnum.eCardDestination;
 import pkgEnum.eDrawCount;
@@ -16,14 +17,12 @@ import pkgEnum.eSuit;
 import pkgException.DeckException;
 import pkgException.HandException;
 
-public class GamePlay { 
+public class GamePlay {
 
 	private Rule Rle;
 	private ArrayList<Player> GamePlayers = new ArrayList<Player>();
 	private HashMap<UUID, HandPoker> GameHand = new HashMap<UUID, HandPoker>();
 	private ArrayList<Card> CommonCards = new ArrayList<Card>();
-	private HashMap<UUID, HandPoker> BestMadeHand = new HashMap<UUID, HandPoker>();
-	private HashMap<UUID, ArrayList<HandPoker>> BestPossibleHands = new HashMap<UUID, ArrayList<HandPoker>>();
 	private Deck GameDeck;
 
 	/**
@@ -55,66 +54,68 @@ public class GamePlay {
 	 * @version Lab #4
 	 * @since Lab #4
 	 * 
-	 * EvaluateGameHands - Find every hand in the GameHand map and 
-	 * evaluate it.  
+	 *        EvaluateGameHands - Find every hand in the GameHand map and evaluate
+	 *        it.
 	 * 
 	 * @throws HandException
 	 */
-	public void EvaluateGameHands() throws HandException
-	{
+	public void EvaluateGameHands() throws HandException {
+		ArrayList<HandPoker> pokerHands = new ArrayList<HandPoker>();
 		Iterator<Map.Entry<UUID, HandPoker>> itr = GameHand.entrySet().iterator();
 		while (itr.hasNext()) {
 			Map.Entry<UUID, HandPoker> entry = itr.next();
-			
+
 			HandPoker hp = entry.getValue();
-			hp = hp.EvaluateHand(hp);		
+			pokerHands.addAll(hp.EvaluateHand(hp));
 		}
 	}
 
-	/**
-	 * @author BRG
-	 * @version Lab #4
-	 * @since Lab #4
-	 * 
-	 * getBestMadeHand - Return the best made hand for the player
-	 * @param player
-	 * @return
-	 */
-	public HandPoker getBestMadeHand(Player player) {
-		return BestMadeHand.get(player.getPlayerID());
+	public ArrayList<HandPoker> getBestMadeHands(Player player) throws HandException {
+		return this.getBestHands(player, true);
+	}
+
+	public ArrayList<HandPoker> getBestPossibleHands(Player player) throws HandException {
+		return this.getBestHands(player, false);
 	}
 
 	/**
-	 * @author BRG
-	 * @version Lab #4
-	 * @since Lab #4
+	 * getBestHands - will pass back an array list of the best hands. If bMadeHand
+	 * is true, it's looking for a hand that doesn't have jokers... which means the
+	 * hand is an actual hand
 	 * 
-	 * getBestPossibleHands - return a list of best possible hands for a player
-	 * Could be more than one (example, same straight, but different suits)
-	 * @param player
+	 * @param player    - given player
+	 * @param bMadeHand - if true, ensure the found hand has no jokers.
 	 * @return
+	 * @throws HandException
 	 */
-	public ArrayList<HandPoker> getBestPossibleHands(Player player) {
-		return BestPossibleHands.get(player.getPlayerID());
+	private ArrayList<HandPoker> getBestHands(Player player, boolean bMadeHand) throws HandException {
+
+		ArrayList<HandPoker> pokerHands = new ArrayList<HandPoker>();
+		Iterator<Map.Entry<UUID, HandPoker>> itr = GameHand.entrySet().iterator();
+		while (itr.hasNext()) {
+			Map.Entry<UUID, HandPoker> entry = itr.next();
+
+			if (player.getPlayerID().equals(entry.getKey())) {
+				HandPoker hp = entry.getValue();
+				try {
+					pokerHands.addAll(hp.EvaluateHand(hp));
+				} catch (HandException e) {
+					e.printStackTrace();
+					throw e;
+				}
+			}
+		}
+
+		pokerHands = (ArrayList<HandPoker>) pokerHands.stream()
+				.filter(x -> x.getHandScorePoker().isNatural() == bMadeHand).collect(Collectors.toList());
+		Collections.sort(pokerHands);
+		return pokerHands;
 	}
 
-	/**
-	 * @author BRG
-	 * @version Lab #4
-	 * @since Lab #4
-	 * 
-	 * getCommonCards - returns the common cards for the game.
-	 * There's a bit of a cheat- return 'jokers' for cards that are 
-	 * not yet dealt.  If there are supposed to be 5 community cards,
-	 * and in the current state of the game there are 3, return the
-	 * three + two jokers. 
-	 * 
-	 * @return - list of community cards.
-	 */
 	public ArrayList<Card> getCommonCards() {
 		int iSize = CommonCards.size();
 		ArrayList<Card> commonCards = (ArrayList<Card>) CommonCards.clone();
-		for (int i = iSize; i < this.getRle().getCommunityCardsMax() ; i++) {
+		for (int i = iSize; i < this.getRle().getCommunityCardsMax(); i++) {
 			commonCards.add(new Card(eSuit.JOKER, eRank.JOKER));
 		}
 		return commonCards;
@@ -123,15 +124,12 @@ public class GamePlay {
 	/**
 	 * @author BRG
 	 * @version Lab #4
-	 * @since Lab #4
-	 * GetGamePlayer - return the Player object for a given PlayerID
+	 * @since Lab #4 GetGamePlayer - return the Player object for a given PlayerID
 	 * @param PlayerID - ID for the Player
 	 * @return - Player object
 	 */
-	private Player GetGamePlayer(UUID PlayerID)
-	{
-		for (Player p: GamePlayers)
-		{
+	private Player GetGamePlayer(UUID PlayerID) {
+		for (Player p : GamePlayers) {
 			if (p.getPlayerID() == PlayerID)
 				return p;
 		}
@@ -143,8 +141,9 @@ public class GamePlay {
 	 * @version Lab #4
 	 * @since Lab #4
 	 * 
-	 * GetPlayersHand - return the Hand in the GameHand hashmap for a given player
-	 * @param player 
+	 *        GetPlayersHand - return the Hand in the GameHand hashmap for a given
+	 *        player
+	 * @param player
 	 * @return
 	 */
 	public HandPoker GetPlayersHand(Player player) {
@@ -156,7 +155,7 @@ public class GamePlay {
 	 * @version Lab #4
 	 * @since Lab #4
 	 * 
-	 * getRle - Get the rule for the game.  It's set in the constructor
+	 *        getRle - Get the rule for the game. It's set in the constructor
 	 * @return
 	 */
 	public Rule getRle() {
@@ -168,17 +167,16 @@ public class GamePlay {
 	 * @version Lab #4
 	 * @since Lab #4
 	 * 
-	 * isMadeHandBestPossibleHand - return 'true' if the BestMadeHand is
-	 * one of the BestPossibleHands
+	 *        isMadeHandBestPossibleHand - return 'true' if the BestMadeHand is one
+	 *        of the BestPossibleHands
 	 * @param player
 	 * @return
+	 * @throws HandException
 	 */
-	public boolean isMadeHandBestPossibleHand(Player player) {
-		ArrayList<HandPoker> PossibleHands = BestPossibleHands.get(player.getPlayerID());
-		for (HandPoker hp : PossibleHands) {
-			if (getBestMadeHand(player) == hp) {
-				return true;
-			}
+	public boolean isMadeHandBestPossibleHand(Player player) throws HandException {
+
+		if (getBestMadeHands(player).get(0).getHS().equals(this.getBestPossibleHands(player).get(0).getHS())) {
+			return true;
 		}
 		return false;
 	}
@@ -188,34 +186,8 @@ public class GamePlay {
 	 * @version Lab #4
 	 * @since Lab #4
 	 * 
-	 * SetBestMadeHand - set the BestMadeHand for a given player
-	 * @param PlayerID
-	 * @param HandPoker
-	 */
-	protected void SetBestMadeHand(UUID PlayerID, HandPoker HandPoker) {
-		BestMadeHand.put(PlayerID, HandPoker);
-	}
-
-	/**
-	 * @author BRG
-	 * @version Lab #4
-	 * @since Lab #4
-	 * 
-	 * SetBestPossibleHands - set the BestPossibleHands for a given player
-	 * @param PlayerID
-	 * @param BestHands
-	 */
-	protected void SetBestPossibleHands(UUID PlayerID, ArrayList<HandPoker> BestHands) {
-		BestPossibleHands.put(PlayerID, BestHands);
-	}
-	
-	/**
-	 * @author BRG
-	 * @version Lab #4
-	 * @since Lab #4
-	 * 
-	 * StartGame - Create a new HandPoker for each player, put it in the 
-	 * GameHand map, execute the first Draw
+	 *        StartGame - Create a new HandPoker for each player, put it in the
+	 *        GameHand map, execute the first Draw
 	 * 
 	 * @throws DeckException
 	 * @throws HandException
@@ -227,62 +199,54 @@ public class GamePlay {
 			Draw(p, this.Rle.getCardDraw(eDrawCount.FIRST));
 		}
 	}
-	
+
 	/**
 	 * @author BRG
 	 * @version Lab #4
 	 * @since Lab #4
 	 * 
-	 * GetGameWinners - Return an ArrayList of players with the winning
-	 * hand.  Could be a tie...
+	 *        GetGameWinners - Return an ArrayList of players with the winning hand.
+	 *        Could be a tie...
 	 * @return
 	 */
 	public ArrayList<Player> GetGameWinners() {
-		
 		ArrayList<Player> WinningPlayers = new ArrayList<Player>();
-		ArrayList<HandPoker> GameHands = new ArrayList<HandPoker>();
-		for (HandPoker PlayerHand : BestMadeHand.values()) {
-			GameHands.add(PlayerHand);
-		}
-		Collections.sort(GameHands);
-		HandPoker WinningHand = GameHands.get(0);
-		
-		Iterator<Map.Entry<UUID, HandPoker>> itr = BestMadeHand.entrySet().iterator();
-		while (itr.hasNext()) {
-			Map.Entry<UUID, HandPoker> entry = itr.next();
-			if (entry.getValue().equals(WinningHand))
-			{
-				WinningPlayers.add(GetGamePlayer(entry.getKey()));
-			}
-		}
-		
+		/*
+		 * 
+		 * ArrayList<HandPoker> GameHands = new ArrayList<HandPoker>(); for (HandPoker
+		 * PlayerHand : BestMadeHand.values()) { GameHands.add(PlayerHand); }
+		 * Collections.sort(GameHands); HandPoker WinningHand = GameHands.get(0);
+		 * 
+		 * Iterator<Map.Entry<UUID, HandPoker>> itr =
+		 * BestMadeHand.entrySet().iterator(); while (itr.hasNext()) { Map.Entry<UUID,
+		 * HandPoker> entry = itr.next(); if (entry.getValue().equals(WinningHand)) {
+		 * WinningPlayers.add(GetGamePlayer(entry.getKey())); } }
+		 */
 		return WinningPlayers;
 	}
-	
+
 	/**
 	 * @author BRG
 	 * @version Lab #4
 	 * @since Lab #4
 	 * 
-	 * PutGameHand - puts a hand to the GameHand map
+	 *        PutGameHand - puts a hand to the GameHand map
 	 * @return
 	 */
 
-	private void PutGameHand(UUID PlayerID, HandPoker hp)
-	{
-		GameHand.put(PlayerID,  hp);
+	private void PutGameHand(UUID PlayerID, HandPoker hp) {
+		GameHand.put(PlayerID, hp);
 	}
-	
+
 	/**
 	 * @author BRG
 	 * @version Lab #4
 	 * @since Lab #4
 	 * 
-	 * setCommonCards - set the common cards.
+	 *        setCommonCards - set the common cards.
 	 * @param cards
 	 */
-	private void setCommonCards(ArrayList<Card> cards)
-	{
+	private void setCommonCards(ArrayList<Card> cards) {
 		this.CommonCards.clear();
 		this.CommonCards.addAll(cards);
 	}
