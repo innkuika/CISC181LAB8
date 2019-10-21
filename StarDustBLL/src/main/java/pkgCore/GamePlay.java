@@ -4,8 +4,10 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -13,6 +15,7 @@ import java.util.stream.Collectors;
 import pkgEnum.eCardDestination;
 import pkgEnum.eDrawCount;
 import pkgEnum.eRank;
+import pkgEnum.eSubstituteDeck;
 import pkgEnum.eSuit;
 import pkgException.DeckException;
 import pkgException.HandException;
@@ -70,14 +73,43 @@ public class GamePlay {
 		}
 	}
 
+	/**
+	 * getBestMadeHands - get the best made hands by Player.
+	 * 
+	 * @version Lab #5
+	 * @since Lab #5
+	 * 
+	 * @param player
+	 * @return
+	 * @throws HandException
+	 */
 	public ArrayList<HandPoker> getBestMadeHands(Player player) throws HandException {
 		return this.getBestHands(player, true);
 	}
 
+	/**
+	 * getBestPossibleHands - get the best possible hands. These are hands that are
+	 * made, but are made using a wild card.
+	 * 
+	 * @version Lab #5
+	 * @since Lab #5
+	 * @param player
+	 * @return
+	 * @throws HandException
+	 */
 	public ArrayList<HandPoker> getBestPossibleHands(Player player) throws HandException {
 		return this.getBestHands(player, false);
 	}
 
+	public HashSet<HandScorePoker> getUniqueHSP(Player p) throws HandException {
+		HashSet<HandScorePoker> setHSP = new HashSet<HandScorePoker>();
+		
+		for (HandPoker hp: this.getBestPossibleHands(p))
+		{
+			setHSP.add(hp.getHandScorePoker());
+		}
+		return setHSP;
+	}
 	/**
 	 * getBestHands - will pass back an array list of the best hands. If bMadeHand
 	 * is true, it's looking for a hand that doesn't have jokers... which means the
@@ -105,10 +137,15 @@ public class GamePlay {
 				}
 			}
 		}
-
+		
+		//isNatural = false when one of the cards used to make the hand was a substitution
+		
 		pokerHands = (ArrayList<HandPoker>) pokerHands.stream()
-				.filter(x -> x.getHandScorePoker().isNatural() == bMadeHand).collect(Collectors.toList());
+				.filter(x -> x.getHandScorePoker().isNatural() == bMadeHand)
+				.collect(Collectors.toList());
+		
 		Collections.sort(pokerHands);
+		
 		return pokerHands;
 	}
 
@@ -116,7 +153,7 @@ public class GamePlay {
 		int iSize = CommonCards.size();
 		ArrayList<Card> commonCards = (ArrayList<Card>) CommonCards.clone();
 		for (int i = iSize; i < this.getRle().getCommunityCardsMax(); i++) {
-			commonCards.add(new Card(eSuit.JOKER, eRank.JOKER));
+			commonCards.add(new Card(eSuit.JOKER, eRank.JOKER, eSubstituteDeck.SUBSTITUTE));
 		}
 		return commonCards;
 	}

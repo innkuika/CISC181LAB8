@@ -17,6 +17,7 @@ import pkgEnum.eHandStrength;
 import pkgEnum.eRank;
 import pkgEnum.eRow;
 import pkgEnum.eRowCount;
+import pkgEnum.eSubstituteDeck;
 import pkgEnum.eSuit;
 import pkgException.HandException;
 
@@ -192,7 +193,7 @@ public class HandPoker extends Hand implements Comparable {
 		HandsToReturn.add(h);
 
 		// Create a new deck to substitute for Jokers
-		Deck dSubstitute = new Deck();
+		Deck dSubstitute = new Deck(eSubstituteDeck.SUBSTITUTE);
 
 		// Call the method that will substitute each card if it's a joker
 		for (int a = 0; a < h.getCards().size(); a++) {

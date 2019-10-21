@@ -1,6 +1,7 @@
 package pkgCore;
 
 import pkgEnum.eRank;
+import pkgEnum.eSubstituteDeck;
 import pkgEnum.eSuit;
 
 /**
@@ -41,6 +42,9 @@ public class Card implements Comparable {
 	 */
 	private boolean Wild;
 	
+	
+	private eSubstituteDeck eSubstituteDeck;
+	
 	/**
 	 * @version Lab #1
 	 * @since Lab #1
@@ -54,8 +58,17 @@ public class Card implements Comparable {
 		this.eSuit = eSuit;
 		this.eRank = eRank;
 		this.Wild = false;
+		this.eSubstituteDeck = eSubstituteDeck.NORMAL;
 	}
 
+	public Card(pkgEnum.eSuit eSuit, pkgEnum.eRank eRank, eSubstituteDeck eSubstituteDeck) {
+		super();
+		this.eSuit = eSuit;
+		this.eRank = eRank;
+		this.Wild = false;
+		this.eSubstituteDeck = eSubstituteDeck;
+	}
+	
 	/**
 	 * @version Lab #1
 	 * @since Lab #1
@@ -150,6 +163,14 @@ public class Card implements Comparable {
 	 */
 	private void seteSuit(eSuit eSuit) {
 		this.eSuit = eSuit;
+	}
+
+	public eSubstituteDeck geteSubstituteDeck() {
+		return eSubstituteDeck;
+	}
+
+	void seteSubstituteDeck(eSubstituteDeck eSubstituteDeck) {
+		this.eSubstituteDeck = eSubstituteDeck;
 	}
 	
 	

@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.EnumSet;
 
 import pkgEnum.eRank;
+import pkgEnum.eSubstituteDeck;
 import pkgEnum.eSuit;
 import pkgException.DeckException;
 
@@ -21,6 +22,14 @@ public class Deck {
 	 */
 	private ArrayList<Card> cardsInDeck = new ArrayList<Card>();
 
+	Deck(eSubstituteDeck eSD)
+	{
+		this(1);
+		for (Card c: this.getCardsInDeck())
+		{
+			c.seteSubstituteDeck(eSD);
+		}
+	}
 	/**
 	 * @author BRG
 	 * @version Lab #1

@@ -3,6 +3,7 @@ package pkgCore;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
@@ -42,10 +43,10 @@ public class TexasHoldemTest {
 		gp.Draw(null, cd2);
 		gp.EvaluateGameHands();
 		
-		CardDraw cd3 = new CardDraw(eCardCount.One, eCardDestination.COMMON, eCardVisibility.EVERYONE);
-		gp.Draw(null, cd3);
+		//CardDraw cd3 = new CardDraw(eCardCount.One, eCardDestination.COMMON, eCardVisibility.EVERYONE);
+		//gp.Draw(null, cd3);
 		
-		gp.EvaluateGameHands();
+		//gp.EvaluateGameHands();
 
 		
 		HandPoker hp1 = gp.GetPlayersHand(p1);
@@ -67,13 +68,17 @@ public class TexasHoldemTest {
 		PrintHand(gp.GetPlayersHand(p3).getCards(),"Player 3 Cards");
 		
 		PrintHand(gp.getCommonCards(),"Common Cards");
+		
 		ArrayList<HandPoker> BestPossibleHands = hp1.getGP().getBestPossibleHands(p1);
-		assertEquals(0,BestPossibleHands.size());
+		//assertEquals(0,BestPossibleHands.size());
 		
 		ArrayList<HandPoker> BestMadeHands = hp1.getGP().getBestMadeHands(p1);
-		assertEquals(21,BestMadeHands.size());
+		//assertEquals(21,BestMadeHands.size());
 		
 		PrintHand(BestMadeHands.get(0).getCards(), "Best Possible Hand");
+		
+		HashSet<HandScorePoker> setHSP = gp.getUniqueHSP(p1);
+		System.out.println("Unique HandScorePoker count " + setHSP.size());
 		
 		/* 
 		PrintHand(BestPossibleHand.getCards(), "Best Possible Hand");
@@ -104,7 +109,7 @@ public class TexasHoldemTest {
 		System.out.println("************" + strHandName + "************" );
 		for (Card handPC : cards)
 		{
-			System.out.print(handPC.geteRank() + " " + handPC.geteSuit() + " ");
+			System.out.print(handPC.geteRank() + " " + handPC.geteSuit() + " " + handPC.geteSubstituteDeck() + " " );
 		}
 		System.out.println(" ");
 	}

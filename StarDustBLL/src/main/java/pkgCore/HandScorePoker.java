@@ -1,6 +1,8 @@
 package pkgCore;
 
 import java.util.ArrayList;
+import java.util.Objects;
+
 import pkgEnum.eHandStrength;
 
 public class HandScorePoker extends HandScore {
@@ -48,6 +50,13 @@ public class HandScorePoker extends HandScore {
 
 	public void setNatural(boolean natural) {
 		Natural = natural;
+	}
+
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.geteHandStrength(), this.getHiCard(),
+				this.getLoCard(), this.getKickers());
 	}
 
 	@Override
