@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.stream.Collectors;
 
@@ -49,10 +50,6 @@ public class HandPoker extends Hand implements Comparable {
 	 */
 	private ArrayList<CardRankCount> CRC = null;
 	
-	//private HandPoker BestMadeHand = null;
-	//private HandPoker BestPossibleHand = null;
-			
-	//private ArrayList<HandPoker> TopHands = new ArrayList<HandPoker>();
 
 	/**
 	 * @author BRG
@@ -615,6 +612,15 @@ public class HandPoker extends Hand implements Comparable {
 		
 	}
 
+    // External Comparator
+    public static Comparator<HandPoker> hpComparator = new Comparator<HandPoker>() {
+        @Override
+        public int compare(HandPoker hp1, HandPoker hp2) {        	
+        	return hp1.compareTo(hp2);
+        }
+    };
+    
+    
 	/**
 	 * @author BRG
 	 * @version Lab #3

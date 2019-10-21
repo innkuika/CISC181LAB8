@@ -3,6 +3,7 @@ package pkgCore;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -10,7 +11,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import com.google.common.collect.MinMaxPriorityQueue;
 
 import pkgEnum.eCardDestination;
 import pkgEnum.eDrawCount;
@@ -98,8 +102,21 @@ public class GamePlay {
 	 * @throws HandException
 	 */
 	public ArrayList<HandPoker> getBestPossibleHands(Player player) throws HandException {
-		return this.getBestHands(player, false);
+		
+		MinMaxPriorityQueue<HandPoker> queue = MinMaxPriorityQueue
+				  .orderedBy(HandPoker.hpComparator)
+				  .maximumSize(10)
+				  .create();
+		
+		for (HandPoker hp: this.getBestHands(player, false))
+		{
+			queue.add(hp);
+		}
+
+		return new ArrayList<HandPoker>(queue);
+		
 	}
+	
 
 	public HashSet<HandScorePoker> getUniqueHSP(Player p) throws HandException {
 		HashSet<HandScorePoker> setHSP = new HashSet<HandScorePoker>();

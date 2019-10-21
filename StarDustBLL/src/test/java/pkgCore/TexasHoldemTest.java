@@ -16,6 +16,8 @@ import pkgEnum.eRank;
 import pkgEnum.eSuit;
 import pkgException.DeckException;
 import pkgException.HandException;
+import pkgHelper.GamePlayHelper;
+import pkgHelper.HandPokerHelper;
 
 public class TexasHoldemTest {
 
@@ -34,72 +36,99 @@ public class TexasHoldemTest {
 		Rule rle = new Rule(eGame.TexasHoldEm);
 		GamePlay gp = new GamePlay(t, rle);
 		gp.StartGame();
-
-		CardDraw cd1 = new CardDraw(eCardCount.Three, eCardDestination.COMMON, eCardVisibility.EVERYONE);
-		gp.Draw(null, cd1);
+		
+		//	P1 Cards
+		ArrayList<Card> p1Cards = new ArrayList<Card>();
+		p1Cards.add(new Card(eSuit.CLUBS, eRank.TWO));
+		p1Cards.add(new Card(eSuit.DIAMONDS, eRank.THREE));
+		
+		HandPoker hp1 = HandPokerHelper.SetHand(p1Cards, gp.GetPlayersHand(p1));
+		GamePlayHelper.PutGamePlay(gp, p1.getPlayerID(), hp1);
+		
+		//	Common Cards
+		ArrayList<Card> commonCards = new ArrayList<Card>();
+		commonCards.add(new Card(eSuit.SPADES, eRank.FOUR));
+		commonCards.add(new Card(eSuit.SPADES, eRank.FIVE));
+		commonCards.add(new Card(eSuit.SPADES, eRank.SIX));
+		commonCards.add(new Card(eSuit.DIAMONDS, eRank.ACE));
+		//commonCards.add(new Card(eSuit.SPADES, eRank.QUEEN));
+		GamePlayHelper.setCommonCards(gp,  commonCards);
+		
+		//	Evaluate
 		gp.EvaluateGameHands();
 		
-		CardDraw cd2 = new CardDraw(eCardCount.One, eCardDestination.COMMON, eCardVisibility.EVERYONE);
-		gp.Draw(null, cd2);
-		gp.EvaluateGameHands();
 		
-		//CardDraw cd3 = new CardDraw(eCardCount.One, eCardDestination.COMMON, eCardVisibility.EVERYONE);
-		//gp.Draw(null, cd3);
+		//	Get P1 Hand
+		hp1 = gp.GetPlayersHand(p1);
 		
-		//gp.EvaluateGameHands();
-
-		
-		HandPoker hp1 = gp.GetPlayersHand(p1);
-		HandPoker hp2 = gp.GetPlayersHand(p2);
-		HandPoker hp3 = gp.GetPlayersHand(p3);
-		/*
-		try {
-			hp1 = hp1.EvaluateHand(hp1);
-			hp2 = hp2.EvaluateHand(hp2);
-			hp3 = hp3.EvaluateHand(hp3);
-		} catch (HandException e) {
-
-			e.printStackTrace();
-		}
-*/
-	
 		PrintHand(gp.GetPlayersHand(p1).getCards(),"Player 1 Cards");
-		PrintHand(gp.GetPlayersHand(p2).getCards(),"Player 2 Cards");
-		PrintHand(gp.GetPlayersHand(p3).getCards(),"Player 3 Cards");
-		
 		PrintHand(gp.getCommonCards(),"Common Cards");
 		
 		ArrayList<HandPoker> BestPossibleHands = hp1.getGP().getBestPossibleHands(p1);
-		//assertEquals(0,BestPossibleHands.size());
+		System.out.println(BestPossibleHands.size());
 		
 		ArrayList<HandPoker> BestMadeHands = hp1.getGP().getBestMadeHands(p1);
-		//assertEquals(21,BestMadeHands.size());
-		
-		PrintHand(BestMadeHands.get(0).getCards(), "Best Possible Hand");
-		
-		HashSet<HandScorePoker> setHSP = gp.getUniqueHSP(p1);
-		System.out.println("Unique HandScorePoker count " + setHSP.size());
-		
-		/* 
-		PrintHand(BestPossibleHand.getCards(), "Best Possible Hand");
-		*/
-			/*	
-		PrintHand(hp1.getGP().getBestMadeHand(p1).getCards(), "Best Made Hand Player 1");
-		PrintHand(hp2.getGP().getBestMadeHand(p2).getCards(), "Best Made Hand Player 2");
-		PrintHand(hp3.getGP().getBestMadeHand(p3).getCards(), "Best Made Hand Player 3");
+		System.out.println(BestMadeHands.size());
 
- 
-		if (hp1.getGP().isMadeHandBestPossibleHand(p1))
+		
+		for (HandPoker hp: BestPossibleHands)
 		{
-			System.out.println("You have the best possible hand");
+			this.PrintHand(hp.getCards(), hp.getHandScorePoker().geteHandStrength().toString());
+			//System.out.println(hp.getHandScorePoker().geteHandStrength());
 		}
 		
-		ArrayList<Player> Winners = gp.GetGameWinners();
-		for (Player p: Winners)
-		{
-			System.out.println(p.getPlayerName() + " is the winner");
-		}
- **/
+		
+		
+//		CardDraw cd1 = new CardDraw(eCardCount.Three, eCardDestination.COMMON, eCardVisibility.EVERYONE);
+//		gp.Draw(null, cd1);
+//		gp.EvaluateGameHands();
+//		
+//		CardDraw cd2 = new CardDraw(eCardCount.One, eCardDestination.COMMON, eCardVisibility.EVERYONE);
+//		gp.Draw(null, cd2);
+//		gp.EvaluateGameHands();
+//		
+//		//CardDraw cd3 = new CardDraw(eCardCount.One, eCardDestination.COMMON, eCardVisibility.EVERYONE);
+//		//gp.Draw(null, cd3);
+//		
+//		//gp.EvaluateGameHands();
+//
+//		
+//		HandPoker hp1 = gp.GetPlayersHand(p1);
+//		HandPoker hp2 = gp.GetPlayersHand(p2);
+//		HandPoker hp3 = gp.GetPlayersHand(p3);
+//		/*
+//		try {
+//			hp1 = hp1.EvaluateHand(hp1);
+//			hp2 = hp2.EvaluateHand(hp2);
+//			hp3 = hp3.EvaluateHand(hp3);
+//		} catch (HandException e) {
+//
+//			e.printStackTrace();
+//		}
+//*/
+//	
+//		PrintHand(gp.GetPlayersHand(p1).getCards(),"Player 1 Cards");
+//		PrintHand(gp.GetPlayersHand(p2).getCards(),"Player 2 Cards");
+//		PrintHand(gp.GetPlayersHand(p3).getCards(),"Player 3 Cards");
+//		
+//		PrintHand(gp.getCommonCards(),"Common Cards");
+//		
+//		ArrayList<HandPoker> BestPossibleHands = hp1.getGP().getBestPossibleHands(p1);
+//		//assertEquals(0,BestPossibleHands.size());
+//		
+//		ArrayList<HandPoker> BestMadeHands = hp1.getGP().getBestMadeHands(p1);
+//		//assertEquals(21,BestMadeHands.size());
+//		
+//		PrintHand(BestMadeHands.get(0).getCards(), "Best Possible Hand");
+//		
+//		HashSet<HandScorePoker> setHSP = gp.getUniqueHSP(p1);
+//		System.out.println("Unique HandScorePoker count " + setHSP.size());	
+//		
+//		
+//		for (HandPoker hpPossible: BestPossibleHands)
+//		{
+//			System.out.println(hpPossible.getHandScorePoker().geteHandStrength());
+//		}
 		
 	}
 
