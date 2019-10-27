@@ -280,8 +280,12 @@ public class GamePlay {
 	 */
 	private ArrayList<HandPoker> getBestMadeHands() throws HandException
 	{
-		//TODO: Return the best made hands in the game
 		ArrayList<HandPoker> BestGameHands = new ArrayList<HandPoker>();
+		for (Player p: GamePlayers)
+		{
+			BestGameHands.addAll(getBestMadeHands(p));
+		}
+		BestGameHands.sort(HandPoker.hpComparator);
 		return BestGameHands;
 	}
 	
@@ -295,8 +299,7 @@ public class GamePlay {
 	 */
 	public HandScorePoker getWinningScore() throws HandException
 	{
-		//TODO: return the best made hand's hand score
-		return null;
+		return this.getBestMadeHands().get(0).getHandScorePoker();
 	}
 	
 	/**
@@ -312,8 +315,23 @@ public class GamePlay {
 	public ArrayList<Player> GetGameWinners() throws HandException {
 		
 		ArrayList<Player> WinningPlayers = new ArrayList<Player>();
-		//TODO: Return an array list of the winning players in the game
+		HandScorePoker bestHSP = this.getWinningScore();
+
+		Iterator<Map.Entry<UUID, HandPoker>> itr = this.GameHand.entrySet().iterator();
+		while (itr.hasNext()) {
+			ArrayList<HandPoker> PlayerHands = new ArrayList<HandPoker>();
+			Map.Entry<UUID, HandPoker> entry = itr.next();
+			HandPoker hp = entry.getValue();
+			PlayerHands.addAll(hp.EvaluateHand(hp));
+			PlayerHands.sort(HandPoker.hpComparator);
+			if (PlayerHands.get(0).getHandScorePoker().equals(bestHSP))
+			{
+				WinningPlayers.addAll(
+				GamePlayers.stream()
+				.filter(p -> p.getPlayerID().equals(entry.getKey())).collect(Collectors.toList()));				
+			}
+		}
+
 		return WinningPlayers;
 	}
-
 }
