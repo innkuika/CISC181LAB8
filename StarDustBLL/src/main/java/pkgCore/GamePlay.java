@@ -1,17 +1,10 @@
 package pkgCore;
 
-import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.MinMaxPriorityQueue;
@@ -41,7 +34,8 @@ public class GamePlay {
 	 */
 	public GamePlay(Table t, Rule rle) {
 		this.Rle = rle;
-		GamePlayers.addAll(t.getTablePlayers());
+		if (t.getTablePlayers() != null)
+			GamePlayers.addAll(t.getTablePlayers());
 		GameDeck = new Deck();
 	}
 
@@ -76,7 +70,7 @@ public class GamePlay {
 			pokerHands.addAll(hp.EvaluateHand(hp));
 		}
 	}
-
+	
 	/**
 	 * getBestMadeHands - get the best made hands by Player.
 	 * 
@@ -102,36 +96,26 @@ public class GamePlay {
 	 * @throws HandException
 	 */
 	public ArrayList<HandPoker> getBestPossibleHands(Player player) throws HandException {
-		
+
 		MinMaxPriorityQueue<HandPoker> queue = MinMaxPriorityQueue
-				  .orderedBy(HandPoker.hpComparator)
-				  .maximumSize(10)
-				  .create();
-		
-		for (HandPoker hp: this.getBestHands(player, false))
-		{
+				.orderedBy(HandPoker.hpComparator)
+				.maximumSize(20)
+				.create();
+		for (HandPoker hp : this.getBestHands(player, false)) {
 			queue.add(hp);
 		}
 
 		return new ArrayList<HandPoker>(queue);
-		
-	}
-	
 
-	public HashSet<HandScorePoker> getUniqueHSP(Player p) throws HandException {
-		HashSet<HandScorePoker> setHSP = new HashSet<HandScorePoker>();
-		
-		for (HandPoker hp: this.getBestPossibleHands(p))
-		{
-			setHSP.add(hp.getHandScorePoker());
-		}
-		return setHSP;
 	}
+
 	/**
 	 * getBestHands - will pass back an array list of the best hands. If bMadeHand
 	 * is true, it's looking for a hand that doesn't have jokers... which means the
 	 * hand is an actual hand
 	 * 
+	 * @version Lab #5
+	 * @since Lab #5
 	 * @param player    - given player
 	 * @param bMadeHand - if true, ensure the found hand has no jokers.
 	 * @return
@@ -154,18 +138,20 @@ public class GamePlay {
 				}
 			}
 		}
-		
-		//isNatural = false when one of the cards used to make the hand was a substitution
-		
 		pokerHands = (ArrayList<HandPoker>) pokerHands.stream()
-				.filter(x -> x.getHandScorePoker().isNatural() == bMadeHand)
-				.collect(Collectors.toList());
-		
-		Collections.sort(pokerHands);
-		
+				.filter(x -> x.getHandScorePoker().isNatural() == bMadeHand).collect(Collectors.toList());
+		pokerHands.sort(HandPoker.hpComparator);
 		return pokerHands;
+
 	}
 
+	/**
+	 * @version Lab #5
+	 * @since Lab #5
+	 * getCommonCards - return an ArrayList of the game's common cards
+	 * If there aren't five cards, return jokers for the missing cards
+	 * @return
+	 */
 	public ArrayList<Card> getCommonCards() {
 		int iSize = CommonCards.size();
 		ArrayList<Card> commonCards = (ArrayList<Card>) CommonCards.clone();
@@ -259,31 +245,6 @@ public class GamePlay {
 	 * @version Lab #4
 	 * @since Lab #4
 	 * 
-	 *        GetGameWinners - Return an ArrayList of players with the winning hand.
-	 *        Could be a tie...
-	 * @return
-	 */
-	public ArrayList<Player> GetGameWinners() {
-		ArrayList<Player> WinningPlayers = new ArrayList<Player>();
-		/*
-		 * 
-		 * ArrayList<HandPoker> GameHands = new ArrayList<HandPoker>(); for (HandPoker
-		 * PlayerHand : BestMadeHand.values()) { GameHands.add(PlayerHand); }
-		 * Collections.sort(GameHands); HandPoker WinningHand = GameHands.get(0);
-		 * 
-		 * Iterator<Map.Entry<UUID, HandPoker>> itr =
-		 * BestMadeHand.entrySet().iterator(); while (itr.hasNext()) { Map.Entry<UUID,
-		 * HandPoker> entry = itr.next(); if (entry.getValue().equals(WinningHand)) {
-		 * WinningPlayers.add(GetGamePlayer(entry.getKey())); } }
-		 */
-		return WinningPlayers;
-	}
-
-	/**
-	 * @author BRG
-	 * @version Lab #4
-	 * @since Lab #4
-	 * 
 	 *        PutGameHand - puts a hand to the GameHand map
 	 * @return
 	 */
@@ -303,6 +264,56 @@ public class GamePlay {
 	private void setCommonCards(ArrayList<Card> cards) {
 		this.CommonCards.clear();
 		this.CommonCards.addAll(cards);
+	}
+
+	int getGameDeckCount() {
+		return this.GameDeck.getiDeckCount();
+	}
+	
+	/**
+	 * @version Lab #6
+	 * @since Lab #6
+	 * getBestMadeHands - Get the best made hand for all players
+	 * 
+	 * @return
+	 * @throws HandException
+	 */
+	private ArrayList<HandPoker> getBestMadeHands() throws HandException
+	{
+		//TODO: Return the best made hands in the game
+		ArrayList<HandPoker> BestGameHands = new ArrayList<HandPoker>();
+		return BestGameHands;
+	}
+	
+	/**
+	 * @version Lab #6
+	 * @since Lab #6
+	 * getWinningScore - Get the winning score, looking at all Player's hands
+	 * 
+	 * @return
+	 * @throws HandException
+	 */
+	public HandScorePoker getWinningScore() throws HandException
+	{
+		//TODO: return the best made hand's hand score
+		return null;
+	}
+	
+	/**
+	 * @author BRG
+	 * @version Lab #6
+	 * @since Lab #6
+	 * 
+	 *        GetGameWinners - Return an ArrayList of players with the winning hand.
+	 *        Could be a tie...
+	 * @return
+	 * @throws HandException 
+	 */
+	public ArrayList<Player> GetGameWinners() throws HandException {
+		
+		ArrayList<Player> WinningPlayers = new ArrayList<Player>();
+		//TODO: Return an array list of the winning players in the game
+		return WinningPlayers;
 	}
 
 }
