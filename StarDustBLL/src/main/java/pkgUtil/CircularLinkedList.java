@@ -156,6 +156,9 @@ public class CircularLinkedList<E> implements API<E> {
 
 	public List<E> getItemsInOrder() {
 		List<E> list = new LinkedList<E>();
+		if (head == null)
+			return null;
+		
 		Node<E> temp = head;
 		while (temp.getNext() != head) {
 			list.add((E) temp.getValue());

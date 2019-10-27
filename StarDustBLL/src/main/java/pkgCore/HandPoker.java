@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.apache.commons.math3.util.CombinatoricsUtils;
@@ -104,8 +105,7 @@ public class HandPoker extends Hand implements Comparable {
 		super.getCards().clear();
 		super.setCards(cards);
 	}
-
-
+	
 	/**
 	 * EvaluateHand - This method will generate all the possible hands:
 	 * 					* All combinations
@@ -262,17 +262,6 @@ public class HandPoker extends Hand implements Comparable {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	@Override
 	public HandScore ScoreHand() throws HandException {
 
@@ -321,13 +310,22 @@ public class HandPoker extends Hand implements Comparable {
 
 			}
 			HSP = (HandScorePoker) this.getHandScorePoker();
+			int iSubstituteCardCount = 0;
+			for (Card crd: this.getCards())
+			{
+				if (crd.geteSubstituteDeck() == eSubstituteDeck.SUBSTITUTE)
+				{
+					iSubstituteCardCount++;
+					HSP.addSubstitutedCard(crd);
+				}
+			}
+			HSP.setRemainingCards(this.getGP().getGameDeckCount());
 
 		} catch (ClassNotFoundException x) {
 			x.printStackTrace();
 		} catch (IllegalAccessException x) {
 			x.printStackTrace();
 		} catch (NoSuchMethodException e) {
-			System.out.println(e.getMessage());
 			e.printStackTrace();
 		} catch (SecurityException e) {
 			e.printStackTrace();
