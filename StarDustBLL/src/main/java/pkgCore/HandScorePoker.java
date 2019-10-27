@@ -11,8 +11,10 @@ public class HandScorePoker extends HandScore {
 	private Card LoCard;
 	private ArrayList<Card> kickers = new ArrayList<Card>();
 	private boolean Natural = true;
+	private ArrayList<Card> SubstitutedCards = new ArrayList<Card>();
+	private int RemainingCards;
 
-	protected eHandStrength geteHandStrength() {
+	public eHandStrength geteHandStrength() {
 		return eHandStrength;
 	}
 
@@ -52,11 +54,30 @@ public class HandScorePoker extends HandScore {
 		Natural = natural;
 	}
 
-	
+	ArrayList<Card> getSubtitutedCards() {
+		return SubstitutedCards;
+	}
+
+	void addSubstitutedCard(Card c) {
+		SubstitutedCards.add(c);
+	}
+
+	void setSubtitutedCards(ArrayList<Card> subtitutedCards) {
+		SubstitutedCards.clear();
+		SubstitutedCards.addAll(subtitutedCards);
+	}
+
+	int getRemainingCards() {
+		return RemainingCards;
+	}
+
+	void setRemainingCards(int remainingCards) {
+		RemainingCards = remainingCards;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(this.geteHandStrength(), this.getHiCard(),
-				this.getLoCard(), this.getKickers());
+		return Objects.hash(this.geteHandStrength(), this.getHiCard(), this.getLoCard(), this.getKickers());
 	}
 
 	@Override
@@ -73,10 +94,10 @@ public class HandScorePoker extends HandScore {
 		}
 		if ((PassedHSP.geteHandStrength() != null) && (ThisHSP.geteHandStrength() == null)) {
 			return false;
-		}		
-		
+		}
+
 		if ((PassedHSP.getHiCard() != null) && (ThisHSP.getHiCard() != null)
-				&& (PassedHSP.getHiCard() != ThisHSP.getHiCard())) {
+				&& (PassedHSP.getHiCard().geteRank().getiRankNbr() != ThisHSP.getHiCard().geteRank().getiRankNbr())) {
 			return false;
 		}
 		if ((PassedHSP.getHiCard() == null) && (ThisHSP.getHiCard() != null)) {
@@ -84,10 +105,10 @@ public class HandScorePoker extends HandScore {
 		}
 		if ((PassedHSP.getHiCard() != null) && (ThisHSP.getHiCard() == null)) {
 			return false;
-		}		
-		
+		}
+
 		if ((PassedHSP.getLoCard() != null) && (ThisHSP.getLoCard() != null)
-				&& (PassedHSP.getLoCard() != ThisHSP.getLoCard())) {
+				&& (PassedHSP.getLoCard().geteRank().getiRankNbr() != ThisHSP.getLoCard().geteRank().getiRankNbr())) {
 			return false;
 		}
 		if ((PassedHSP.getLoCard() == null) && (ThisHSP.getLoCard() != null)) {
@@ -95,19 +116,26 @@ public class HandScorePoker extends HandScore {
 		}
 		if ((PassedHSP.getLoCard() != null) && (ThisHSP.getLoCard() == null)) {
 			return false;
-		}		
-		
-		if ((PassedHSP.getKickers() != null) && (ThisHSP.getKickers() != null)
-				&& (PassedHSP.getKickers() != ThisHSP.getKickers())) {
-			return false;
 		}
-		if ((PassedHSP.getKickers() == null) && (ThisHSP.getKickers() != null)) {
-			return false;
-		}
-		if ((PassedHSP.getKickers() != null) && (ThisHSP.getKickers() == null)) {
-			return false;
-		}	
 
+		if ((PassedHSP.getKickers() == null) || (ThisHSP.getKickers() == null))
+		{
+			return true;
+		}
+		for (int i = 0; i < 4; i++) {
+
+			if ((PassedHSP.getKickers().get(i) != null) && (ThisHSP.getKickers().get(i) != null)
+					&& (PassedHSP.getKickers().get(i).geteRank().getiRankNbr() != 
+					ThisHSP.getKickers().get(i).geteRank().getiRankNbr())) {
+				return false;
+			}
+			if ((PassedHSP.getKickers().get(i) == null) && (ThisHSP.getKickers().get(i) != null)) {
+				return false;
+			}
+			if ((PassedHSP.getKickers().get(i) != null) && (ThisHSP.getKickers().get(i) == null)) {
+				return false;
+			}
+		}
 
 		return true;
 	}

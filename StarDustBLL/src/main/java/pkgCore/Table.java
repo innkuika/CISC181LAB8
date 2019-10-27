@@ -98,7 +98,16 @@ public class Table {
 	 * @return
 	 */
 	public ArrayList<Player> getTablePlayers() {
-		return (ArrayList<Player>) TablePlayers.getItemsInOrder();
+		
+		ArrayList<Player> tablePlayers = new ArrayList<Player>();
+		if (TablePlayers.getItemsInOrder() == null)
+			return null;
+		
+		for (Player p: TablePlayers.getItemsInOrder())
+		{
+			tablePlayers.add(p);
+		}
+		return tablePlayers;
 	}
 
 	/**
