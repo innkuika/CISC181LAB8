@@ -52,11 +52,11 @@
 			<artifactId>StarDustBLL</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		<dependency>		
-			<groupId>cisc.udel.edu</groupId>
-			<artifactId>StarDustJabber</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+<!-- 		<dependency>		 -->
+<!-- 			<groupId>cisc.udel.edu</groupId> -->
+<!-- 			<artifactId>StarDustJabber</artifactId> -->
+<!-- 			<version>0.0.1-SNAPSHOT</version> -->
+<!-- 		</dependency> -->
 
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
