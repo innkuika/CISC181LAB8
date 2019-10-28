@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"pkgCore"}]
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"pkgCore"},{"l":"pkgEnum"},{"l":"pkgException"},{"l":"pkgGame"},{"l":"pkgHelper"},{"l":"pkgUtil"}]

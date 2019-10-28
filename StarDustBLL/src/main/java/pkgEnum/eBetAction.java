@@ -1,19 +1,20 @@
 package pkgEnum;
+/*
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
-
+*/
 public enum eBetAction {
 	
-	@XmlEnumValue("CHECK")
+	//@XmlEnumValue("CHECK")
 	CHECK("CHECK"), 
-	@XmlEnumValue("BET")
+	//@XmlEnumValue("BET")
 	BET("BET"), 
-	@XmlEnumValue("RAISE")
+	//@XmlEnumValue("RAISE")
 	RAISE("RAISE"), 
-	@XmlEnumValue("CALL")
+	//@XmlEnumValue("CALL")
 	CALL("CALL"), 
-	@XmlEnumValue("FOLD")
+	//@XmlEnumValue("FOLD")
 	FOLD("FOLD");
 	
     private final String value;
