@@ -8,7 +8,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/8.0.40"
 	xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="app.controller.ClientServerStartController">
+	fx:controller="app.controller.ServerStartController">
 	<center>
 		<Pane prefHeight="316.0" prefWidth="390.0"
 			BorderPane.alignment="CENTER">

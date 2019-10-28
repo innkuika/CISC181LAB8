@@ -8,6 +8,7 @@ module StarDustServer {
 	requires javafx.fxml;
 
 	requires javafx.media;
+	requires StarDustBLL;
 	
 	opens app.controller to javafx.fxml;
 }

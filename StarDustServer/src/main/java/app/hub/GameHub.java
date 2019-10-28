@@ -18,7 +18,7 @@ public class GameHub extends Hub {
 	}
 
 	@Override
-	protected void messageReceived(int playerID, Object message) {
+	public void messageReceived(int playerID, Object message) {
 
 		System.out.println("Action received from the hub");
 		

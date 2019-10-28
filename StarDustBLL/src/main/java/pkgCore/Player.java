@@ -6,8 +6,9 @@ public class Player {
 
 	private UUID PlayerID;
 	private String PlayerName;
+	private int ClientID;
 	 
-	public Player(UUID playerID, String playerName) {
+	public Player(UUID playerID, String playerName) {		
 		super();
 		PlayerID = playerID;
 		PlayerName = playerName;
@@ -28,6 +29,10 @@ public class Player {
 
 	public UUID getPlayerID() {
 		return PlayerID;
+	}
+
+	public int getClientID() {
+		return ClientID;
 	}
 	
 	
