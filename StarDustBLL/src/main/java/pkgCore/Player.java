@@ -8,10 +8,11 @@ public class Player {
 	private String PlayerName;
 	private int ClientID;
 	 
-	public Player(UUID playerID, String playerName) {		
+	public Player(String playerName, int iClientID) {		
 		super();
-		PlayerID = playerID;
+		PlayerID = UUID.randomUUID();
 		PlayerName = playerName;
+		this.ClientID = iClientID;
 	}
 		
 	public Player(String playerName) {

@@ -21,6 +21,7 @@ public class GameHub extends Hub {
 	public void messageReceived(int playerID, Object message) {
 
 		System.out.println("Action received from the hub");
+		sendToAll(message);	
 		
 //		if (HubPokerTable == null)
 //			HubPokerTable = new Table();

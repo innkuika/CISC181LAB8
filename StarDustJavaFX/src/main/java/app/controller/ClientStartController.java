@@ -26,12 +26,6 @@ public class ClientStartController implements Initializable {
 	@FXML
 	private TextField txtPlayerName;
 	@FXML
-	private RadioButton rbtnServer;
-	@FXML
-	private RadioButton rbtnClient;
-	@FXML
-	private TextField txtServerPort;
-	@FXML
 	private TextField txtClientPort;
 	@FXML
 	private TextField txtComputerName;
@@ -56,37 +50,13 @@ public class ClientStartController implements Initializable {
 		this.mainApp = mainApp;
 	}
 
-	@FXML
-	public void optServerClientSelected(ActionEvent event) {
-		RadioButton rbServerClient = (RadioButton) event.getSource();
-		switch (rbServerClient.getId().toString()) {
-		case "rbtnServer":
-			txtServerPort.setDisable(!rbServerClient.isSelected());
-			txtClientPort.setDisable(rbServerClient.isSelected());
-			txtComputerName.setDisable(rbServerClient.isSelected());
-			break;
-		case "rbtnClient":
-			txtServerPort.setDisable(rbServerClient.isSelected());
-			txtClientPort.setDisable(!rbServerClient.isSelected());
-			txtComputerName.setDisable(!rbServerClient.isSelected());
-
-			break;
-		}
-	}
 
 	@FXML
 	public void btnOK(ActionEvent event) {
-		int iPort = 0;
-		String strComputerName = "localhost";
+ 
 		boolean bServer = false;
-		if (rbtnServer.isSelected()) {
-			bServer = true;
-			iPort = Integer.parseInt(txtServerPort.getText());
-		} else if (rbtnClient.isSelected()) {
-			strComputerName = txtComputerName.getText();
-			iPort = Integer.parseInt(txtClientPort.getText());
-		}
-
+		String strComputerName = txtComputerName.getText();
+		int iPort = Integer.parseInt(txtClientPort.getText());
 		mainApp.StartClient(strComputerName, iPort, txtPlayerName.getText());
 	}
 

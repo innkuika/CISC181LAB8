@@ -19,7 +19,6 @@ public class ServerStart extends Application {
 	private Stage primaryStage;
 	private GameHub gHub = null;
 	private GameClient gClient = null;
-	// private Player appPlayer;
 
 	/**
 	 * @author BRG
@@ -105,7 +104,6 @@ public class ServerStart extends Application {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	/**
@@ -195,8 +193,6 @@ public class ServerStart extends Application {
 
 			});
 		}
-
-		
 		
 		/**
 		 * @author BRG

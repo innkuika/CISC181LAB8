@@ -15,12 +15,15 @@ import javafx.stage.Stage;
 import netgame.common.Client;
 import pkgCore.Action;
 import pkgCore.GamePlay;
+import pkgCore.Player;
 import pkgCore.Table;
 
 public class Poker extends Application {
 
 	private Stage primaryStage;
 	private GameClient gClient = null;
+	private Player appPlayer;
+	
 	// private Player appPlayer;
 
 	/**
@@ -98,6 +101,9 @@ public class Poker extends Application {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		appPlayer = new Player(strPlayerName, gClient.getID());
+		
+		System.out.println(appPlayer.getClientID());
 	}
 
 	/**
