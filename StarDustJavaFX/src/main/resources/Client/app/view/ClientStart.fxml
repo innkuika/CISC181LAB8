@@ -8,7 +8,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/8.0.40"
 	xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="app.controller.ServerStartController">
+	fx:controller="app.controller.ClientStartController">
 	<center>
 		<Pane prefHeight="316.0" prefWidth="390.0"
 			BorderPane.alignment="CENTER">
@@ -49,6 +49,7 @@
 				<Label layoutX="42.0" layoutY="39.0" text="Player Name:" />
 				<Line endX="175.0" layoutX="141.0" layoutY="72.0"
 					startX="-100.0" />
+
 			</children>
 		</Pane>
 	</center>
