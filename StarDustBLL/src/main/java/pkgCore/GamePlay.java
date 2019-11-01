@@ -9,9 +9,12 @@ import java.util.stream.Collectors;
 
 import com.google.common.collect.MinMaxPriorityQueue;
 
+import pkgCoreInterface.iCardDraw;
 import pkgEnum.eCardDestination;
+import pkgEnum.eCardVisibility;
 import pkgEnum.eDrawCount;
 import pkgEnum.eRank;
+import pkgEnum.eStartEnd;
 import pkgEnum.eSubstituteDeck;
 import pkgEnum.eSuit;
 import pkgException.DeckException;
@@ -24,6 +27,7 @@ public class GamePlay {
 	private HashMap<UUID, HandPoker> GameHand = new HashMap<UUID, HandPoker>();
 	private ArrayList<Card> CommonCards = new ArrayList<Card>();
 	private Deck GameDeck;
+	private eDrawCount LasteDrawCount = null;
 
 	/**
 	 * GamePlay - Create an instance of GamePlay. For every player in the table, add
@@ -39,7 +43,9 @@ public class GamePlay {
 		GameDeck = new Deck();
 	}
 
-	public void Draw(Player p, CardDraw CD) throws DeckException, HandException {
+	public void Draw(Player p, eDrawCount eDC) throws DeckException, HandException {
+
+		CardDraw CD = this.Rle.getCardDraw(eDC);
 
 		for (int crdCnt = 0; crdCnt < CD.getCardCount().getCardCount(); crdCnt++) {
 			if (CD.getCardDestination() == eCardDestination.COMMON) {
@@ -48,6 +54,7 @@ public class GamePlay {
 				GameHand.get(p.getPlayerID()).Draw(GameDeck);
 			}
 		}
+		this.LasteDrawCount = eDC;
 	}
 
 	/**
@@ -70,7 +77,7 @@ public class GamePlay {
 			pokerHands.addAll(hp.EvaluateHand(hp));
 		}
 	}
-	
+
 	/**
 	 * getBestMadeHands - get the best made hands by Player.
 	 * 
@@ -97,9 +104,7 @@ public class GamePlay {
 	 */
 	public ArrayList<HandPoker> getBestPossibleHands(Player player) throws HandException {
 
-		MinMaxPriorityQueue<HandPoker> queue = MinMaxPriorityQueue
-				.orderedBy(HandPoker.hpComparator)
-				.maximumSize(20)
+		MinMaxPriorityQueue<HandPoker> queue = MinMaxPriorityQueue.orderedBy(HandPoker.hpComparator).maximumSize(20)
 				.create();
 		for (HandPoker hp : this.getBestHands(player, false)) {
 			queue.add(hp);
@@ -147,16 +152,15 @@ public class GamePlay {
 
 	/**
 	 * @version Lab #5
-	 * @since Lab #5
-	 * getCommonCards - return an ArrayList of the game's common cards
-	 * If there aren't five cards, return jokers for the missing cards
+	 * @since Lab #5 getCommonCards - return an ArrayList of the game's common cards
+	 *        If there aren't five cards, return jokers for the missing cards
 	 * @return
 	 */
 	public ArrayList<Card> getCommonCards() {
 		int iSize = CommonCards.size();
 		ArrayList<Card> commonCards = (ArrayList<Card>) CommonCards.clone();
 		for (int i = iSize; i < this.getRle().getCommunityCardsMax(); i++) {
-			commonCards.add(new Card(eSuit.JOKER, eRank.JOKER, eSubstituteDeck.SUBSTITUTE));
+			commonCards.add(new Card(eSuit.JOKER, eRank.JOKER, eSubstituteDeck.SUBSTITUTE, 54));
 		}
 		return commonCards;
 	}
@@ -236,7 +240,7 @@ public class GamePlay {
 		for (Player p : GamePlayers) {
 			HandPoker hp = new HandPoker(p, this);
 			GameHand.put(p.getPlayerID(), hp);
-			Draw(p, this.Rle.getCardDraw(eDrawCount.FIRST));
+			Draw(p, eDrawCount.FIRST);
 		}
 	}
 
@@ -269,39 +273,35 @@ public class GamePlay {
 	int getGameDeckCount() {
 		return this.GameDeck.getiDeckCount();
 	}
-	
+
 	/**
 	 * @version Lab #6
-	 * @since Lab #6
-	 * getBestMadeHands - Get the best made hand for all players
+	 * @since Lab #6 getBestMadeHands - Get the best made hand for all players
 	 * 
 	 * @return
 	 * @throws HandException
 	 */
-	private ArrayList<HandPoker> getBestMadeHands() throws HandException
-	{
+	private ArrayList<HandPoker> getBestMadeHands() throws HandException {
 		ArrayList<HandPoker> BestGameHands = new ArrayList<HandPoker>();
-		for (Player p: GamePlayers)
-		{
+		for (Player p : GamePlayers) {
 			BestGameHands.addAll(getBestMadeHands(p));
 		}
 		BestGameHands.sort(HandPoker.hpComparator);
 		return BestGameHands;
 	}
-	
+
 	/**
 	 * @version Lab #6
-	 * @since Lab #6
-	 * getWinningScore - Get the winning score, looking at all Player's hands
+	 * @since Lab #6 getWinningScore - Get the winning score, looking at all
+	 *        Player's hands
 	 * 
 	 * @return
 	 * @throws HandException
 	 */
-	public HandScorePoker getWinningScore() throws HandException
-	{
+	public HandScorePoker getWinningScore() throws HandException {
 		return this.getBestMadeHands().get(0).getHandScorePoker();
 	}
-	
+
 	/**
 	 * @author BRG
 	 * @version Lab #6
@@ -310,28 +310,65 @@ public class GamePlay {
 	 *        GetGameWinners - Return an ArrayList of players with the winning hand.
 	 *        Could be a tie...
 	 * @return
-	 * @throws HandException 
+	 * @throws HandException
 	 */
 	public ArrayList<Player> GetGameWinners() throws HandException {
-		
+
+		// Build a list of winning players
 		ArrayList<Player> WinningPlayers = new ArrayList<Player>();
+
+		// Figure the best HandScore
+
 		HandScorePoker bestHSP = this.getWinningScore();
 
-		Iterator<Map.Entry<UUID, HandPoker>> itr = this.GameHand.entrySet().iterator();
-		while (itr.hasNext()) {
-			ArrayList<HandPoker> PlayerHands = new ArrayList<HandPoker>();
-			Map.Entry<UUID, HandPoker> entry = itr.next();
-			HandPoker hp = entry.getValue();
-			PlayerHands.addAll(hp.EvaluateHand(hp));
-			PlayerHands.sort(HandPoker.hpComparator);
-			if (PlayerHands.get(0).getHandScorePoker().equals(bestHSP))
-			{
-				WinningPlayers.addAll(
-				GamePlayers.stream()
-				.filter(p -> p.getPlayerID().equals(entry.getKey())).collect(Collectors.toList()));				
+		// Check each player's hand, look for their top score
+		for (Player p : this.GamePlayers) {
+			// If the player's top score is equal to the bestHSP, add the player to the list
+			if (bestHSP.equals(this.getBestMadeHands(p).get(0).getHandScorePoker())) {
+				WinningPlayers.add(p);
 			}
 		}
 
 		return WinningPlayers;
+	}
+
+	public ArrayList<DrawResult> getDrawResult(Player p) {
+
+		ArrayList<DrawResult> lstDR = new ArrayList<DrawResult>();
+		CardDraw LastCardDraw = this.Rle.getCardDraw(this.LasteDrawCount);
+		ArrayList<iCardDraw> drawCards = new ArrayList<iCardDraw>();
+
+		if (LastCardDraw.getCardDestination() == eCardDestination.COMMON) {
+			for (Card c : this.CommonCards.subList(this.Rle.getIdx(this.LasteDrawCount, eStartEnd.START),
+					this.Rle.getIdx(this.LasteDrawCount, eStartEnd.END))) {
+				drawCards.add(c);
+			}
+			lstDR.add(new DrawResult(LastCardDraw, null, drawCards));
+		}
+
+		if (LastCardDraw.getCardDestination() == eCardDestination.PLAYER) {
+			Iterator<Map.Entry<UUID, HandPoker>> itr = this.GameHand.entrySet().iterator();
+
+			while (itr.hasNext()) {
+				Map.Entry<UUID, HandPoker> entry = itr.next();
+				{
+					HandPoker PlayerHandPoker = entry.getValue();
+					UUID PlayerID = entry.getKey();
+					for (Card c : PlayerHandPoker.getCards().subList(
+							this.Rle.getIdx(this.LasteDrawCount, eStartEnd.START),
+							this.Rle.getIdx(this.LasteDrawCount, eStartEnd.END))) {
+						if ((LastCardDraw.getCardVisibility() 
+								== eCardVisibility.ME) && (p.getPlayerID() != PlayerID))
+						{
+							c.setiCardNbr(0);
+						}
+						drawCards.add(c);
+					}
+				}
+				lstDR.add(new DrawResult(LastCardDraw, null, drawCards));				
+			}
+		}
+
+		return lstDR;
 	}
 }

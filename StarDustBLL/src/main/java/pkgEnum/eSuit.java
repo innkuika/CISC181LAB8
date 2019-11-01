@@ -1,8 +1,8 @@
 package pkgEnum;
 
 public enum eSuit {
-	HEARTS((char)'\u2764'), CLUBS((char)'\u2663'), 
-	DIAMONDS((char)'\u2666'), SPADES((char)'\u2660'), JOKER((char)'\uDCCF');
+	HEARTS((char)'\u2764'),SPADES((char)'\u2660'), CLUBS((char)'\u2663'), 
+	DIAMONDS((char)'\u2666'),  JOKER((char)'\uDCCF');
 	
 	private char iSuitChar;
 	

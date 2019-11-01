@@ -1,5 +1,6 @@
 package pkgCore;
 
+import pkgCoreInterface.iCardDraw;
 import pkgEnum.eRank;
 import pkgEnum.eSubstituteDeck;
 import pkgEnum.eSuit;
@@ -15,7 +16,7 @@ import pkgEnum.eSuit;
  *        Cards.
  *
  */
-public class Card implements Comparable {
+public class Card implements Comparable<Card>, iCardDraw {
 
 	/**
 	 * @version Lab #1
@@ -45,6 +46,16 @@ public class Card implements Comparable {
 	
 	private eSubstituteDeck eSubstituteDeck;
 	
+	
+	private int iCardNbr;
+	
+	public Card(pkgEnum.eSuit eSuit, pkgEnum.eRank eRank) {
+		this(eSuit, eRank,0);
+		this.Wild = false;
+		this.eSubstituteDeck = eSubstituteDeck.NORMAL;
+		this.iCardNbr = iCardNbr;
+	}
+	
 	/**
 	 * @version Lab #1
 	 * @since Lab #1
@@ -53,22 +64,24 @@ public class Card implements Comparable {
 	 * 
 	 *              Create an instance of the Card class
 	 */
-	public Card(pkgEnum.eSuit eSuit, pkgEnum.eRank eRank) {
+	public Card(pkgEnum.eSuit eSuit, pkgEnum.eRank eRank, int iCardNbr) {
 		super();
 		this.eSuit = eSuit;
 		this.eRank = eRank;
 		this.Wild = false;
 		this.eSubstituteDeck = eSubstituteDeck.NORMAL;
+		this.iCardNbr = iCardNbr;
 	}
 
-	public Card(pkgEnum.eSuit eSuit, pkgEnum.eRank eRank, eSubstituteDeck eSubstituteDeck) {
+	public Card(pkgEnum.eSuit eSuit, pkgEnum.eRank eRank, eSubstituteDeck eSubstituteDeck, int iCardNbr) {
 		super();
 		this.eSuit = eSuit;
 		this.eRank = eRank;
 		this.Wild = false;
 		this.eSubstituteDeck = eSubstituteDeck;
+		this.iCardNbr = iCardNbr;
 	}
-	
+
 	/**
 	 * @version Lab #1
 	 * @since Lab #1
@@ -76,7 +89,7 @@ public class Card implements Comparable {
 	 *        compareTo - set the generic sort order to sort by rank ascending
 	 */
 	@Override
-	public int compareTo(Object o) {
+	public int compareTo(Card o) {
 		Card c = (Card) o;
 		return c.geteRank().compareTo(this.geteRank());
 	}
@@ -172,6 +185,17 @@ public class Card implements Comparable {
 	void seteSubstituteDeck(eSubstituteDeck eSubstituteDeck) {
 		this.eSubstituteDeck = eSubstituteDeck;
 	}
+
+	public void setiCardNbr(int iCardNbr) {
+		this.iCardNbr = iCardNbr;
+	}
+
+	public int getiCardNbr() {
+		return iCardNbr;
+	}
+
+
+	
 	
 	
 	

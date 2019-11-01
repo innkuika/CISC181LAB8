@@ -4,7 +4,10 @@ package pkgCore;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.UUID;
 
 
@@ -14,6 +17,7 @@ import pkgEnum.eCardVisibility;
 import pkgEnum.eDrawCount;
 import pkgEnum.eGame;
 import pkgEnum.eRank;
+import pkgEnum.eStartEnd;
 import pkgEnum.eSuit;
 
 public class Rule implements Serializable {
@@ -27,7 +31,8 @@ public class Rule implements Serializable {
 		private int CommunityCardsMax;
 		private int PossibleHandCombinations;
 		private ArrayList<Card> WildCards = new ArrayList<Card>();
-		private HashMap<eDrawCount, CardDraw> hmCardDraw = new HashMap<eDrawCount, CardDraw>();
+		private TreeMap<eDrawCount, CardDraw> hmCardDraw = 
+				new TreeMap<eDrawCount, CardDraw>();
 				
 		private eGame Game;
 
@@ -271,4 +276,58 @@ public class Rule implements Serializable {
 		{
 			return (CardDraw)hmCardDraw.get(eDrawCount);
 		}
+		
+		
+		public int getIdx(eDrawCount eDrawCount, eStartEnd eStartEnd)
+		{
+			int idx = 0;
+			int iLastCardCount = 0;
+			
+			CardDraw findCardDraw = this.hmCardDraw.get(eDrawCount);		
+			
+			Iterator<Map.Entry<eDrawCount, CardDraw>> itr = 
+					this.hmCardDraw.entrySet().iterator();
+			
+			while (itr.hasNext()) {
+				Map.Entry<eDrawCount, CardDraw> entry = itr.next();
+				
+				eDrawCount edc = entry.getKey();
+				CardDraw cd = entry.getValue();
+				
+				if (cd.getCardDestination().equals(findCardDraw.getCardDestination()))
+				{
+					idx += cd.getCardCount().getCardCount();	
+					iLastCardCount = cd.getCardCount().getCardCount();
+				}
+				
+				if (edc.equals(eDrawCount))
+				{
+					break;
+				}
+				
+			}
+			
+			if (eStartEnd == eStartEnd.START)
+				return idx - iLastCardCount;
+			else if (eStartEnd == eStartEnd.END)
+			{
+				return idx-1;
+			}
+			return 0;
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 }
