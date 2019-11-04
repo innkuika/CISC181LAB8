@@ -284,16 +284,6 @@ public class GamePlayTest {
 		assertEquals(40,p1DrawResult.stream().filter(x -> x.getP().equals(p1))
 		.collect(Collectors.toList()).get(0).getCards().get(1).getiCardNbr());
 		
-		/*
-		assertEquals(52,p1DrawResult.get(0).getCards().get(0).getiCardNbr());
-		assertEquals(40,p1DrawResult.get(0).getCards().get(1).getiCardNbr());
-		
-		assertEquals(0,p1DrawResult.get(1).getCards().get(0).getiCardNbr());
-		assertEquals(0,p1DrawResult.get(1).getCards().get(1).getiCardNbr());
-		*/
-		
-		
-		
 
 	}
 	
@@ -302,4 +292,6 @@ public class GamePlayTest {
 	{
 		System.out.println("Hand Strength: " + hsp.geteHandStrength() );
 	}
+	
+ 
 }
