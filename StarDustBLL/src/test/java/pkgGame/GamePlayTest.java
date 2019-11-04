@@ -3,6 +3,7 @@ package pkgGame;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
@@ -263,20 +264,33 @@ public class GamePlayTest {
 		//	This is going to return the DrawResult for eDrawCount.FIRST
 		ArrayList<DrawResult> p1DrawResult = gp.getDrawResult(p1);
 		
+		System.out.println("***** Draw Result *****");		
 		for (DrawResult DR: p1DrawResult)
 		{
-			System.out.println(DR.getP().getPlayerName());
+			System.out.println("* Player : " + DR.getP().getPlayerName());
+			System.out.println("* Player is me " + DR.getP().equals(p1));
+			System.out.println("* ");
+			System.out.println("* Cards for Player");						
 			for (iCardDraw iCD: DR.getCards())
 			{
 				System.out.println(iCD.getiCardNbr());
 			}
 		}
+		
+		
+		assertEquals(52,p1DrawResult.stream().filter(x -> x.getP().equals(p1))
+		.collect(Collectors.toList()).get(0).getCards().get(0).getiCardNbr());
+		
+		assertEquals(40,p1DrawResult.stream().filter(x -> x.getP().equals(p1))
+		.collect(Collectors.toList()).get(0).getCards().get(1).getiCardNbr());
+		
+		/*
 		assertEquals(52,p1DrawResult.get(0).getCards().get(0).getiCardNbr());
 		assertEquals(40,p1DrawResult.get(0).getCards().get(1).getiCardNbr());
 		
 		assertEquals(0,p1DrawResult.get(1).getCards().get(0).getiCardNbr());
 		assertEquals(0,p1DrawResult.get(1).getCards().get(1).getiCardNbr());
-		
+		*/
 		
 		
 		

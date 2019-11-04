@@ -1,6 +1,7 @@
 package app;
 
 import java.io.IOException;
+import java.util.Properties;
 
 import app.controller.ClientStartController;
 //import app.controller.ServerStartController;
@@ -17,9 +18,12 @@ import pkgCore.Action;
 import pkgCore.GamePlay;
 import pkgCore.Player;
 import pkgCore.Table;
+import util.PropertyUtil;
+
 
 public class Poker extends Application {
 
+	private static Properties props = null;
 	private Stage primaryStage;
 	private GameClient gClient = null;
 	private Player appPlayer;
@@ -37,6 +41,14 @@ public class Poker extends Application {
 	 *
 	 */
 	public static void main(String[] args) {
+		
+		PropertyUtil properties = new PropertyUtil();		
+		try {
+			props = properties.getPropertyFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		launch(args);
 	}
 
