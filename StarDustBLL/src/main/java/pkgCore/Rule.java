@@ -311,7 +311,7 @@ public class Rule implements Serializable {
 				return idx - iLastCardCount;
 			else if (eStartEnd == eStartEnd.END)
 			{
-				return idx-1;
+				return idx;
 			}
 			return 0;
 		}

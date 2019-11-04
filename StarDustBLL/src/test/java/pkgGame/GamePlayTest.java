@@ -213,11 +213,9 @@ public class GamePlayTest {
 		try {
 			gp.StartGame();
 		} catch (DeckException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			fail("Deck Exception");
 		} catch (HandException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			fail("Hand Exception");
 		}
 		
 		//	Get the Player hand (should be empty at this point) from GamePlay.
@@ -252,17 +250,37 @@ public class GamePlayTest {
 		gp = GamePlayHelper.PutGamePlay(gp, p1.getPlayerID(), hp1);		
 		gp = GamePlayHelper.PutGamePlay(gp, p2.getPlayerID(), hp2);
 		
+		//	Set the eDrawCount to FIRST
 		gp = GamePlayHelper.setLasteDrawCount(gp, eDrawCount.FIRST);
 		
-		ArrayList<DrawResult> p1CardDraw = gp.getDrawResult(p1);
 		
-		for (DrawResult DR: p1CardDraw)
+		//	All of the above... was to set up a new table, gameplay, add players
+		//	Set up hands in the common hand, players hands.		
+		//	None of the above should fail.  All of the above was previous tested.		
+		//	Now we're going to test to make sure the getDrawResult is working.
+		
+		
+		//	This is going to return the DrawResult for eDrawCount.FIRST
+		ArrayList<DrawResult> p1DrawResult = gp.getDrawResult(p1);
+		
+		for (DrawResult DR: p1DrawResult)
 		{
+			System.out.println(DR.getP().getPlayerName());
 			for (iCardDraw iCD: DR.getCards())
 			{
 				System.out.println(iCD.getiCardNbr());
 			}
 		}
+		assertEquals(52,p1DrawResult.get(0).getCards().get(0).getiCardNbr());
+		assertEquals(40,p1DrawResult.get(0).getCards().get(1).getiCardNbr());
+		
+		assertEquals(0,p1DrawResult.get(1).getCards().get(0).getiCardNbr());
+		assertEquals(0,p1DrawResult.get(1).getCards().get(1).getiCardNbr());
+		
+		
+		
+		
+
 	}
 	
 	

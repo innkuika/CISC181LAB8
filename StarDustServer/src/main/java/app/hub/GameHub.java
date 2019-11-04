@@ -6,7 +6,6 @@ import netgame.common.Hub;
 //import pkgCore.GamePlay;
 //import pkgCore.Table;
 
-
 public class GameHub extends Hub {
 
 	//private Table HubPokerTable = null;

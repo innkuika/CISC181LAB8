@@ -340,9 +340,10 @@ public class GamePlay {
 
 		ArrayList<DrawResult> lstDR = new ArrayList<DrawResult>();
 		CardDraw LastCardDraw = this.Rle.getCardDraw(this.LasteDrawCount);
-		ArrayList<iCardDraw> drawCards = new ArrayList<iCardDraw>();
+		UUID PlayerID = null;
 
 		if (LastCardDraw.getCardDestination() == eCardDestination.COMMON) {
+			ArrayList<iCardDraw> drawCards = new ArrayList<iCardDraw>();
 			for (Card c : this.CommonCards.subList(this.Rle.getIdx(this.LasteDrawCount, eStartEnd.START),
 					this.Rle.getIdx(this.LasteDrawCount, eStartEnd.END))) {
 				drawCards.add(c);
@@ -353,11 +354,13 @@ public class GamePlay {
 		if (LastCardDraw.getCardDestination() == eCardDestination.PLAYER) {
 			Iterator<Map.Entry<UUID, HandPoker>> itr = this.GameHand.entrySet().iterator();
 
+			
 			while (itr.hasNext()) {
+				ArrayList<iCardDraw> drawCards = new ArrayList<iCardDraw>();
 				Map.Entry<UUID, HandPoker> entry = itr.next();
 				{
 					HandPoker PlayerHandPoker = entry.getValue();
-					UUID PlayerID = entry.getKey();
+					PlayerID = entry.getKey();
 					for (Card c : PlayerHandPoker.getCards().subList(
 							this.Rle.getIdx(this.LasteDrawCount, eStartEnd.START),
 							this.Rle.getIdx(this.LasteDrawCount, eStartEnd.END))) {
@@ -369,7 +372,7 @@ public class GamePlay {
 						drawCards.add(c);
 					}
 				}
-				lstDR.add(new DrawResult(LastCardDraw, null, drawCards));				
+				lstDR.add(new DrawResult(LastCardDraw, GetGamePlayer(PlayerID), drawCards));				
 			}
 		}
 
