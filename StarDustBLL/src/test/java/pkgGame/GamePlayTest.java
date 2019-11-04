@@ -7,12 +7,15 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 
 import pkgCore.Card;
+import pkgCore.DrawResult;
 import pkgCore.GamePlay;
 import pkgCore.HandPoker;
 import pkgCore.HandScorePoker;
 import pkgCore.Player;
 import pkgCore.Rule;
 import pkgCore.Table;
+import pkgCoreInterface.iCardDraw;
+import pkgEnum.eDrawCount;
 import pkgEnum.eGame;
 import pkgEnum.eRank;
 import pkgEnum.eSuit;
@@ -189,6 +192,80 @@ public class GamePlayTest {
 		assertTrue(pWinner.contains(p2));
 		
 	}
+
+	@Test
+	public void GamePlay_Test_LastDraw()
+	{
+		//	Create new table
+		Table t = new Table("Table 1");
+		
+		//	Create two new players 
+		Player p1 = new Player("Bert");
+		Player p2 = new Player("Joe");
+		//	Add players to the table
+		t.AddPlayerToTable(p1);
+		t.AddPlayerToTable(p2);
+
+		//	Create a new GamePlay with Rule for Texas Hold 'em
+		Rule rle = new Rule(eGame.TexasHoldEm);
+		GamePlay gp = new GamePlay(t, rle);
+		
+		try {
+			gp.StartGame();
+		} catch (DeckException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (HandException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		//	Get the Player hand (should be empty at this point) from GamePlay.
+		HandPoker hp1 = gp.GetPlayersHand(p1);		
+		HandPoker hp2 = gp.GetPlayersHand(p2);
+		
+		//	Create P1 cards
+		ArrayList<Card> p1Cards = new ArrayList<Card>();
+		p1Cards.add(new Card(eSuit.DIAMONDS, eRank.ACE,52));
+		p1Cards.add(new Card(eSuit.DIAMONDS, eRank.TWO,40));
+		
+		//	Create p2 cards	
+		ArrayList<Card> p2Cards = new ArrayList<Card>();
+		p2Cards.add(new Card(eSuit.CLUBS, eRank.ACE,52));
+		p2Cards.add(new Card(eSuit.CLUBS, eRank.TWO,40));
+		
+		//	Create common cards
+		ArrayList<Card> commonCards = new ArrayList<Card>();
+		commonCards.add(new Card(eSuit.HEARTS, eRank.THREE,2));
+		commonCards.add(new Card(eSuit.HEARTS, eRank.FOUR,3));
+		commonCards.add(new Card(eSuit.HEARTS, eRank.FIVE,4));
+		commonCards.add(new Card(eSuit.CLUBS, eRank.TEN,35));	
+		commonCards.add(new Card(eSuit.CLUBS, eRank.QUEEN,37));	
+		gp = GamePlayHelper.setCommonCards(gp,  commonCards);
+		
+
+		//	Set the HandPoker with known cards
+		hp1 = HandPokerHelper.SetHand(p1Cards, hp1);
+		hp2 = HandPokerHelper.SetHand(p2Cards, hp2);
+		
+		//	Set the Hands in GamePlay
+		gp = GamePlayHelper.PutGamePlay(gp, p1.getPlayerID(), hp1);		
+		gp = GamePlayHelper.PutGamePlay(gp, p2.getPlayerID(), hp2);
+		
+		gp = GamePlayHelper.setLasteDrawCount(gp, eDrawCount.FIRST);
+		
+		ArrayList<DrawResult> p1CardDraw = gp.getDrawResult(p1);
+		
+		for (DrawResult DR: p1CardDraw)
+		{
+			for (iCardDraw iCD: DR.getCards())
+			{
+				System.out.println(iCD.getiCardNbr());
+			}
+		}
+	}
+	
+	
 	private void PrintHandScore(HandScorePoker hsp)
 	{
 		System.out.println("Hand Strength: " + hsp.geteHandStrength() );

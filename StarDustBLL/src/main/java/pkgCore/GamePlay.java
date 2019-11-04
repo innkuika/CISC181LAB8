@@ -332,6 +332,10 @@ public class GamePlay {
 		return WinningPlayers;
 	}
 
+	private void setLasteDrawCount(eDrawCount lasteDrawCount) {
+		LasteDrawCount = lasteDrawCount;
+	}
+
 	public ArrayList<DrawResult> getDrawResult(Player p) {
 
 		ArrayList<DrawResult> lstDR = new ArrayList<DrawResult>();
