@@ -10,6 +10,12 @@ public class Action implements Serializable {
 	private Player ActPlayer;
 	private Object payload;
 	
+	public Action(eAction eAction, Player player  ) {
+		super();
+		this.EA = eAction;
+		this.ActPlayer = player;	
+	}
+	
 	public Action(eAction eAction, Player player, Object Payload ) {
 		super();
 		this.EA = eAction;

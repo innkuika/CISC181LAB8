@@ -36,7 +36,11 @@ public class TexasHoldemTest {
 		
 		Rule rle = new Rule(eGame.TexasHoldEm);
 		GamePlay gp = new GamePlay(t, rle);
-		gp.StartGame();
+		try {
+			gp.StartGame();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		//	P1 Cards
 		ArrayList<Card> p1Cards = new ArrayList<Card>();

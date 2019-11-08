@@ -1,13 +1,25 @@
 package pkgCore;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class Player {
+public class Player implements Serializable {
 
 	private UUID PlayerID;
 	private String PlayerName;
 	private int ClientID;
+	private int iPlayerPosition;
+	
+	
 	 
+	public int getiPlayerPosition() {
+		return iPlayerPosition;
+	}
+
+	public void setiPlayerPosition(int iPlayerPosition) {
+		this.iPlayerPosition = iPlayerPosition;
+	}
+
 	public Player(String playerName, int iClientID) {		
 		super();
 		PlayerID = UUID.randomUUID();
@@ -35,6 +47,8 @@ public class Player {
 	public int getClientID() {
 		return ClientID;
 	}
+
+
 	
 	
 	

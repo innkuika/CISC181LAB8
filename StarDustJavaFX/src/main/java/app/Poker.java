@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import app.controller.ClientStartController;
+import app.controller.TexasHoldemController;
 //import app.controller.ServerStartController;
 //import app.hub.GameHub;
 import javafx.application.Application;
@@ -18,6 +19,7 @@ import pkgCore.Action;
 import pkgCore.GamePlay;
 import pkgCore.Player;
 import pkgCore.Table;
+import pkgEnum.eAction;
 import util.PropertyUtil;
 
 
@@ -28,7 +30,12 @@ public class Poker extends Application {
 	private GameClient gClient = null;
 	private Player appPlayer;
 	
-	// private Player appPlayer;
+	private TexasHoldemController PokerController;
+	
+
+	public Player getAppPlayer() {
+		return appPlayer;
+	}
 
 	/**
 	 * @author BRG
@@ -97,6 +104,26 @@ public class Poker extends Application {
 		}
 	}
 
+	
+	public void showPoker() {
+		try {
+			// Load person overview.
+			FXMLLoader loader = new FXMLLoader();
+
+			loader = new FXMLLoader(getClass().getResource("/Client/app/view/TexasHoldemBoard.fxml"));
+			BorderPane PokerOverview = (BorderPane) loader.load();
+			Scene scene = new Scene(PokerOverview);
+			primaryStage.setScene(scene);
+			
+			PokerController = loader.getController();
+			PokerController.setMainApp(this);
+			primaryStage.show();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * @author BRG
 	 * @version Lab #6
@@ -114,9 +141,14 @@ public class Poker extends Application {
 			e.printStackTrace();
 		}
 		appPlayer = new Player(strPlayerName, gClient.getID());
+		showPoker();
+		
+		Action act = new Action(eAction.TableState, this.getAppPlayer());		
+		messageSend(act);
 		
 		System.out.println(appPlayer.getClientID());
 	}
+	
 
 	/**
 	 * @author BRG
@@ -209,7 +241,7 @@ public class Poker extends Application {
 					
 				}
 				else if (message instanceof Table) {
-					
+					PokerController.HandleTableState((Table)message);
 				}
 
 			});

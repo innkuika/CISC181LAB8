@@ -52,6 +52,9 @@ public class GamePlayTest {
 		} catch (HandException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		//	Get the Player hand (should be empty at this point) from GamePlay.
@@ -135,6 +138,9 @@ public class GamePlayTest {
 		} catch (HandException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		//	Get the Player hand (should be empty at this point) from GamePlay.
@@ -217,6 +223,9 @@ public class GamePlayTest {
 			fail("Deck Exception");
 		} catch (HandException e1) {
 			fail("Hand Exception");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		//	Get the Player hand (should be empty at this point) from GamePlay.
@@ -230,8 +239,8 @@ public class GamePlayTest {
 		
 		//	Create p2 cards	
 		ArrayList<Card> p2Cards = new ArrayList<Card>();
-		p2Cards.add(new Card(eSuit.CLUBS, eRank.ACE,52));
-		p2Cards.add(new Card(eSuit.CLUBS, eRank.TWO,40));
+		p2Cards.add(new Card(eSuit.CLUBS, eRank.ACE,39));
+		p2Cards.add(new Card(eSuit.CLUBS, eRank.TWO,27));
 		
 		//	Create common cards
 		ArrayList<Card> commonCards = new ArrayList<Card>();
@@ -284,7 +293,13 @@ public class GamePlayTest {
 		assertEquals(40,p1DrawResult.stream().filter(x -> x.getP().equals(p1))
 		.collect(Collectors.toList()).get(0).getCards().get(1).getiCardNbr());
 		
+		assertEquals(0,p1DrawResult.stream().filter(x -> x.getP().equals(p2))
+		.collect(Collectors.toList()).get(0).getCards().get(0).getiCardNbr());
 
+		assertEquals(0,p1DrawResult.stream().filter(x -> x.getP().equals(p2))
+		.collect(Collectors.toList()).get(0).getCards().get(1).getiCardNbr());
+	
+	
 	}
 	
 	

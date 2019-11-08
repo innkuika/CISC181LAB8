@@ -3,13 +3,13 @@ package app.hub;
 import java.io.IOException;
 
 import netgame.common.Hub;
-//import pkgCore.GamePlay;
-//import pkgCore.Table;
+import pkgCore.Action;
+import pkgCore.Table;
 
 public class GameHub extends Hub {
 
-	//private Table HubPokerTable = null;
-	//private GamePlay HubGamePlay = null;
+	private Table HubPokerTable = null;
+	// private GamePlay HubGamePlay = null;
 
 	public GameHub(int port) throws IOException {
 		super(port);
@@ -17,10 +17,37 @@ public class GameHub extends Hub {
 	}
 
 	@Override
-	public void messageReceived(int playerID, Object message) {
+	public void messageReceived(int ClientID, Object message) {
 
-		System.out.println("Action received from the hub");
-		sendToAll(message);	
+		if (HubPokerTable == null)
+			HubPokerTable = new Table("Poker");
+		
+
+		if (message instanceof Action)
+		{
+			Action act = (Action)message;
+			
+			switch (act.geteAction())
+			{
+			case TableState:
+				resetOutput();
+				sendToAll(HubPokerTable);
+				break;
+			case Sit:
+				HubPokerTable.AddPlayerToTable(act.getActPlayer());
+					resetOutput();
+ 				sendToAll(HubPokerTable);
+				break;
+			case Leave:
+				break;
+			}
+		}
+		
+		
+		
+		
+		
+		
 		
 //		if (HubPokerTable == null)
 //			HubPokerTable = new Table();
@@ -55,10 +82,8 @@ public class GameHub extends Hub {
 //				//TODO: Implement this
 //				break;
 //			}
-				
 
-
-	//	}
+		// }
 	}
 
 }

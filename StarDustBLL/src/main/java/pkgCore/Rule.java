@@ -274,8 +274,41 @@ public class Rule implements Serializable {
 		
 		public CardDraw getCardDraw(eDrawCount eDrawCount)
 		{
-			return (CardDraw)hmCardDraw.get(eDrawCount);
+			return hmCardDraw.get(eDrawCount);
 		}
+		
+		
+		public static eDrawCount getNextDraw(eGame eG, eDrawCount eDC)
+		{
+			Rule rle = new Rule(eG);
+			eDrawCount eDCReturn = null;
+			
+			Iterator<Map.Entry<eDrawCount, CardDraw>> itr = 
+					rle.hmCardDraw.entrySet().iterator();
+			
+			while (itr.hasNext()) {
+				Map.Entry<eDrawCount, CardDraw> entry = itr.next();
+				
+				if (eDC == null)
+				{
+					return entry.getKey();
+				}
+				if (eDC == entry.getKey())
+				{
+					
+					return (itr.hasNext()) ? (itr.next().getKey()) : null;
+
+				}
+				
+			}
+			return null;
+			
+		}
+		
+		
+		
+		
+		
 		
 		
 		public int getIdx(eDrawCount eDrawCount, eStartEnd eStartEnd)

@@ -1,11 +1,12 @@
 package pkgUtil;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
 import pkgCore.Player;
 
-public class CircularLinkedList<E> implements API<E> {
+public class CircularLinkedList<E> implements API<E>, Serializable {
 
 	private Node<E> head;
 	private E current;

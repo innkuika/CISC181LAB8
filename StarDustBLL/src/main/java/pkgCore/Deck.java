@@ -56,9 +56,9 @@ public class Deck {
 
 		int iCardNbr = 0;
 		for (int a = 0; a < iNbrOfDecks; a++) {
-			for (eSuit eSuit : EnumSet.range(eSuit.HEARTS, eSuit.SPADES)) {
+			for (eSuit eSuit : EnumSet.range(eSuit.HEARTS, eSuit.DIAMONDS)) {
 				for (eRank eRank : EnumSet.range(eRank.TWO,  eRank.ACE)) {
-					cardsInDeck.add(new Card(eSuit, eRank, iCardNbr++));
+					cardsInDeck.add(new Card(eSuit, eRank, ++iCardNbr));
 				}
 			}
 		}

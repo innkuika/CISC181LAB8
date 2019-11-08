@@ -13,6 +13,7 @@ import pkgCoreInterface.iCardDraw;
 import pkgEnum.eCardDestination;
 import pkgEnum.eCardVisibility;
 import pkgEnum.eDrawCount;
+import pkgEnum.eGame;
 import pkgEnum.eRank;
 import pkgEnum.eStartEnd;
 import pkgEnum.eSubstituteDeck;
@@ -43,19 +44,56 @@ public class GamePlay {
 		GameDeck = new Deck();
 	}
 
-	public void Draw(Player p, eDrawCount eDC) throws DeckException, HandException {
-
+	
+	public void Draw() throws DeckException, HandException, Exception
+	{	
+		eDrawCount eDC = Rule.getNextDraw(Rle.GetGame(), LasteDrawCount);
+		if (eDC == null)
+		{
+			throw new Exception("DrawCount Not Found");
+		}
+		
 		CardDraw CD = this.Rle.getCardDraw(eDC);
 
 		for (int crdCnt = 0; crdCnt < CD.getCardCount().getCardCount(); crdCnt++) {
 			if (CD.getCardDestination() == eCardDestination.COMMON) {
 				CommonCards.add(GameDeck.Draw());
 			} else {
-				GameHand.get(p.getPlayerID()).Draw(GameDeck);
+				
+				for (Player pDraw: this.GamePlayers)
+				{
+					GameHand.get(pDraw.getPlayerID()).Draw(GameDeck);
+				}
+				
+			}
+		}
+		this.LasteDrawCount = eDC;	
+	}
+	
+	/*
+	public void Draw(Player p, eDrawCount eDC) throws DeckException, HandException {
+		
+		eGame eG = this.getRle().GetGame();
+		
+		
+		
+		CardDraw CD = this.Rle.getCardDraw(eDC);
+
+		for (int crdCnt = 0; crdCnt < CD.getCardCount().getCardCount(); crdCnt++) {
+			if (CD.getCardDestination() == eCardDestination.COMMON) {
+				CommonCards.add(GameDeck.Draw());
+			} else {
+				
+				for (Player pDraw: this.GamePlayers)
+				{
+					GameHand.get(p.getPlayerID()).Draw(GameDeck);
+				}
+				
 			}
 		}
 		this.LasteDrawCount = eDC;
 	}
+	*/
 
 	/**
 	 * @author BRG
@@ -235,13 +273,14 @@ public class GamePlay {
 	 * 
 	 * @throws DeckException
 	 * @throws HandException
+	 * @throws Exception
 	 */
-	public void StartGame() throws DeckException, HandException {
+	public void StartGame() throws DeckException, HandException, Exception {
 		for (Player p : GamePlayers) {
 			HandPoker hp = new HandPoker(p, this);
 			GameHand.put(p.getPlayerID(), hp);
-			Draw(p, eDrawCount.FIRST);
 		}
+		Draw();
 	}
 
 	/**
@@ -336,6 +375,17 @@ public class GamePlay {
 		LasteDrawCount = lasteDrawCount;
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public ArrayList<DrawResult> getDrawResult(Player p) {
 
 		ArrayList<DrawResult> lstDR = new ArrayList<DrawResult>();
@@ -377,5 +427,7 @@ public class GamePlay {
 		}
 
 		return lstDR;
+		
 	}
+	
 }

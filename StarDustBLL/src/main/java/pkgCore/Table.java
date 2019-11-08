@@ -1,5 +1,6 @@
 package pkgCore;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -8,7 +9,7 @@ import java.util.UUID;
 
 import pkgUtil.CircularLinkedList;
 
-public class Table {
+public class Table implements Serializable {
 
 	/**
 	 * @author BRG
