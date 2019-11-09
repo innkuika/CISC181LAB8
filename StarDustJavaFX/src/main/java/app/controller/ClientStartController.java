@@ -66,7 +66,6 @@ public class ClientStartController implements Initializable {
 		System.exit(0);
 
 		System.out.println("End Program");
-
 	}
 
 }

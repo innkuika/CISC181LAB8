@@ -1,9 +1,11 @@
 package pkgCore;
 
 import java.io.Serializable;
+import java.util.Comparator;
+import java.util.Objects;
 import java.util.UUID;
 
-public class Player implements Serializable {
+public class Player implements Serializable, Comparable<Player> {
 
 	private UUID PlayerID;
 	private String PlayerName;
@@ -12,6 +14,16 @@ public class Player implements Serializable {
 	
 	
 	 
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.PlayerID);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return this.hashCode() == obj.hashCode();
+	}
+
 	public int getiPlayerPosition() {
 		return iPlayerPosition;
 	}
@@ -49,8 +61,23 @@ public class Player implements Serializable {
 	}
 
 
-	
-	
+    // External Comparator
+    public static Comparator<Player> hpPlayerPosition = new Comparator<Player>() {
+        @Override
+        public int compare(Player p1, Player p2) {        	
+        	return p1.compareTo(p2);
+        }
+    };
+
+	@Override
+	public int compareTo(Player o) {
+		Player PassedPlayer =  o;
+		Player ThisPlayer = this;
+		
+		if (PassedPlayer.getiPlayerPosition() - ThisPlayer.getiPlayerPosition() != 0)
+			return PassedPlayer.getiPlayerPosition() - ThisPlayer.getiPlayerPosition();
+		return 0;
+	}
 	
 	
 }

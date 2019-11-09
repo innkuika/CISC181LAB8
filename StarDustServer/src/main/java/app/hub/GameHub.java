@@ -39,6 +39,9 @@ public class GameHub extends Hub {
  				sendToAll(HubPokerTable);
 				break;
 			case Leave:
+				HubPokerTable.RemovePlayerFromTable(act.getActPlayer());
+				resetOutput();
+				sendToAll(HubPokerTable);
 				break;
 			}
 		}

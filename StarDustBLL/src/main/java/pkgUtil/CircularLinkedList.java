@@ -86,7 +86,7 @@ public class CircularLinkedList<E> implements API<E>, Serializable {
 		size = 0;
 	}
 
-	private boolean contains(E Element)
+	private boolean contains(Object Element)
 	{
 		boolean bContains = false;
 		
@@ -97,9 +97,10 @@ public class CircularLinkedList<E> implements API<E>, Serializable {
 			temp = temp.getNext();
 		}
 		
-		if (temp.getValue() == Element)
+
+		if (temp.getValue().equals(Element))
 			return true;
-		
+	 
 		return bContains;
 	}
 
@@ -112,13 +113,13 @@ public class CircularLinkedList<E> implements API<E>, Serializable {
 		Node<E> temp = head;
 		while (true)
 		{
-			if (temp.getNext().getValue() == element)
+			if (temp.getNext().getValue().equals(element))
 				break;
 			temp = temp.getNext();
 		}
 		temp.setNext(temp.getNext().getNext());
 		
-		if (this.current == element) {
+		if (this.current.equals(element)) {
 			this.current = temp.getNext().getValue();
 		}
 		

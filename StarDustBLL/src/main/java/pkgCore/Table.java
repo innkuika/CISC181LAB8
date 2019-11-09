@@ -35,7 +35,7 @@ public class Table implements Serializable {
 	 * @version Lab #3
 	 * @since Lab #5
 	 */
-	private CircularLinkedList<Player> TablePlayers = new CircularLinkedList<Player>();
+	private ArrayList<Player> TablePlayers = new ArrayList<Player>();
 
 	/**
 	 * @author BRG
@@ -87,7 +87,7 @@ public class Table implements Serializable {
 	 * @param p
 	 */
 	public void RemovePlayerFromTable(Player p) {
-		TablePlayers.delete(p);
+		TablePlayers.remove(p);
 	}
 
 	/**
@@ -100,6 +100,8 @@ public class Table implements Serializable {
 	 */
 	public ArrayList<Player> getTablePlayers() {
 		
+		return this.TablePlayers;
+		/*
 		ArrayList<Player> tablePlayers = new ArrayList<Player>();
 		if (TablePlayers.getItemsInOrder() == null)
 			return null;
@@ -109,6 +111,8 @@ public class Table implements Serializable {
 			tablePlayers.add(p);
 		}
 		return tablePlayers;
+		
+		*/
 	}
 
 	/**
@@ -118,9 +122,11 @@ public class Table implements Serializable {
 	 * @version Lab #3
 	 * @since Lab #5
 	 */
+	/*
 	public void AdvancePlayer() {
 		TablePlayers.advanceCurrent();
 	}
+	*/
 	
 	/**
 	 * getButton - Return the 'current' LinkedList member
@@ -129,9 +135,11 @@ public class Table implements Serializable {
 	 * @version Lab #3
 	 * @since Lab #5
 	 */
+	/*
 	public Player getButton() {
 		return TablePlayers.getCurrent();
 	}
+	*/
 
 	/**
 	 * ClearTable - Clear the CircularLinkedList
