@@ -51,6 +51,14 @@ public class ClientStartController implements Initializable {
 	}
 
 
+	/**
+	 * btnOK - Execute this action when the 'OK' button is clicked.
+	 * 
+	 * @author BRG
+	 * @version Lab #6
+	 * @since Lab #6
+	 * @param event
+	 */
 	@FXML
 	public void btnOK(ActionEvent event) {
  
@@ -60,12 +68,18 @@ public class ClientStartController implements Initializable {
 		mainApp.StartClient(strComputerName, iPort, txtPlayerName.getText());
 	}
 
+	/**
+	 * btnCancel - Execute this action when the 'Cancel' button is clicked.
+	 * 
+	 * @author BRG
+	 * @version Lab #6
+	 * @since Lab #6
+	 * @param event
+	 */
 	@FXML
 	public void btnCancel(ActionEvent event) {
 		Platform.exit();
 		System.exit(0);
-
-		System.out.println("End Program");
 	}
 
 }

@@ -2,6 +2,8 @@ module StarDustBLL {
 
 	exports pkgCore;
 	exports pkgEnum;
+	exports pkgException;
+	exports pkgCoreInterface;
 	requires java.activation;
 	//requires java.xml.bind;
 	requires commons.math3;

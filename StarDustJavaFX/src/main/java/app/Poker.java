@@ -1,6 +1,7 @@
 package app;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import app.controller.ClientStartController;
@@ -16,6 +17,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import netgame.common.Client;
 import pkgCore.Action;
+import pkgCore.DrawResult;
 import pkgCore.GamePlay;
 import pkgCore.Player;
 import pkgCore.Table;
@@ -236,7 +238,10 @@ public class Poker extends Application {
 				if (message instanceof String) {
 					System.out.println("Message Received from hub " + message);
 				}
-
+				else if (message instanceof ArrayList)
+				{
+					PokerController.HandleDraw((ArrayList<DrawResult>) message);
+				}
 				else if (message instanceof GamePlay) {
 					
 				}

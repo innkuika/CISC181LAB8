@@ -1,15 +1,23 @@
 package app.hub;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import netgame.common.Hub;
 import pkgCore.Action;
+import pkgCore.DrawResult;
+import pkgCore.GamePlay;
+import pkgCore.Rule;
 import pkgCore.Table;
+import pkgEnum.eAction;
+import pkgEnum.eGame;
+import pkgException.DeckException;
+import pkgException.HandException;
 
 public class GameHub extends Hub {
 
 	private Table HubPokerTable = null;
-	// private GamePlay HubGamePlay = null;
+	private GamePlay HubGamePlay = null;
 
 	public GameHub(int port) throws IOException {
 		super(port);
@@ -22,7 +30,6 @@ public class GameHub extends Hub {
 		if (HubPokerTable == null)
 			HubPokerTable = new Table("Poker");
 		
-
 		if (message instanceof Action)
 		{
 			Action act = (Action)message;
@@ -42,6 +49,37 @@ public class GameHub extends Hub {
 				HubPokerTable.RemovePlayerFromTable(act.getActPlayer());
 				resetOutput();
 				sendToAll(HubPokerTable);
+				break;
+			case Bet:
+				break;
+			case Deal:
+				break;
+			case Fold:
+				break;
+			case GameState:
+				break;
+			case Raise:
+				break;
+			case ScoreGame:
+				break;
+			case StartGamePoker:
+				try {
+					HubGamePlay = new GamePlay(HubPokerTable, new Rule(eGame.TexasHoldEm));
+					HubGamePlay.StartGame();
+				} catch (DeckException e) {
+					e.printStackTrace();
+				} catch (HandException e) {
+					e.printStackTrace();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}				
+				break;
+			case Draw:
+				ArrayList<DrawResult> DR = HubGamePlay.getDrawResult(act.getActPlayer());
+				resetOutput();
+				sendToAll(DR);
+				break;				
+			default:
 				break;
 			}
 		}

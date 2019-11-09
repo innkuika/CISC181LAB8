@@ -30,7 +30,7 @@
                       <RowConstraints maxHeight="41.11113823784723" minHeight="10.0" prefHeight="41.11113823784723" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <HBox fx:id="p1HBoxCards" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                        <HBox id="HBoxCardsp4" fx:id="HBoxCardsp4" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
                            <children>
                               <ImageView fitHeight="150.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true" rotate="-10.0">
                                  <image>
@@ -73,7 +73,7 @@
                         <RowConstraints maxHeight="41.11113823784723" minHeight="10.0" prefHeight="41.11113823784723" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                        <HBox id="HBoxCardsp5" fx:id="HBoxCardsp5" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
                            <children>
                               <ImageView fitHeight="150.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true" rotate="-10.0">
                                  <image>
@@ -108,6 +108,6 @@
       </HBox>
    </bottom>
    <center>
-      <Button mnemonicParsing="false" onAction="#btnClick" text="Button" BorderPane.alignment="CENTER" />
+      <Button mnemonicParsing="false" onAction="#btnStartGame" text="Start Game" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>

@@ -1,10 +1,11 @@
 package pkgCore;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import pkgCoreInterface.iCardDraw;
 
-public class DrawResult {
+public class DrawResult implements Serializable {
 
 	private CardDraw CD;
 	private Player p;

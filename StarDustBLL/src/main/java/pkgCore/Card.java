@@ -1,5 +1,7 @@
 package pkgCore;
 
+import java.io.Serializable;
+
 import pkgCoreInterface.iCardDraw;
 import pkgEnum.eRank;
 import pkgEnum.eSubstituteDeck;
@@ -16,7 +18,7 @@ import pkgEnum.eSuit;
  *        Cards.
  *
  */
-public class Card implements Comparable<Card>, iCardDraw {
+public class Card implements Comparable<Card>, iCardDraw,  Serializable{
 
 	/**
 	 * @version Lab #1

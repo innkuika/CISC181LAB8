@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import com.google.common.collect.MinMaxPriorityQueue;
 
 import pkgCoreInterface.iCardDraw;
+import pkgEnum.eAction;
 import pkgEnum.eCardDestination;
 import pkgEnum.eCardVisibility;
 import pkgEnum.eDrawCount;
@@ -29,6 +30,7 @@ public class GamePlay {
 	private ArrayList<Card> CommonCards = new ArrayList<Card>();
 	private Deck GameDeck;
 	private eDrawCount LasteDrawCount = null;
+	private eAction lastAction = null;
 
 	/**
 	 * GamePlay - Create an instance of GamePlay. For every player in the table, add
@@ -70,30 +72,6 @@ public class GamePlay {
 		this.LasteDrawCount = eDC;	
 	}
 	
-	/*
-	public void Draw(Player p, eDrawCount eDC) throws DeckException, HandException {
-		
-		eGame eG = this.getRle().GetGame();
-		
-		
-		
-		CardDraw CD = this.Rle.getCardDraw(eDC);
-
-		for (int crdCnt = 0; crdCnt < CD.getCardCount().getCardCount(); crdCnt++) {
-			if (CD.getCardDestination() == eCardDestination.COMMON) {
-				CommonCards.add(GameDeck.Draw());
-			} else {
-				
-				for (Player pDraw: this.GamePlayers)
-				{
-					GameHand.get(p.getPlayerID()).Draw(GameDeck);
-				}
-				
-			}
-		}
-		this.LasteDrawCount = eDC;
-	}
-	*/
 
 	/**
 	 * @author BRG
@@ -281,6 +259,7 @@ public class GamePlay {
 			GameHand.put(p.getPlayerID(), hp);
 		}
 		Draw();
+		lastAction = eAction.StartGamePoker;
 	}
 
 	/**
@@ -415,7 +394,7 @@ public class GamePlay {
 							this.Rle.getIdx(this.LasteDrawCount, eStartEnd.START),
 							this.Rle.getIdx(this.LasteDrawCount, eStartEnd.END))) {
 						if ((LastCardDraw.getCardVisibility() 
-								== eCardVisibility.ME) && (p.getPlayerID() != PlayerID))
+								== eCardVisibility.ME) && (!p.getPlayerID().equals(PlayerID)))
 						{
 							c.setiCardNbr(0);
 						}

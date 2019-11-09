@@ -19,8 +19,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.Node;
 import pkgCore.Action;
+import pkgCore.Card;
+import pkgCore.DrawResult;
+import pkgCore.GamePlay;
 import pkgCore.Player;
 import pkgCore.Table;
+import pkgCoreInterface.iCardDraw;
 import pkgEnum.eAction;
 
 public class TexasHoldemController implements Initializable {
@@ -48,23 +52,23 @@ public class TexasHoldemController implements Initializable {
 	private Label PlayerLabel9;
 
 	@FXML
-	private HBox p1HBoxCards;
+	private HBox HBoxCardsp1;
 	@FXML
-	private HBox p2HBoxCards;
+	private HBox HBoxCardsp2;
 	@FXML
-	private HBox p3HBoxCards;
+	private HBox HBoxCardsp3;
 	@FXML
-	private HBox p4HBoxCards;
+	private HBox HBoxCardsp4;
 	@FXML
-	private HBox p5HBoxCards;
+	private HBox HBoxCardsp5;
 	@FXML
-	private HBox p6HBoxCards;
+	private HBox HBoxCardsp6;
 	@FXML
-	private HBox p7HBoxCards;
+	private HBox HBoxCardsp7;
 	@FXML
-	private HBox p8HBoxCards;
+	private HBox HBoxCardsp8;
 	@FXML
-	private HBox p9HBoxCards;
+	private HBox HBoxCardsp9;
 
 	private Poker mainApp;
 
@@ -75,6 +79,27 @@ public class TexasHoldemController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
+	}
+
+	public void HandleDraw(ArrayList<DrawResult> lstDrawResult) {
+
+		for (Node n : getAllControls(parentNode, new HBox())) {
+			HBox pCards = (HBox) n;
+			if ((pCards.getId() != null) && (pCards.getId().contains("HBoxCardsp"))) {
+				// Get the iPlayerPositon of the control
+				int iPlayerPosition = Integer.parseInt(pCards.getId().substring(pCards.getId().length() - 1));
+
+				for (DrawResult dr : lstDrawResult) {
+					// Blank out all the player labels
+
+					if (iPlayerPosition == dr.getP().getiPlayerPosition()) {
+						for (iCardDraw c : dr.getCards()) {
+							AddCardToHbox(pCards.getId(), BuildImage(c.getiCardNbr()));
+						}
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -155,12 +180,17 @@ public class TexasHoldemController implements Initializable {
 	}
 
 	@FXML
-	private void btnClick(ActionEvent event) {
-		AddCardToHbox("p1HBoxCards", BuildImage(10));
+	private void btnStartGame(ActionEvent event) {
+
+		Action act = new Action(eAction.StartGamePoker, this.mainApp.getAppPlayer());
+		this.mainApp.messageSend(act);
+
+		// AddCardToHbox("p1HBoxCards", BuildImage(10));
 	}
 
 	/**
 	 * btnSit - execute this action after the Sit/Leave button is clicked
+	 * 
 	 * @author BRG
 	 * @version Lab #6
 	 * @since Lab #6
@@ -217,13 +247,14 @@ public class TexasHoldemController implements Initializable {
 	}
 
 	/**
-	 * getAllControls - get all controls of a particular control type, starting with a given root
+	 * getAllControls - get all controls of a particular control type, starting with
+	 * a given root
 	 * 
 	 * @author BRG
 	 * @version Lab #6
 	 * @since Lab #6
 	 * @param root - root control
-	 * @param o - instance of given control type
+	 * @param o    - instance of given control type
 	 * @return
 	 */
 	private ArrayList<Node> getAllControls(Parent root, Object o) {

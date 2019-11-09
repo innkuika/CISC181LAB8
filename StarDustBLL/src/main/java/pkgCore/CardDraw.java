@@ -1,5 +1,7 @@
 package pkgCore;
 
+import java.io.Serializable;
+
 import pkgEnum.eCardCount;
 import pkgEnum.eCardDestination;
 import pkgEnum.eCardVisibility;
@@ -15,7 +17,7 @@ import pkgEnum.eCardVisibility;
  * @author Dad
  *
  */
-public class CardDraw {
+public class CardDraw  implements Serializable {
 
 	/**
 	 * @author BRG
