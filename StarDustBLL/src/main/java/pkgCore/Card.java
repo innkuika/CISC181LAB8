@@ -18,7 +18,7 @@ import pkgEnum.eSuit;
  *        Cards.
  *
  */
-public class Card implements Comparable<Card>, iCardDraw,  Serializable{
+public class Card implements Comparable<Card>, iCardDraw, Serializable, Cloneable {
 
 	/**
 	 * @version Lab #1
@@ -41,23 +41,26 @@ public class Card implements Comparable<Card>, iCardDraw,  Serializable{
 	 * @version Lab #3
 	 * @since Lab #3
 	 * 
-	 * Wild - signifies if the card is 'Wild' or not.  If Wild, it can be substituted by any other card
+	 *        Wild - signifies if the card is 'Wild' or not. If Wild, it can be
+	 *        substituted by any other card
 	 */
 	private boolean Wild;
-	
-	
+
 	private eSubstituteDeck eSubstituteDeck;
-	
-	
+
 	private int iCardNbr;
-	
+
+	public Card (Card c)
+	{
+		this(c.eSuit, c.eRank, c.iCardNbr);
+	}
 	public Card(pkgEnum.eSuit eSuit, pkgEnum.eRank eRank) {
-		this(eSuit, eRank,0);
+		this(eSuit, eRank, 0);
 		this.Wild = false;
 		this.eSubstituteDeck = eSubstituteDeck.NORMAL;
 		this.iCardNbr = iCardNbr;
 	}
-	
+
 	/**
 	 * @version Lab #1
 	 * @since Lab #1
@@ -100,7 +103,7 @@ public class Card implements Comparable<Card>, iCardDraw,  Serializable{
 	 * @version Lab #1
 	 * @since Lab #1
 	 * 
-	 * equals - return 'true' if eSuit and eRank are the same. 
+	 *        equals - return 'true' if eSuit and eRank are the same.
 	 */
 	@Override
 	public boolean equals(Object o) {
@@ -149,7 +152,6 @@ public class Card implements Comparable<Card>, iCardDraw,  Serializable{
 		return eSuit;
 	}
 
-	
 	/**
 	 * 
 	 * @return
@@ -196,9 +198,4 @@ public class Card implements Comparable<Card>, iCardDraw,  Serializable{
 		return iCardNbr;
 	}
 
-
-	
-	
-	
-	
 }

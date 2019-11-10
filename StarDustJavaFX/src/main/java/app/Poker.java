@@ -115,6 +115,7 @@ public class Poker extends Application {
 			loader = new FXMLLoader(getClass().getResource("/Client/app/view/TexasHoldemBoard.fxml"));
 			BorderPane PokerOverview = (BorderPane) loader.load();
 			Scene scene = new Scene(PokerOverview);
+			primaryStage.setTitle("Player: " + this.appPlayer.getPlayerName());
 			primaryStage.setScene(scene);
 			
 			PokerController = loader.getController();

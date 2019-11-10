@@ -3,15 +3,13 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane fx:id="parentNode" prefHeight="552.0" prefWidth="735.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.TexasHoldemController">
+<BorderPane fx:id="parentNode" prefHeight="552.0" prefWidth="735.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.TexasHoldemController">
    <bottom>
       <HBox alignment="CENTER" prefHeight="173.0" prefWidth="685.0" spacing="25.0" BorderPane.alignment="CENTER">
          <BorderPane.margin>
@@ -30,23 +28,7 @@
                       <RowConstraints maxHeight="41.11113823784723" minHeight="10.0" prefHeight="41.11113823784723" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <HBox id="HBoxCardsp4" fx:id="HBoxCardsp4" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
-                           <children>
-                              <ImageView fitHeight="150.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true" rotate="-10.0">
-                                 <image>
-                                    <Image url="@../../../img/5.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="150.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../img/7.png" />
-                                 </image>
-                                 <HBox.margin>
-                                    <Insets left="-55.0" />
-                                 </HBox.margin>
-                              </ImageView>
-                           </children>
-                        </HBox>
+                        <HBox id="HBoxCardsp4" fx:id="HBoxCardsp4" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.rowIndex="2">
                            <children>
                               <Button id="btnSit4" mnemonicParsing="false" onAction="#btnSitLeave" text="Sit" />
@@ -54,7 +36,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Label id="PlayerLabel4" fx:id="PlayerLabel4" text="Player Label" />
+                              <Label id="PlayerLabel4" fx:id="PlayerLabel4" />
                            </children>
                         </HBox>
                      </children>
@@ -73,23 +55,7 @@
                         <RowConstraints maxHeight="41.11113823784723" minHeight="10.0" prefHeight="41.11113823784723" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <HBox id="HBoxCardsp5" fx:id="HBoxCardsp5" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
-                           <children>
-                              <ImageView fitHeight="150.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true" rotate="-10.0">
-                                 <image>
-                                    <Image url="@../../../img/5.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="150.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../img/7.png" />
-                                 </image>
-                                 <HBox.margin>
-                                    <Insets left="-55.0" />
-                                 </HBox.margin>
-                              </ImageView>
-                           </children>
-                        </HBox>
+                        <HBox id="HBoxCardsp5" fx:id="HBoxCardsp5" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.rowIndex="2">
                            <children>
                               <Button id="btnSit5" mnemonicParsing="false" onAction="#btnSitLeave" text="Sit" />
@@ -97,13 +63,38 @@
                         </HBox>
                         <HBox id="p5Label" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Label id="PlayerLabel5" fx:id="PlayerLabel5" text="Player Label" />
+                              <Label id="PlayerLabel5" fx:id="PlayerLabel5" />
                            </children>
                         </HBox>
                      </children>
                   </GridPane>
                </children></HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" />
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <GridPane prefHeight="173.0" prefWidth="180.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="53.77776421440972" minHeight="10.0" prefHeight="19.11113823784722" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="118.66664632161458" minHeight="10.0" prefHeight="105.77775065104167" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="41.11113823784723" minHeight="10.0" prefHeight="41.11113823784723" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <HBox id="HBoxCardsp6" fx:id="HBoxCardsp41" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1" />
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.rowIndex="2">
+                           <children>
+                              <Button id="btnSit6" mnemonicParsing="false" onAction="#btnSitLeave" text="Sit" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label id="PlayerLabel6" fx:id="PlayerLabel41" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </GridPane>
+               </children></HBox>
          </children>
       </HBox>
    </bottom>

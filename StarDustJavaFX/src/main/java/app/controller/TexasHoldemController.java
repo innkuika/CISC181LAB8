@@ -4,12 +4,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 import app.Poker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -17,11 +18,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.Node;
 import pkgCore.Action;
 import pkgCore.Card;
 import pkgCore.DrawResult;
-import pkgCore.GamePlay;
 import pkgCore.Player;
 import pkgCore.Table;
 import pkgCoreInterface.iCardDraw;
@@ -83,20 +82,36 @@ public class TexasHoldemController implements Initializable {
 
 	public void HandleDraw(ArrayList<DrawResult> lstDrawResult) {
 
-		for (Node n : getAllControls(parentNode, new HBox())) {
-			HBox pCards = (HBox) n;
-			if ((pCards.getId() != null) && (pCards.getId().contains("HBoxCardsp"))) {
-				// Get the iPlayerPositon of the control
-				int iPlayerPosition = Integer.parseInt(pCards.getId().substring(pCards.getId().length() - 1));
+		for (DrawResult DR : lstDrawResult) {
+			// This is the common cards
+			if (DR.getP() == null) {
+				//TODO: Handle the draw event for the common cards
+			}
+			// This is the player cards
+			else if (DR.getP() != null) {
+				int iCardCnt = 1;
+				int iRightMargin = 0;
+				int iCardRotate = 0;
 
-				for (DrawResult dr : lstDrawResult) {
-					// Blank out all the player labels
-
-					if (iPlayerPosition == dr.getP().getiPlayerPosition()) {
-						for (iCardDraw c : dr.getCards()) {
-							AddCardToHbox(pCards.getId(), BuildImage(c.getiCardNbr()));
-						}
+				String strControl = "HBoxCardsp" + DR.getP().getiPlayerPosition();
+				Optional<Node> optNode = this.getSpecificControl(parentNode, strControl);
+				HBox pCards = (HBox) optNode.get();
+				for (iCardDraw c : DR.getCards()) {
+					switch (iCardCnt) {
+					case 1:
+						iRightMargin = 0;
+						iCardRotate = -10;
+						break;
+					case 2:
+						iRightMargin = -50;
+						iCardRotate = 10;
+						break;
 					}
+
+					ImageView iCardImg = BuildImage(c.getiCardNbr(), iCardRotate);
+					AddCardToHbox(pCards.getId(), iCardImg);
+					pCards.setMargin(iCardImg, new Insets(0, 0, 0, iRightMargin));
+					iCardCnt++;
 				}
 			}
 		}
@@ -179,14 +194,20 @@ public class TexasHoldemController implements Initializable {
 
 	}
 
+	/**
+	 * btnStartGame - Start the game
+	 * 
+	 * @author BRG
+	 * @version Lab #6
+	 * @since Lab #6
+
+	 * @param event
+	 */
 	@FXML
+	
 	private void btnStartGame(ActionEvent event) {
-
 		Action act = new Action(eAction.StartGamePoker, this.mainApp.getAppPlayer());
-		this.mainApp.messageSend(act);
-
-		// AddCardToHbox("p1HBoxCards", BuildImage(10));
-	}
+		this.mainApp.messageSend(act);	}
 
 	/**
 	 * btnSit - execute this action after the Sit/Leave button is clicked
@@ -223,7 +244,7 @@ public class TexasHoldemController implements Initializable {
 	 * @param iCardNbr
 	 * @return
 	 */
-	private ImageView BuildImage(int iCardNbr) {
+	private ImageView BuildImage(int iCardNbr, int iRotate) {
 
 		String strImgPath = null;
 		int iWidth = 72;
@@ -241,9 +262,23 @@ public class TexasHoldemController implements Initializable {
 		default:
 			strImgPath = "/img/" + iCardNbr + ".png";
 		}
+		ImageView iCardImageView = new ImageView(new Image(getClass().getResourceAsStream(strImgPath), iWidth, iHeight, true, true));
+		iCardImageView.setRotate(iRotate);
+		return iCardImageView;
+	}
 
-		return new ImageView(new Image(getClass().getResourceAsStream(strImgPath), iWidth, iHeight, true, true));
-
+	/**
+	 * getSpecificControl - Find a specific control by ID
+	 * 
+	 * @param root - the outer/parent container
+	 * @param strID - the ID of the control
+	 * @return
+	 */
+	private Optional<Node> getSpecificControl(Parent root, String strID) {
+		ArrayList<Node> allNodes = getAllNodes(root);
+		Optional<Node> n = allNodes.stream().filter(x -> x.getId() != null).filter(x -> x.getId().equals(strID))
+				.findFirst();
+		return n;
 	}
 
 	/**
@@ -264,9 +299,7 @@ public class TexasHoldemController implements Initializable {
 				nodeControl.add(n);
 			}
 		}
-
 		return nodeControl;
-
 	}
 
 	/**

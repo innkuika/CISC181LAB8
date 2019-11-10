@@ -30,7 +30,6 @@ public class GamePlay {
 	private ArrayList<Card> CommonCards = new ArrayList<Card>();
 	private Deck GameDeck;
 	private eDrawCount LasteDrawCount = null;
-	private eAction lastAction = null;
 
 	/**
 	 * GamePlay - Create an instance of GamePlay. For every player in the table, add
@@ -222,6 +221,13 @@ public class GamePlay {
 		return Rle;
 	}
 
+	
+	
+	public ArrayList<Player> getGamePlayers() {
+		return GamePlayers;
+	}
+
+
 	/**
 	 * @author BRG
 	 * @version Lab #4
@@ -258,8 +264,6 @@ public class GamePlay {
 			HandPoker hp = new HandPoker(p, this);
 			GameHand.put(p.getPlayerID(), hp);
 		}
-		Draw();
-		lastAction = eAction.StartGamePoker;
 	}
 
 	/**
@@ -393,12 +397,17 @@ public class GamePlay {
 					for (Card c : PlayerHandPoker.getCards().subList(
 							this.Rle.getIdx(this.LasteDrawCount, eStartEnd.START),
 							this.Rle.getIdx(this.LasteDrawCount, eStartEnd.END))) {
+						
+						//  I have to make a copy of the card...  I need to change
+						//	the CardNbr on occasion, and if I change the 'c', it'll
+						//	remain changed.
+						Card cClone = new Card(c);						
 						if ((LastCardDraw.getCardVisibility() 
 								== eCardVisibility.ME) && (!p.getPlayerID().equals(PlayerID)))
 						{
-							c.setiCardNbr(0);
+							cClone.setiCardNbr(0);
 						}
-						drawCards.add(c);
+						drawCards.add(cClone);
 					}
 				}
 				lstDR.add(new DrawResult(LastCardDraw, GetGamePlayer(PlayerID), drawCards));				

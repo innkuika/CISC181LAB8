@@ -4,22 +4,14 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import app.Poker;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
-import javafx.util.Duration;
-import javafx.animation.Timeline;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 public class ClientStartController implements Initializable {
 
@@ -44,6 +36,15 @@ public class ClientStartController implements Initializable {
 				txtPlayerName.requestFocus();
 			}
 		});
+		
+		txtPlayerName.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				if (event.getCode().equals(KeyCode.ENTER)) {
+					btnOK_OnAction(null);
+				}
+			}
+		});
 	}
 
 	public void setMainApp(Poker mainApp) {
@@ -60,7 +61,7 @@ public class ClientStartController implements Initializable {
 	 * @param event
 	 */
 	@FXML
-	public void btnOK(ActionEvent event) {
+	public void btnOK_OnAction(ActionEvent event) {
  
 		boolean bServer = false;
 		String strComputerName = txtComputerName.getText();
