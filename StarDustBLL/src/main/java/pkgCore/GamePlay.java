@@ -45,32 +45,27 @@ public class GamePlay {
 		GameDeck = new Deck();
 	}
 
-	
-	public void Draw() throws DeckException, HandException, Exception
-	{	
+	public void Draw() throws DeckException, HandException, Exception {
 		eDrawCount eDC = Rule.getNextDraw(Rle.GetGame(), LasteDrawCount);
-		if (eDC == null)
-		{
+		if (eDC == null) {
 			throw new Exception("DrawCount Not Found");
 		}
-		
+
 		CardDraw CD = this.Rle.getCardDraw(eDC);
 
 		for (int crdCnt = 0; crdCnt < CD.getCardCount().getCardCount(); crdCnt++) {
 			if (CD.getCardDestination() == eCardDestination.COMMON) {
 				CommonCards.add(GameDeck.Draw());
 			} else {
-				
-				for (Player pDraw: this.GamePlayers)
-				{
+
+				for (Player pDraw : this.GamePlayers) {
 					GameHand.get(pDraw.getPlayerID()).Draw(GameDeck);
 				}
-				
+
 			}
 		}
-		this.LasteDrawCount = eDC;	
+		this.LasteDrawCount = eDC;
 	}
-	
 
 	/**
 	 * @author BRG
@@ -221,12 +216,9 @@ public class GamePlay {
 		return Rle;
 	}
 
-	
-	
 	public ArrayList<Player> getGamePlayers() {
 		return GamePlayers;
 	}
-
 
 	/**
 	 * @author BRG
@@ -358,23 +350,39 @@ public class GamePlay {
 		LasteDrawCount = lasteDrawCount;
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	public ArrayList<DrawResult> getDrawResult(Player p) {
 
 		ArrayList<DrawResult> lstDR = new ArrayList<DrawResult>();
 		CardDraw LastCardDraw = this.Rle.getCardDraw(this.LasteDrawCount);
 		UUID PlayerID = null;
 
+		for (int iCardDraw = 0; iCardDraw < LastCardDraw.getCardCount().getCardCount(); iCardDraw++) {
+			if (LastCardDraw.getCardDestination() == eCardDestination.COMMON) {
+				Card c = this.CommonCards.get(iCardDraw + this.Rle.getIdx(this.LasteDrawCount, eStartEnd.START));
+				DrawResult DR = new DrawResult(LastCardDraw, null, 0, c.getiCardNbr(), this.LasteDrawCount, iCardDraw);
+				lstDR.add(DR);
+				
+				
+			} else if (LastCardDraw.getCardDestination() == eCardDestination.PLAYER) {
+
+				for (Player GamePlayer : this.GamePlayers) {
+					HandPoker hp = this.GameHand.get(GamePlayer.getPlayerID());
+
+					Card c = hp.getCards().get(iCardDraw + this.Rle.getIdx(this.LasteDrawCount, eStartEnd.START));
+				
+					Card cClone = new Card(c);
+					if ((LastCardDraw.getCardVisibility() == eCardVisibility.ME)
+							&& (!p.getPlayerID().equals(GamePlayer.getPlayerID()))) {
+						cClone.setiCardNbr(0);
+					}
+					DrawResult DR = new DrawResult(LastCardDraw, GamePlayer.getPlayerName(),
+							GamePlayer.getiPlayerPosition(), cClone.getiCardNbr(), this.LasteDrawCount, iCardDraw);
+					lstDR.add(DR);
+				}
+			}
+		}
+
+		/*
 		if (LastCardDraw.getCardDestination() == eCardDestination.COMMON) {
 			ArrayList<iCardDraw> drawCards = new ArrayList<iCardDraw>();
 			for (Card c : this.CommonCards.subList(this.Rle.getIdx(this.LasteDrawCount, eStartEnd.START),
@@ -387,7 +395,6 @@ public class GamePlay {
 		if (LastCardDraw.getCardDestination() == eCardDestination.PLAYER) {
 			Iterator<Map.Entry<UUID, HandPoker>> itr = this.GameHand.entrySet().iterator();
 
-			
 			while (itr.hasNext()) {
 				ArrayList<iCardDraw> drawCards = new ArrayList<iCardDraw>();
 				Map.Entry<UUID, HandPoker> entry = itr.next();
@@ -397,25 +404,24 @@ public class GamePlay {
 					for (Card c : PlayerHandPoker.getCards().subList(
 							this.Rle.getIdx(this.LasteDrawCount, eStartEnd.START),
 							this.Rle.getIdx(this.LasteDrawCount, eStartEnd.END))) {
-						
-						//  I have to make a copy of the card...  I need to change
-						//	the CardNbr on occasion, and if I change the 'c', it'll
-						//	remain changed.
-						Card cClone = new Card(c);						
-						if ((LastCardDraw.getCardVisibility() 
-								== eCardVisibility.ME) && (!p.getPlayerID().equals(PlayerID)))
-						{
+
+						// I have to make a copy of the card... I need to change
+						// the CardNbr on occasion, and if I change the 'c', it'll
+						// remain changed.
+						Card cClone = new Card(c);
+						if ((LastCardDraw.getCardVisibility() == eCardVisibility.ME)
+								&& (!p.getPlayerID().equals(PlayerID))) {
 							cClone.setiCardNbr(0);
 						}
 						drawCards.add(cClone);
 					}
 				}
-				lstDR.add(new DrawResult(LastCardDraw, GetGamePlayer(PlayerID), drawCards));				
+				lstDR.add(new DrawResult(LastCardDraw, GetGamePlayer(PlayerID), drawCards));
 			}
 		}
-
+*/
 		return lstDR;
-		
+
 	}
-	
+
 }

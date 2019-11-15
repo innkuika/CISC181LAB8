@@ -9,7 +9,9 @@ import app.Poker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -25,6 +27,7 @@ import pkgCore.Player;
 import pkgCore.Table;
 import pkgCoreInterface.iCardDraw;
 import pkgEnum.eAction;
+import pkgEnum.eDrawCount;
 
 public class TexasHoldemController implements Initializable {
 
@@ -69,6 +72,9 @@ public class TexasHoldemController implements Initializable {
 	@FXML
 	private HBox HBoxCardsp9;
 
+	@FXML
+	private HBox HBoxCommon;
+
 	private Poker mainApp;
 
 	public void setMainApp(Poker mainApp) {
@@ -80,39 +86,71 @@ public class TexasHoldemController implements Initializable {
 
 	}
 
+	private void ClearCardBoxes() {
+
+		for (Node n : getAllControls(parentNode, new HBox())) {
+
+			HBox hb = (HBox) n;
+			if (hb.getId() != null) {
+
+				if ((hb.getId().contains("HBoxCardsp")) || (hb.getId().equals("HBoxCommon"))) {
+					hb.getChildren().clear();
+				}
+			}
+		}
+	}
+
 	public void HandleDraw(ArrayList<DrawResult> lstDrawResult) {
+
+		if (lstDrawResult.get(0).geteDrawCount() == eDrawCount.FIRST) {
+			ClearCardBoxes();
+		}
+
+ 
 
 		for (DrawResult DR : lstDrawResult) {
 			// This is the common cards
-			if (DR.getP() == null) {
-				//TODO: Handle the draw event for the common cards
+			if (DR.getiPlayerPosition() == 0) {
+				// TODO: Handle the draw event for the common cards
 			}
 			// This is the player cards
-			else if (DR.getP() != null) {
-				int iCardCnt = 1;
+			else if (DR.getiPlayerPosition() > 0) {
+				
+				
+				
+				
+				
+				
 				int iRightMargin = 0;
 				int iCardRotate = 0;
-
-				String strControl = "HBoxCardsp" + DR.getP().getiPlayerPosition();
+				String strControl = "HBoxCardsp" + DR.getiPlayerPosition();
 				Optional<Node> optNode = this.getSpecificControl(parentNode, strControl);
 				HBox pCards = (HBox) optNode.get();
-				for (iCardDraw c : DR.getCards()) {
-					switch (iCardCnt) {
-					case 1:
-						iRightMargin = 0;
-						iCardRotate = -10;
-						break;
-					case 2:
-						iRightMargin = -50;
-						iCardRotate = 10;
-						break;
-					}
 
-					ImageView iCardImg = BuildImage(c.getiCardNbr(), iCardRotate);
-					AddCardToHbox(pCards.getId(), iCardImg);
-					pCards.setMargin(iCardImg, new Insets(0, 0, 0, iRightMargin));
-					iCardCnt++;
+				if (strControl.equals("HBoxCardsp4"))
+						{
+					Point2D pntPlayer = FindPoint(pCards, 0);
+					Point2D pntCommon = FindPoint(HBoxCommon,0);
+						}
+				
+				
+ 
+				switch (DR.getiCardPosition()) {
+				case 0:
+					iRightMargin = 0;
+					iCardRotate = -10;
+					break;
+				case 1:
+					iRightMargin = -50;
+					iCardRotate = 10;
+					break;
 				}
+
+				ImageView iCardImg = BuildImage(DR.getiCardNbr(), iCardRotate);
+				AddCardToHbox(pCards.getId(), iCardImg);
+				pCards.setMargin(iCardImg, new Insets(0, 0, 0, iRightMargin));
+	 
+			 
 			}
 		}
 	}
@@ -200,14 +238,21 @@ public class TexasHoldemController implements Initializable {
 	 * @author BRG
 	 * @version Lab #6
 	 * @since Lab #6
-
+	 * 
 	 * @param event
 	 */
 	@FXML
-	
+
 	private void btnStartGame(ActionEvent event) {
 		Action act = new Action(eAction.StartGamePoker, this.mainApp.getAppPlayer());
-		this.mainApp.messageSend(act);	}
+		this.mainApp.messageSend(act);
+	}
+
+	@FXML
+	private void btnDraw_onAction() {
+		Action act = new Action(eAction.Draw, this.mainApp.getAppPlayer());
+		this.mainApp.messageSend(act);
+	}
 
 	/**
 	 * btnSit - execute this action after the Sit/Leave button is clicked
@@ -262,7 +307,8 @@ public class TexasHoldemController implements Initializable {
 		default:
 			strImgPath = "/img/" + iCardNbr + ".png";
 		}
-		ImageView iCardImageView = new ImageView(new Image(getClass().getResourceAsStream(strImgPath), iWidth, iHeight, true, true));
+		ImageView iCardImageView = new ImageView(
+				new Image(getClass().getResourceAsStream(strImgPath), iWidth, iHeight, true, true));
 		iCardImageView.setRotate(iRotate);
 		return iCardImageView;
 	}
@@ -270,7 +316,7 @@ public class TexasHoldemController implements Initializable {
 	/**
 	 * getSpecificControl - Find a specific control by ID
 	 * 
-	 * @param root - the outer/parent container
+	 * @param root  - the outer/parent container
 	 * @param strID - the ID of the control
 	 * @return
 	 */
@@ -367,5 +413,18 @@ public class TexasHoldemController implements Initializable {
 				}
 			}
 		}
+	}
+	
+	
+	private Point2D FindPoint(HBox hBoxCard, int iCardNbr) {
+
+		ImageView imgvCardFaceDown = (ImageView) hBoxCard.getChildren().get(iCardNbr);
+		
+		Bounds bndCardDealt = imgvCardFaceDown.localToScene(imgvCardFaceDown.getBoundsInLocal());
+		
+		Point2D pntCardDealt = new Point2D(bndCardDealt.getMinX() + iCardNbr, bndCardDealt.getMinY());
+
+		return pntCardDealt;
+
 	}
 }

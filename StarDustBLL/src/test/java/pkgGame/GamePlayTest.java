@@ -276,20 +276,28 @@ public class GamePlayTest {
 		System.out.println("***** Draw Result *****");		
 		for (DrawResult DR: p1DrawResult)
 		{
-			System.out.println("* Player : " + DR.getP().getPlayerName());
-			System.out.println("* Player is me " + DR.getP().equals(p1));
+			System.out.println("* Player : " + DR.getStrPlayerName());
+			System.out.print("* Player is me " );
+			System.out.println(DR.getiPlayerPosition() == p1.getiPlayerPosition());
 			System.out.println("* ");
-			System.out.println("* Cards for Player");						
-			for (iCardDraw iCD: DR.getCards())
-			{
-				System.out.println(iCD.getiCardNbr());
-			}
+			System.out.println("* Cards for Player");	
+			System.out.println(DR.getiCardNbr());
 		}
 		
 		
-		assertEquals(52,p1DrawResult.stream().filter(x -> x.getP().equals(p1))
-		.collect(Collectors.toList()).get(0).getCards().get(0).getiCardNbr());
+		assertEquals(52,p1DrawResult.stream().filter(x -> x.getiPlayerPosition() == p1.getiPlayerPosition())
+		.collect(Collectors.toList()).get(0).getiCardNbr());
 		
+		assertEquals(0,p1DrawResult.stream().filter(x -> x.getiPlayerPosition() == p1.getiPlayerPosition())
+		.collect(Collectors.toList()).get(1).getiCardNbr());
+		
+		assertEquals(40,p1DrawResult.stream().filter(x -> x.getiPlayerPosition() == p2.getiPlayerPosition())
+		.collect(Collectors.toList()).get(2).getiCardNbr());
+		
+		assertEquals(0,p1DrawResult.stream().filter(x -> x.getiPlayerPosition() == p2.getiPlayerPosition())
+		.collect(Collectors.toList()).get(3).getiCardNbr());
+		
+		/*
 		assertEquals(40,p1DrawResult.stream().filter(x -> x.getP().equals(p1))
 		.collect(Collectors.toList()).get(0).getCards().get(1).getiCardNbr());
 		
@@ -298,7 +306,7 @@ public class GamePlayTest {
 
 		assertEquals(0,p1DrawResult.stream().filter(x -> x.getP().equals(p2))
 		.collect(Collectors.toList()).get(0).getCards().get(1).getiCardNbr());
-	
+	*/
 	
 	}
 	
