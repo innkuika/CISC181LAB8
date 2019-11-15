@@ -359,7 +359,7 @@ public class GamePlay {
 		for (int iCardDraw = 0; iCardDraw < LastCardDraw.getCardCount().getCardCount(); iCardDraw++) {
 			if (LastCardDraw.getCardDestination() == eCardDestination.COMMON) {
 				Card c = this.CommonCards.get(iCardDraw + this.Rle.getIdx(this.LasteDrawCount, eStartEnd.START));
-				DrawResult DR = new DrawResult(LastCardDraw, null, 0, c.getiCardNbr(), this.LasteDrawCount, iCardDraw);
+				DrawResult DR = new DrawResult(LastCardDraw, null, 0, c.getiCardNbr(), this.LasteDrawCount, iCardDraw + this.Rle.getIdx(this.LasteDrawCount, eStartEnd.START));
 				lstDR.add(DR);
 				
 				

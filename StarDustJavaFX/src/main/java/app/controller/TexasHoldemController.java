@@ -6,7 +6,16 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import app.Poker;
+import javafx.animation.FadeTransition;
+import javafx.animation.Interpolator;
+import javafx.animation.ParallelTransition;
+import javafx.animation.PathTransition;
+import javafx.animation.RotateTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.SequentialTransition;
+import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
@@ -20,6 +29,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.CubicCurveTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.util.Duration;
 import pkgCore.Action;
 import pkgCore.Card;
 import pkgCore.DrawResult;
@@ -31,6 +46,7 @@ import pkgEnum.eDrawCount;
 
 public class TexasHoldemController implements Initializable {
 
+	private int iAnimationLength = 2000;
 	@FXML
 	private BorderPane parentNode;
 
@@ -73,6 +89,9 @@ public class TexasHoldemController implements Initializable {
 	private HBox HBoxCardsp9;
 
 	@FXML
+	private HBox HBoxDeck;
+
+	@FXML
 	private HBox HBoxCommon;
 
 	private Poker mainApp;
@@ -106,34 +125,23 @@ public class TexasHoldemController implements Initializable {
 			ClearCardBoxes();
 		}
 
- 
-
 		for (DrawResult DR : lstDrawResult) {
+
 			// This is the common cards
 			if (DR.getiPlayerPosition() == 0) {
-				// TODO: Handle the draw event for the common cards
+				ImageView iCardImg = BuildImage(DR.getiCardNbr(), 0);
+				//AddCardToHbox(HBoxCommon, iCardImg);
+
+				DealCard(HBoxCommon, iCardImg, DR.getiCardPosition());
 			}
 			// This is the player cards
 			else if (DR.getiPlayerPosition() > 0) {
-				
-				
-				
-				
-				
-				
 				int iRightMargin = 0;
 				int iCardRotate = 0;
 				String strControl = "HBoxCardsp" + DR.getiPlayerPosition();
 				Optional<Node> optNode = this.getSpecificControl(parentNode, strControl);
 				HBox pCards = (HBox) optNode.get();
 
-				if (strControl.equals("HBoxCardsp4"))
-						{
-					Point2D pntPlayer = FindPoint(pCards, 0);
-					Point2D pntCommon = FindPoint(HBoxCommon,0);
-						}
-				
-				
  
 				switch (DR.getiCardPosition()) {
 				case 0:
@@ -149,10 +157,74 @@ public class TexasHoldemController implements Initializable {
 				ImageView iCardImg = BuildImage(DR.getiCardNbr(), iCardRotate);
 				AddCardToHbox(pCards.getId(), iCardImg);
 				pCards.setMargin(iCardImg, new Insets(0, 0, 0, iRightMargin));
-	 
-			 
 			}
 		}
+	}
+
+	private void DealCard(HBox HBoxTarget, ImageView iCardImg, int iCardNbr) {
+
+		
+		Point2D pntDeck = FindPoint(HBoxDeck, 0);
+		//ImageView imgDealCard = BuildImage(0, 0);
+		final ImageView img = BuildImage(0, 0);
+		final ImageView imgBlank = BuildImage(-2,0);
+		img.setX(pntDeck.getX());
+		img.setY(pntDeck.getY());
+		
+		parentNode.getChildren().add(img);
+		
+		SequentialTransition sT = new SequentialTransition();
+
+		HBoxTarget.getChildren().add(imgBlank);
+		
+		Point2D pntCardDealt = FindPoint(HBoxTarget, iCardNbr);
+		//HBoxTarget.getChildren().remove(imgBlank);
+
+		// Transition should be... two parallel transitions in sequence
+		// First parallel is transition/rotate card
+		// Second parallel is to fade in/out
+
+		// Create a Translate Transition
+		TranslateTransition transT = CreateTranslateTransition(pntDeck, pntCardDealt, imgBlank);
+		// Create a Rotate transition
+		RotateTransition rotT = CreateRotateTransition(iCardImg);
+		// Create a Scale transition (we're not using it, but this is how you do it)
+		//ScaleTransition scaleT = CreateScaleTransition(iCardImg);
+		// Create a Path transition
+		//PathTransition pathT = CreatePathTransition(pntDeck, pntCardDealt, iCardImg);
+
+		// Create a new Parallel transition.
+		ParallelTransition patTMoveRot = new ParallelTransition();
+		// Add transitions you want to execute currently to the parallel transition
+		patTMoveRot.getChildren().addAll(rotT, transT);
+		
+		// Create a new Parallel transition to fade in/fade out
+		ParallelTransition patTFadeInFadeOut = createFadeTransition(
+				(ImageView) HBoxTarget.getChildren().get(iCardNbr), 				
+				iCardImg.getImage());
+		
+		// Create a new sequential transition
+		SequentialTransition seqDeal = new SequentialTransition();
+
+		// Add the two parallel transitions to the sequential transition
+		
+		seqDeal.getChildren().addAll(patTMoveRot, patTFadeInFadeOut);
+		
+		// Set up event handler to remove the animation image after the transition is
+		// complete
+		seqDeal.setOnFinished(new EventHandler<ActionEvent>() {
+
+			public void handle(ActionEvent arg0) {
+				parentNode.getChildren().remove(img);
+			}
+		});
+ 
+		
+		sT.getChildren().add(seqDeal);
+
+		sT.setInterpolator(Interpolator.EASE_OUT);
+		sT.play();
+		
 	}
 
 	/**
@@ -409,22 +481,127 @@ public class TexasHoldemController implements Initializable {
 			if (n instanceof HBox) {
 				HBox hBox = (HBox) n;
 				if ((hBox.getId() != null) && (hBox.getId().equals(HboxName))) {
-					hBox.getChildren().add(imgCard);
+					AddCardToHbox(hBox, imgCard);
 				}
 			}
 		}
 	}
-	
-	
+
+	private void AddCardToHbox(HBox HboxName, ImageView imgCard) {
+		HboxName.getChildren().add(imgCard);
+	}
+
 	private Point2D FindPoint(HBox hBoxCard, int iCardNbr) {
 
 		ImageView imgvCardFaceDown = (ImageView) hBoxCard.getChildren().get(iCardNbr);
-		
+
 		Bounds bndCardDealt = imgvCardFaceDown.localToScene(imgvCardFaceDown.getBoundsInLocal());
-		
+
 		Point2D pntCardDealt = new Point2D(bndCardDealt.getMinX() + iCardNbr, bndCardDealt.getMinY());
 
 		return pntCardDealt;
 
+	}
+
+	@FXML
+	private void btnCheck(ActionEvent event) {
+
+		Point2D p2d = FindPoint(HBoxCardsp4, 0);
+		Point2D p2dDealer = FindPoint(HBoxCommon, 0);
+		Point2D p2dDeck = FindPoint(HBoxDeck, 0);
+
+		Circle c = new Circle(p2d.getX(), p2d.getY(), 5);
+		Circle cD = new Circle(p2dDealer.getX(), p2dDealer.getY(), 5);
+		Circle cDeck = new Circle(p2dDeck.getX(), p2dDeck.getY(), 5);
+
+		c.setFill(Color.DARKRED);
+		cD.setFill(Color.YELLOW);
+		cDeck.setFill(Color.LIGHTSEAGREEN);
+
+		parentNode.getChildren().add(c);
+		parentNode.getChildren().add(cD);
+		parentNode.getChildren().add(cDeck);
+	}
+
+	private PathTransition CreatePathTransition(Point2D fromPoint, Point2D toPoint, ImageView img) {
+		Path path = new Path();
+
+		// TODO: Fix the Path transition. My Path looks terrible... do something cool :)
+
+		path.getElements().add(new MoveTo(fromPoint.getX(), fromPoint.getY()));
+		path.getElements().add(new CubicCurveTo(toPoint.getX() * 2, toPoint.getY() * 2, toPoint.getX() / 3,
+				toPoint.getY() / 3, toPoint.getX(), toPoint.getY()));
+		// path.getElements().add(new CubicCurveTo(0, 120, 0, 240, 380, 240));
+		PathTransition pathTransition = new PathTransition();
+		pathTransition.setDuration(Duration.millis(750));
+		pathTransition.setPath(path);
+		pathTransition.setNode(img);
+		pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+		pathTransition.setCycleCount((int) 1f);
+		pathTransition.setAutoReverse(false);
+
+		return pathTransition;
+
+	}
+
+	private ScaleTransition CreateScaleTransition(ImageView img) {
+		ScaleTransition st = new ScaleTransition(Duration.millis(iAnimationLength), img);
+		st.setByX(.25f);
+		st.setByY(.25f);
+		st.setCycleCount((int) 1f);
+		st.setAutoReverse(true);
+
+		return st;
+	}
+
+	private RotateTransition CreateRotateTransition(ImageView img) {
+
+		RotateTransition rotateTransition = new RotateTransition(Duration.millis(iAnimationLength / 2), img);
+		rotateTransition.setByAngle(180F);
+		rotateTransition.setCycleCount(2);
+		rotateTransition.setAutoReverse(false);
+
+		return rotateTransition;
+	}
+
+	private TranslateTransition CreateTranslateTransition(Point2D fromPoint, Point2D toPoint, ImageView img) {
+
+		Circle c1 = new Circle(fromPoint.getX(), fromPoint.getY(), 5);
+		Circle c2 = new Circle(toPoint.getX(), toPoint.getY(), 5);
+		c1.setFill(Color.DARKRED);
+		c2.setFill(Color.LIGHTPINK);
+		parentNode.getChildren().add(c1);
+		parentNode.getChildren().add(c2);
+		
+		TranslateTransition translateTransition = new TranslateTransition(Duration.millis(iAnimationLength), img);
+
+		translateTransition.setFromX(0);
+		translateTransition.setToX(toPoint.getX() - fromPoint.getX());
+		translateTransition.setFromY(0);
+		translateTransition.setToY(toPoint.getY() - fromPoint.getY());
+		translateTransition.setCycleCount(1);
+		translateTransition.setAutoReverse(false);
+
+		return translateTransition;
+	}
+
+	private ParallelTransition createFadeTransition(final ImageView imgVFadeOut, final Image imgFadeIn) {
+
+		FadeTransition fadeOutTransition = new FadeTransition(Duration.millis(iAnimationLength), imgVFadeOut);
+		fadeOutTransition.setFromValue(1.0);
+		fadeOutTransition.setToValue(0.0);
+		fadeOutTransition.setOnFinished(new EventHandler<ActionEvent>() {
+
+			public void handle(ActionEvent arg0) {
+				imgVFadeOut.setImage(imgFadeIn);
+			}
+		});
+
+		FadeTransition fadeInTransition = new FadeTransition(Duration.millis(iAnimationLength), imgVFadeOut);
+		fadeInTransition.setFromValue(0.0);
+		fadeInTransition.setToValue(1.0);
+		ParallelTransition parallelTransition = new ParallelTransition();
+		parallelTransition.getChildren().addAll(fadeOutTransition, fadeInTransition);
+		return parallelTransition;
 	}
 }
