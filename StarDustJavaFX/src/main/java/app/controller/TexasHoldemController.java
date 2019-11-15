@@ -46,7 +46,7 @@ import pkgEnum.eDrawCount;
 
 public class TexasHoldemController implements Initializable {
 
-	private int iAnimationLength = 2000;
+	private int iAnimationLength = 500;
 	@FXML
 	private BorderPane parentNode;
 
@@ -185,7 +185,7 @@ public class TexasHoldemController implements Initializable {
 		// Second parallel is to fade in/out
 
 		// Create a Translate Transition
-		TranslateTransition transT = CreateTranslateTransition(pntDeck, pntCardDealt, imgBlank);
+		TranslateTransition transT = CreateTranslateTransition(pntDeck, pntCardDealt, img);
 		// Create a Rotate transition
 		RotateTransition rotT = CreateRotateTransition(iCardImg);
 		// Create a Scale transition (we're not using it, but this is how you do it)
