@@ -102,7 +102,32 @@ public class TexasHoldemController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		
+		HBoxCommon.getChildren().clear();		
+		for (int i = 0; i < 5; i++) {
+			final ImageView imgBlank = BuildImage(-2, 0);
+			HBoxCommon.getChildren().add(imgBlank);
+		}
+		for (Node n : getAllControls(parentNode, new HBox())) {
+			HBox hb = (HBox) n;
+			if (hb.getId() != null) {
+				if (hb.getId().contains("HBoxCardsp")) {
+					hb.getChildren().clear();
+					for (int i = 0; i<2; i++)
+					{
+						final ImageView imgBlank = BuildImage(-2, (i==0) ?-10 :10);
+						hb.getChildren().add(imgBlank);
+						
+						hb.setMargin(imgBlank, new Insets(0, 0, 0, (i==0) ? 0 : -50));
+					}	
+					
+				}
+				
 
+				
+				
+			}
+		}
 	}
 
 	private void ClearCardBoxes() {
@@ -130,7 +155,7 @@ public class TexasHoldemController implements Initializable {
 			// This is the common cards
 			if (DR.getiPlayerPosition() == 0) {
 				ImageView iCardImg = BuildImage(DR.getiCardNbr(), 0);
-				//AddCardToHbox(HBoxCommon, iCardImg);
+				// AddCardToHbox(HBoxCommon, iCardImg);
 
 				DealCard(HBoxCommon, iCardImg, DR.getiCardPosition());
 			}
@@ -142,7 +167,6 @@ public class TexasHoldemController implements Initializable {
 				Optional<Node> optNode = this.getSpecificControl(parentNode, strControl);
 				HBox pCards = (HBox) optNode.get();
 
- 
 				switch (DR.getiCardPosition()) {
 				case 0:
 					iRightMargin = 0;
@@ -163,22 +187,22 @@ public class TexasHoldemController implements Initializable {
 
 	private void DealCard(HBox HBoxTarget, ImageView iCardImg, int iCardNbr) {
 
-		
 		Point2D pntDeck = FindPoint(HBoxDeck, 0);
-		//ImageView imgDealCard = BuildImage(0, 0);
+		// ImageView imgDealCard = BuildImage(0, 0);
 		final ImageView img = BuildImage(0, 0);
-		final ImageView imgBlank = BuildImage(-2,0);
+		final ImageView imgBlank = BuildImage(-2, 0);
 		img.setX(pntDeck.getX());
 		img.setY(pntDeck.getY());
-		
+
 		parentNode.getChildren().add(img);
-		
+
 		SequentialTransition sT = new SequentialTransition();
 
 		HBoxTarget.getChildren().add(imgBlank);
-		
+
 		Point2D pntCardDealt = FindPoint(HBoxTarget, iCardNbr);
-		//HBoxTarget.getChildren().remove(imgBlank);
+		
+		// HBoxTarget.getChildren().remove(imgBlank);
 
 		// Transition should be... two parallel transitions in sequence
 		// First parallel is transition/rotate card
@@ -186,30 +210,39 @@ public class TexasHoldemController implements Initializable {
 
 		// Create a Translate Transition
 		TranslateTransition transT = CreateTranslateTransition(pntDeck, pntCardDealt, img);
+		
+		System.out.println("****  Translate");
+		System.out.print("* Deck X: " +  pntDeck.getX());
+		System.out.print(" " );
+		System.out.println("* Card Nbr " + iCardNbr);
+		System.out.println("* Deck Y: " +  pntDeck.getY());
+		System.out.print("* Card X: " +  pntCardDealt.getX());
+		System.out.print(" " );
+		System.out.println("* Card Y: " +  pntCardDealt.getY());
+		
 		// Create a Rotate transition
 		RotateTransition rotT = CreateRotateTransition(iCardImg);
 		// Create a Scale transition (we're not using it, but this is how you do it)
-		//ScaleTransition scaleT = CreateScaleTransition(iCardImg);
+		// ScaleTransition scaleT = CreateScaleTransition(iCardImg);
 		// Create a Path transition
-		//PathTransition pathT = CreatePathTransition(pntDeck, pntCardDealt, iCardImg);
+		// PathTransition pathT = CreatePathTransition(pntDeck, pntCardDealt, iCardImg);
 
 		// Create a new Parallel transition.
 		ParallelTransition patTMoveRot = new ParallelTransition();
 		// Add transitions you want to execute currently to the parallel transition
 		patTMoveRot.getChildren().addAll(rotT, transT);
-		
+
 		// Create a new Parallel transition to fade in/fade out
-		ParallelTransition patTFadeInFadeOut = createFadeTransition(
-				(ImageView) HBoxTarget.getChildren().get(iCardNbr), 				
+		ParallelTransition patTFadeInFadeOut = createFadeTransition((ImageView) HBoxTarget.getChildren().get(iCardNbr),
 				iCardImg.getImage());
-		
+
 		// Create a new sequential transition
 		SequentialTransition seqDeal = new SequentialTransition();
 
 		// Add the two parallel transitions to the sequential transition
-		
+
 		seqDeal.getChildren().addAll(patTMoveRot, patTFadeInFadeOut);
-		
+
 		// Set up event handler to remove the animation image after the transition is
 		// complete
 		seqDeal.setOnFinished(new EventHandler<ActionEvent>() {
@@ -218,13 +251,12 @@ public class TexasHoldemController implements Initializable {
 				parentNode.getChildren().remove(img);
 			}
 		});
- 
-		
+
 		sT.getChildren().add(seqDeal);
 
 		sT.setInterpolator(Interpolator.EASE_OUT);
 		sT.play();
-		
+
 	}
 
 	/**
@@ -572,7 +604,7 @@ public class TexasHoldemController implements Initializable {
 		c2.setFill(Color.LIGHTPINK);
 		parentNode.getChildren().add(c1);
 		parentNode.getChildren().add(c2);
-		
+
 		TranslateTransition translateTransition = new TranslateTransition(Duration.millis(iAnimationLength), img);
 
 		translateTransition.setFromX(0);
