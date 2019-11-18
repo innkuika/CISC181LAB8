@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane fx:id="parentNode" prefHeight="600.0" prefWidth="779.0" stylesheets="@GameTheme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.TexasHoldemController">
+<BorderPane fx:id="parentNode" prefHeight="600.0" prefWidth="779.0" stylesheets="@GameTheme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.TexasHoldemController">
    <bottom>
       <HBox alignment="CENTER" prefHeight="173.0" prefWidth="685.0" spacing="25.0" BorderPane.alignment="CENTER">
          <BorderPane.margin>
@@ -30,10 +30,14 @@
                       <RowConstraints maxHeight="41.11113823784723" minHeight="10.0" prefHeight="41.11113823784723" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <HBox id="HBoxCardsp4" fx:id="HBoxCardsp4" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets />
-                           </GridPane.margin></HBox>
+                           </GridPane.margin>
+                           <children>
+                              <HBox fx:id="hbProgressBarp4" prefHeight="108.0" prefWidth="80.0" />
+                              <HBox id="HBoxCardsp4" fx:id="HBoxCardsp4" prefHeight="100.0" prefWidth="200.0" />
+                           </children></HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.rowIndex="2">
                            <children>
                               <Button id="btnSit4" mnemonicParsing="false" onAction="#btnSitLeave" text="Sit" />

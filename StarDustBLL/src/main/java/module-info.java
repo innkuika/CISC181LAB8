@@ -9,6 +9,7 @@ module StarDustBLL {
 	requires commons.math3;
 	requires guava;
 	requires java.base;
+	requires java.xml.bind;
  
 	
 
