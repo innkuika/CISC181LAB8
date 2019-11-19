@@ -107,12 +107,7 @@ public class TexasHoldemController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		ClearCardBoxes();
-		UpwardProgress uPB = new UpwardProgress(30,60);
-		
-		uPB.getProgressBar().setProgress(75);
-		hbProgressBarp4.getChildren().add(uPB.getProgressBar());
-		
-		
+
 		
 		
 	}

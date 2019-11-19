@@ -30,14 +30,10 @@
                       <RowConstraints maxHeight="41.11113823784723" minHeight="10.0" prefHeight="41.11113823784723" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                        <HBox id="HBoxCardsp4" fx:id="HBoxCardsp4" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets />
-                           </GridPane.margin>
-                           <children>
-                              <HBox fx:id="hbProgressBarp4" prefHeight="108.0" prefWidth="80.0" />
-                              <HBox id="HBoxCardsp4" fx:id="HBoxCardsp4" prefHeight="100.0" prefWidth="200.0" />
-                           </children></HBox>
+                           </GridPane.margin></HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.rowIndex="2">
                            <children>
                               <Button id="btnSit4" mnemonicParsing="false" onAction="#btnSitLeave" text="Sit" />
