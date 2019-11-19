@@ -96,25 +96,35 @@ public class TexasHoldemController implements Initializable {
 
 	private Poker mainApp;
 
-	
 	@FXML
 	private HBox hbProgressBarp4;
-	
+
 	public void setMainApp(Poker mainApp) {
 		this.mainApp = mainApp;
 	}
 
+	/**
+	 * @author BRG
+	 * @version Lab #6
+	 * @since Lab #6
+	 * 
+	 * initialize - Run this when the controller starts
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		ClearCardBoxes();
-
-		
-		
 	}
 
+	/**
+	 * @author BRG
+	 * @version Lab #7
+	 * @since Lab #7
+	 * 
+	 * ClearCardBoxes - Clear all the card boxes
+	 */
 	private void ClearCardBoxes() {
 
-		HBoxCommon.getChildren().clear();		
+		HBoxCommon.getChildren().clear();
 		for (int i = 0; i < 5; i++) {
 			final ImageView imgBlank = BuildImage(-2, 0);
 			HBoxCommon.getChildren().add(imgBlank);
@@ -124,24 +134,32 @@ public class TexasHoldemController implements Initializable {
 			if (hb.getId() != null) {
 				if (hb.getId().contains("HBoxCardsp")) {
 					hb.getChildren().clear();
-					for (int i = 0; i<2; i++)
-					{
-						//final ImageView imgBlank = BuildImage(-2, (i==0) ?-10 :10);
-						final ImageView imgBlank = BuildImage(-2,0);
-						hb.getChildren().add(imgBlank);						
-						//hb.setMargin(imgBlank, new Insets(0, 0, 0, (i==0) ? 0 : -50));
-					}						
+					for (int i = 0; i < 2; i++) {
+						// final ImageView imgBlank = BuildImage(-2, (i==0) ?-10 :10);
+						final ImageView imgBlank = BuildImage(-2, 0);
+						hb.getChildren().add(imgBlank);
+						// hb.setMargin(imgBlank, new Insets(0, 0, 0, (i==0) ? 0 : -50));
+					}
 				}
 			}
 		}
 	}
 
+	/**
+	 * @author BRG
+	 * @version Lab #7
+	 * @since Lab #7
+	 * 
+	 * @param lstDrawResult
+	 * 
+	 * HandleDraw - Handle the draw result
+	 */
 	public void HandleDraw(ArrayList<DrawResult> lstDrawResult) {
 
 		SequentialTransition MainTransition = new SequentialTransition();
-		
+
 		if (lstDrawResult.get(0).geteDrawCount() == eDrawCount.FIRST) {
-			 ClearCardBoxes();
+			ClearCardBoxes();
 		}
 
 		for (DrawResult DR : lstDrawResult) {
@@ -149,52 +167,37 @@ public class TexasHoldemController implements Initializable {
 			// This is the common cards
 			if (DR.getiPlayerPosition() == 0) {
 				ImageView iCardImg = BuildImage(DR.getiCardNbr(), 15);
-				// AddCardToHbox(HBoxCommon, iCardImg);
 				MainTransition.getChildren().add(DealCard(HBoxCommon, iCardImg, DR.getiCardPosition()));
 			}
 			// This is the player cards
 			else if (DR.getiPlayerPosition() > 0) {
-				
+
 				ImageView iCardImg = BuildImage(DR.getiCardNbr(), 0);
 				String strControl = "HBoxCardsp" + DR.getiPlayerPosition();
 				Optional<Node> optNode = this.getSpecificControl(parentNode, strControl);
-				HBox pCards = (HBox) optNode.get();				
-				MainTransition.getChildren().add(DealCard(pCards, iCardImg, DR.getiCardPosition()));
-				
-				/*
-				
-				int iRightMargin = 0;
-				int iCardRotate = 0;
-				String strControl = "HBoxCardsp" + DR.getiPlayerPosition();
-				Optional<Node> optNode = this.getSpecificControl(parentNode, strControl);
 				HBox pCards = (HBox) optNode.get();
-
-				switch (DR.getiCardPosition()) {
-				case 0:
-					iRightMargin = 0;
-					iCardRotate = -10;
-					break;
-				case 1:
-					iRightMargin = -50;
-					iCardRotate = 10;
-					break;
-				}
-
-				ImageView iCardImg = BuildImage(DR.getiCardNbr(), iCardRotate);
-				AddCardToHbox(pCards.getId(), iCardImg);
-				pCards.setMargin(iCardImg, new Insets(0, 0, 0, iRightMargin));
-				*/
+				MainTransition.getChildren().add(DealCard(pCards, iCardImg, DR.getiCardPosition()));
 			}
 		}
-		
-		//if (MainTransition.getChildren().size() > 0)
-			MainTransition.play();
+
+		MainTransition.play();
 	}
 
+	/**
+	 * @author BRG
+	 * @version Lab #7
+	 * @since Lab #7
+	 * 
+	 * @param HBoxTarget
+	 * @param iCardImg
+	 * @param iCardNbr
+	 * @return
+	 * 
+	 * SequentialTransition - Create a giant transition for dealing the card
+	 */
 	private SequentialTransition DealCard(HBox HBoxTarget, ImageView iCardImg, int iCardNbr) {
 
 		Point2D pntDeck = FindPoint(HBoxDeck, 0);
-		// ImageView imgDealCard = BuildImage(0, 0);
 		final ImageView img = BuildImage(0, 0);
 		final ImageView imgBlank = BuildImage(-2, 0);
 		img.setX(pntDeck.getX());
@@ -207,29 +210,20 @@ public class TexasHoldemController implements Initializable {
 		Point2D pntCardDealt = FindPoint(HBoxTarget, iCardNbr);
 
 		// Transition should be... two parallel transitions in sequence
+		
 		// First parallel is transition/rotate card
 		// Second parallel is to fade in/out
 
 		// Create a Translate Transition
 		TranslateTransition transT = CreateTranslateTransition(pntDeck, pntCardDealt, img);
-		
-		/*
-		System.out.println("****  Translate");
-		System.out.print("* Deck X: " +  pntDeck.getX());
-		System.out.print(" " );
-		System.out.println("* Card Nbr " + iCardNbr);
-		System.out.println("* Deck Y: " +  pntDeck.getY());
-		System.out.print("* Card X: " +  pntCardDealt.getX());
-		System.out.print(" " );
-		System.out.println("* Card Y: " +  pntCardDealt.getY());
-		*/
-		
+
 		// Create a Rotate transition
 		RotateTransition rotT = CreateRotateTransition(img);
 		// Create a Scale transition (we're not using it, but this is how you do it)
 		// ScaleTransition scaleT = CreateScaleTransition(iCardImg);
-		// Create a Path transition
-		//PathTransition pathT = CreatePathTransition(pntDeck, pntCardDealt, img);
+		
+		// Create a Path transition (we're not using it, but this is how you do it)
+		// PathTransition pathT = CreatePathTransition(pntDeck, pntCardDealt, img);
 
 		// Create a new Parallel transition.
 		ParallelTransition patTMoveRot = new ParallelTransition();
@@ -244,7 +238,6 @@ public class TexasHoldemController implements Initializable {
 		SequentialTransition seqDeal = new SequentialTransition();
 
 		// Add the two parallel transitions to the sequential transition
-
 		seqDeal.getChildren().addAll(patTMoveRot, patTFadeInFadeOut);
 
 		// Set up event handler to remove the animation image after the transition is
@@ -257,11 +250,9 @@ public class TexasHoldemController implements Initializable {
 		});
 
 		sT.getChildren().add(seqDeal);
-
 		sT.setInterpolator(Interpolator.EASE_OUT);
-		
+
 		return sT;
-		//sT.play();
 
 	}
 
@@ -358,6 +349,13 @@ public class TexasHoldemController implements Initializable {
 		this.mainApp.messageSend(act);
 	}
 
+	/**
+	 * @author BRG
+	 * @version Lab #7
+	 * @since Lab #7
+	 * 
+	 * btnDraw_onAction - handle the draw action
+	 */
 	@FXML
 	private void btnDraw_onAction() {
 		Action act = new Action(eAction.Draw, this.mainApp.getAppPlayer());
@@ -424,6 +422,10 @@ public class TexasHoldemController implements Initializable {
 	}
 
 	/**
+	 * @author BRG
+	 * @version Lab #7
+	 * @since Lab #7
+	 * 
 	 * getSpecificControl - Find a specific control by ID
 	 * 
 	 * @param root  - the outer/parent container
@@ -513,35 +515,29 @@ public class TexasHoldemController implements Initializable {
 		}
 	}
 
-	private void AddCardToHbox(String HboxName, ImageView imgCard) {
-		ArrayList<Node> nodes = getAllNodes(parentNode);
-		for (Node n : nodes) {
-			if (n instanceof HBox) {
-				HBox hBox = (HBox) n;
-				if ((hBox.getId() != null) && (hBox.getId().equals(HboxName))) {
-					AddCardToHbox(hBox, imgCard);
-				}
-			}
-		}
-	}
-
-	private void AddCardToHbox(HBox HboxName, ImageView imgCard) {
-		HboxName.getChildren().add(imgCard);
-	}
 
 	private Point2D FindPoint(HBox hBoxCard, int iCardNbr) {
 
 		ImageView imgvCardFaceDown = (ImageView) hBoxCard.getChildren().get(iCardNbr);
 		Bounds bndCardDealt = imgvCardFaceDown.localToScene(imgvCardFaceDown.getBoundsInLocal());
-		Bounds boundsInScreen = imgvCardFaceDown.localToScreen(imgvCardFaceDown.getBoundsInLocal());		
+		Bounds boundsInScreen = imgvCardFaceDown.localToScreen(imgvCardFaceDown.getBoundsInLocal());
 		Point2D pntCardDealt = new Point2D(bndCardDealt.getMinX(), bndCardDealt.getMinY());
 		return pntCardDealt;
-
 	}
 
+	/**
+	 * @author BRG
+	 * @version Lab #6
+	 * @since Lab #6
+	 * @param event
+	 * 
+	 * btnCheck - temporary... have this event to check where I am
+	 */
 	@FXML
 	private void btnCheck(ActionEvent event) {
 
+		//	I'm using this method to figure out where points are on the screen
+		
 		Point2D p2d = FindPoint(HBoxCardsp4, 0);
 		Point2D p2dDealer = FindPoint(HBoxCommon, 0);
 		Point2D p2dDeck = FindPoint(HBoxDeck, 0);
@@ -593,7 +589,7 @@ public class TexasHoldemController implements Initializable {
 
 	private RotateTransition CreateRotateTransition(ImageView img) {
 
-		RotateTransition rotateTransition = new RotateTransition(Duration.millis(iAnimationLength /4), img);
+		RotateTransition rotateTransition = new RotateTransition(Duration.millis(iAnimationLength / 4), img);
 		rotateTransition.setByAngle(180F);
 		rotateTransition.setCycleCount(2);
 		rotateTransition.setAutoReverse(false);
