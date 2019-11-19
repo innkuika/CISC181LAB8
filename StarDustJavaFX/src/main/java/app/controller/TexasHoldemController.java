@@ -135,10 +135,8 @@ public class TexasHoldemController implements Initializable {
 				if (hb.getId().contains("HBoxCardsp")) {
 					hb.getChildren().clear();
 					for (int i = 0; i < 2; i++) {
-						// final ImageView imgBlank = BuildImage(-2, (i==0) ?-10 :10);
 						final ImageView imgBlank = BuildImage(-2, 0);
 						hb.getChildren().add(imgBlank);
-						// hb.setMargin(imgBlank, new Insets(0, 0, 0, (i==0) ? 0 : -50));
 					}
 				}
 			}

@@ -30,7 +30,7 @@
                       <RowConstraints maxHeight="41.11113823784723" minHeight="10.0" prefHeight="41.11113823784723" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <HBox id="HBoxCardsp4" fx:id="HBoxCardsp4" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                        <HBox id="HBoxCardsp4" fx:id="HBoxCardsp4" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin></HBox>
@@ -210,7 +210,7 @@
                      <children>
                         <Button mnemonicParsing="false" onAction="#btnStartGame" text="Start Game" />
                         <Button mnemonicParsing="false" onAction="#btnDraw_onAction" text="Draw" />
-                        <Button mnemonicParsing="false" onAction="#btnCheck" text="Check" />
+                        <Button mnemonicParsing="false" onAction="#btnCheck" text="Check Screen" />
                      </children>
                   </HBox>
                   <HBox id="HBoxCommon" fx:id="HBoxCommon" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
