@@ -38,6 +38,7 @@ import javafx.util.Duration;
 import pkgCore.Action;
 import pkgCore.Card;
 import pkgCore.DrawResult;
+import pkgCore.HandScorePokerSummary;
 import pkgCore.Player;
 import pkgCore.Table;
 import pkgCoreInterface.iCardDraw;
@@ -181,6 +182,10 @@ public class TexasHoldemController implements Initializable {
 		MainTransition.play();
 	}
 
+	public void HandleHandScorePokerSummary(HandScorePokerSummary HSPS)
+	{
+		
+	}
 	/**
 	 * @author BRG
 	 * @version Lab #7

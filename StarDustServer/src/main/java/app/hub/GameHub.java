@@ -2,16 +2,20 @@ package app.hub;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import netgame.common.Hub;
 import pkgCore.Action;
 import pkgCore.DrawResult;
 import pkgCore.GamePlay;
+import pkgCore.HandPoker;
+import pkgCore.HandScorePokerSummary;
 import pkgCore.Player;
 import pkgCore.Rule;
 import pkgCore.Table;
 import pkgEnum.eAction;
 import pkgEnum.eGame;
+import pkgEnum.eSuit;
 import pkgException.DeckException;
 import pkgException.HandException;
 
@@ -57,8 +61,7 @@ public class GameHub extends Hub {
 				break;
 			case Fold:
 				break;
-			case GameState:
-				break;
+
 			case Raise:
 				break;
 			case ScoreGame:
@@ -90,53 +93,34 @@ public class GameHub extends Hub {
 					resetOutput();
 					sendToOne(p.getClientID(),DR);
 				}				
-				break;				
+			case GameState:
+				
+				if (HubGamePlay.getCommonCards().stream().filter(x -> x.geteSuit().equals(eSuit.JOKER)).collect(Collectors.toList()).size() <=2)
+				{
+					for (Player p: this.HubGamePlay.getGamePlayers())
+					{					
+						try {
+							ArrayList<HandPoker> BestMadeHands = HubGamePlay.getBestMadeHands(p);
+							ArrayList<HandPoker> BestPossibleHands = HubGamePlay.getBestPossibleHands(p);
+							HandScorePokerSummary HSPS = new HandScorePokerSummary(BestMadeHands, BestPossibleHands);	
+							resetOutput();
+							sendToOne(p.getClientID(),HSPS);
+							
+						} catch (HandException e) {
+							e.printStackTrace();
+						}
+					}		
+				}
+				
+				
+				break;
 			default:
 				break;
 			}
 		}
 		
 		
-		
-		
-		
-		
-		
-//		if (HubPokerTable == null)
-//			HubPokerTable = new Table();
-//		
-//		if (message instanceof Action) {
-//			
-//			Action a = (Action)message;
-//
-//			switch (a.geteAction()) {
-//			case Sit:
-//				HubPokerTable.AddPlayerToTable(a.getActPlayer());
-//				resetOutput();
-//				sendToAll(HubPokerTable);				
-//				break;
-//			case Leave:
-//				HubPokerTable.RemovePlayerFromTable(a.getActPlayer());
-//				resetOutput();
-//				sendToAll(HubPokerTable);
-//				break;
-//			case TableState:
-//				resetOutput();
-//				sendToAll(HubPokerTable);
-//			case GameState:
-//				//TODO: Implement this
-//				break;
-//			case StartGameBlackJack:
-//				//TODO: Implement this	
-//				eGameType = eGameType.BLACKJACK;
-//
-//				break;
-//			case Draw:
-//				//TODO: Implement this
-//				break;
-//			}
 
-		// }
 	}
 
 }

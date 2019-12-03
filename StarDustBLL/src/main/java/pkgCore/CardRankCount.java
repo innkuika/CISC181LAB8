@@ -1,5 +1,7 @@
 package pkgCore;
 
+import java.io.Serializable;
+
 import pkgEnum.eRank;
 
 /**
@@ -8,7 +10,7 @@ import pkgEnum.eRank;
  * @author Dad
  *
  */
-public class CardRankCount implements Comparable<CardRankCount> {
+public class CardRankCount implements Comparable<CardRankCount>, Serializable {
 
 	private eRank eRank;
 	private int iCnt;

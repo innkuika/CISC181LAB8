@@ -19,6 +19,7 @@ import netgame.common.Client;
 import pkgCore.Action;
 import pkgCore.DrawResult;
 import pkgCore.GamePlay;
+import pkgCore.HandScorePokerSummary;
 import pkgCore.Player;
 import pkgCore.Table;
 import pkgEnum.eAction;
@@ -243,8 +244,8 @@ public class Poker extends Application {
 				{
 					PokerController.HandleDraw((ArrayList<DrawResult>) message);
 				}
-				else if (message instanceof GamePlay) {
-					
+				else if (message instanceof HandScorePokerSummary) {
+					PokerController.HandleHandScorePokerSummary((HandScorePokerSummary)message);
 				}
 				else if (message instanceof Table) {
 					PokerController.HandleTableState((Table)message);

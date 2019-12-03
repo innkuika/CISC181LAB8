@@ -1,5 +1,6 @@
 package pkgCore;
 
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import pkgEnum.eSubstituteDeck;
 import pkgEnum.eSuit;
 import pkgException.HandException;
 
-public class HandPoker extends Hand implements Comparable {
+public class HandPoker extends Hand implements Comparable, Serializable{
 
 	/**
 	 * @author BRG
