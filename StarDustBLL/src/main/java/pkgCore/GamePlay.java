@@ -382,44 +382,6 @@ public class GamePlay {
 			}
 		}
 
-		/*
-		if (LastCardDraw.getCardDestination() == eCardDestination.COMMON) {
-			ArrayList<iCardDraw> drawCards = new ArrayList<iCardDraw>();
-			for (Card c : this.CommonCards.subList(this.Rle.getIdx(this.LasteDrawCount, eStartEnd.START),
-					this.Rle.getIdx(this.LasteDrawCount, eStartEnd.END))) {
-				drawCards.add(c);
-			}
-			lstDR.add(new DrawResult(LastCardDraw, null, drawCards));
-		}
-
-		if (LastCardDraw.getCardDestination() == eCardDestination.PLAYER) {
-			Iterator<Map.Entry<UUID, HandPoker>> itr = this.GameHand.entrySet().iterator();
-
-			while (itr.hasNext()) {
-				ArrayList<iCardDraw> drawCards = new ArrayList<iCardDraw>();
-				Map.Entry<UUID, HandPoker> entry = itr.next();
-				{
-					HandPoker PlayerHandPoker = entry.getValue();
-					PlayerID = entry.getKey();
-					for (Card c : PlayerHandPoker.getCards().subList(
-							this.Rle.getIdx(this.LasteDrawCount, eStartEnd.START),
-							this.Rle.getIdx(this.LasteDrawCount, eStartEnd.END))) {
-
-						// I have to make a copy of the card... I need to change
-						// the CardNbr on occasion, and if I change the 'c', it'll
-						// remain changed.
-						Card cClone = new Card(c);
-						if ((LastCardDraw.getCardVisibility() == eCardVisibility.ME)
-								&& (!p.getPlayerID().equals(PlayerID))) {
-							cClone.setiCardNbr(0);
-						}
-						drawCards.add(cClone);
-					}
-				}
-				lstDR.add(new DrawResult(LastCardDraw, GetGamePlayer(PlayerID), drawCards));
-			}
-		}
-*/
 		return lstDR;
 
 	}

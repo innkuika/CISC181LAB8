@@ -78,23 +78,18 @@ public class GameHub extends Hub {
 				try {
 					HubGamePlay.Draw();
 				} catch (DeckException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (HandException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
-				
+				}				
 				for (Player p: this.HubGamePlay.getGamePlayers())
 				{					
 					ArrayList<DrawResult> DR = HubGamePlay.getDrawResult(p);
 					resetOutput();
 					sendToOne(p.getClientID(),DR);
-				}
-				
+				}				
 				break;				
 			default:
 				break;
