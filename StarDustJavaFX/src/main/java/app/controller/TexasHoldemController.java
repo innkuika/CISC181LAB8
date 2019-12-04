@@ -69,6 +69,12 @@ public class TexasHoldemController implements Initializable {
 	private Label PlayerLabel8;
 	@FXML
 	private Label PlayerLabel9;
+	
+	@FXML
+	private Label PlayerBestMadeHand1;
+	
+	@FXML
+	private Label PlayerBestPossibleHand1;
 
 	@FXML
 	private HBox HBoxCardsp1;
