@@ -102,7 +102,7 @@ public class GameHub extends Hub {
 						try {
 							ArrayList<HandPoker> BestMadeHands = HubGamePlay.getBestMadeHands(p);
 							ArrayList<HandPoker> BestPossibleHands = HubGamePlay.getBestPossibleHands(p);
-							HandScorePokerSummary HSPS = new HandScorePokerSummary(BestMadeHands, BestPossibleHands);	
+							HandScorePokerSummary HSPS = new HandScorePokerSummary(BestMadeHands, BestPossibleHands,p);	
 							resetOutput();
 							sendToOne(p.getClientID(),HSPS);
 							

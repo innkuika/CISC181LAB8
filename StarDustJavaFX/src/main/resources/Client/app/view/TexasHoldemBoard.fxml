@@ -42,7 +42,7 @@
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <Label id="PlayerLabel4" fx:id="PlayerLabel4" />
-                              <Label fx:id="PlayerBestMadeHand1" />
+                              <Label id="PlayerBestMadeHand4" fx:id="PlayerBestMadeHand4" />
                            </children>
                         </HBox>
                      </children>
@@ -70,6 +70,7 @@
                         <HBox id="p5Label" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <Label id="PlayerLabel5" fx:id="PlayerLabel5" />
+                              <Label id="PlayerBestMadeHand5" fx:id="PlayerBestMadeHand5" />
                            </children>
                         </HBox>
                      </children>
@@ -96,6 +97,7 @@
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <Label id="PlayerLabel6" fx:id="PlayerLabel6" />
+                              <Label id="PlayerBestMadeHand6" fx:id="PlayerBestMadeHand6" />
                            </children>
                         </HBox>
                      </children>
@@ -131,6 +133,7 @@
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <Label id="PlayerLabel1" fx:id="PlayerLabel1" />
+                              <Label id="PlayerBestMadeHand1" fx:id="PlayerBestMadeHand1" />
                            </children>
                         </HBox>
                      </children>
@@ -158,6 +161,7 @@
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <Label id="PlayerLabel2" fx:id="PlayerLabel2" />
+                              <Label id="PlayerBestMadeHand2" fx:id="PlayerBestMadeHand2" />
                            </children>
                         </HBox>
                      </children>
@@ -185,6 +189,7 @@
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <Label id="PlayerLabel3" fx:id="PlayerLabel3" />
+                              <Label id="PlayerBestMadeHand3" fx:id="PlayerBestMadeHand3" />
                            </children>
                         </HBox>
                      </children>

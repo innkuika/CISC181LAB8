@@ -72,9 +72,19 @@ public class TexasHoldemController implements Initializable {
 
 	@FXML
 	private Label PlayerBestMadeHand1;
-
 	@FXML
-	private Label PlayerBestPossibleHand1;
+	private Label PlayerBestMadeHand2;
+	@FXML
+	private Label PlayerBestMadeHand3;
+	@FXML
+	private Label PlayerBestMadeHand4;
+	@FXML
+	private Label PlayerBestMadeHand5;
+	@FXML
+	private Label PlayerBestMadeHand6;
+
+
+
 
 	@FXML
 	private HBox HBoxCardsp1;
@@ -188,16 +198,7 @@ public class TexasHoldemController implements Initializable {
 		MainTransition.play();
 	}
 
-	public void HandleHandScorePokerSummary(HandScorePokerSummary HSPS) {
 
-		for (Node n : getAllControls(parentNode, new Label())) {
-			Label l = (Label) n;
-			if ((l.getId() != null) && (l.getId().contains("PlayerBestMadeHand"))) {
-				l.setText(HSPS.getBestMadeHands().get(0).getHandScorePoker().geteHandStrength().getEvalMethod());
-			}
-		}
-
-	}
 
 	/**
 	 * @author BRG
@@ -281,6 +282,19 @@ public class TexasHoldemController implements Initializable {
 	 * 
 	 * @param currentTable
 	 */
+	
+	public void HandleHandScorePokerSummary(HandScorePokerSummary HSPS) {
+		
+
+		for (Node n : getAllControls(parentNode, new Label())) {
+			Label l = (Label) n;
+			if ((l.getId() != null) && (l.getId().contains("PlayerBestMadeHand"+HSPS.getiPlayer().getiPlayerPosition()))) {
+				l.setText("Best Made Hand: "+HSPS.getBestMadeHands().get(0).getHandScorePoker().geteHandStrength().toString()+
+						"Best Possible Hand: "+HSPS.getBestPossibleHands().get(0).getHandScorePoker().geteHandStrength().toString());
+			}
+		}
+
+	}
 	public void HandleTableState(Table currentTable) {
 
 		if ((currentTable == null) || (currentTable.getTablePlayers() == null))
