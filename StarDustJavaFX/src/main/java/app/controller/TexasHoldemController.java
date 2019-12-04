@@ -193,7 +193,7 @@ public class TexasHoldemController implements Initializable {
 		for (Node n : getAllControls(parentNode, new Label())) {
 			Label l = (Label) n;
 			if ((l.getId() != null) && (l.getId().contains("PlayerBestMadeHand"))) {
-				l.setText(HSPS.getBestMadeHands().get(0).getHandScorePoker().geteHandStrength().toString());
+				l.setText(HSPS.getBestMadeHands().get(0).getHandScorePoker().geteHandStrength().getEvalMethod());
 			}
 		}
 
