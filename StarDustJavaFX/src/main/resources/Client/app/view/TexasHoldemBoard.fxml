@@ -42,6 +42,7 @@
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <Label id="PlayerLabel4" fx:id="PlayerLabel4" />
+                              <Label fx:id="PlayerBestMadeHand1" />
                            </children>
                         </HBox>
                      </children>

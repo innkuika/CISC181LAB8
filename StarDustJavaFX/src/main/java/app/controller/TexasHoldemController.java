@@ -69,10 +69,10 @@ public class TexasHoldemController implements Initializable {
 	private Label PlayerLabel8;
 	@FXML
 	private Label PlayerLabel9;
-	
+
 	@FXML
 	private Label PlayerBestMadeHand1;
-	
+
 	@FXML
 	private Label PlayerBestPossibleHand1;
 
@@ -115,7 +115,7 @@ public class TexasHoldemController implements Initializable {
 	 * @version Lab #6
 	 * @since Lab #6
 	 * 
-	 * initialize - Run this when the controller starts
+	 *        initialize - Run this when the controller starts
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -127,7 +127,7 @@ public class TexasHoldemController implements Initializable {
 	 * @version Lab #7
 	 * @since Lab #7
 	 * 
-	 * ClearCardBoxes - Clear all the card boxes
+	 *        ClearCardBoxes - Clear all the card boxes
 	 */
 	private void ClearCardBoxes() {
 
@@ -157,7 +157,7 @@ public class TexasHoldemController implements Initializable {
 	 * 
 	 * @param lstDrawResult
 	 * 
-	 * HandleDraw - Handle the draw result
+	 *                      HandleDraw - Handle the draw result
 	 */
 	public void HandleDraw(ArrayList<DrawResult> lstDrawResult) {
 
@@ -188,22 +188,17 @@ public class TexasHoldemController implements Initializable {
 		MainTransition.play();
 	}
 
-	public void HandleHandScorePokerSummary(HandScorePokerSummary HSPS)
-	{
-		// Blank out all the player labels
-				for (Node n : getAllControls(parentNode, new Label())) {
-					Label l = (Label) n;
-					if ((l.getId() != null) && (l.getId().contains("PlayerLabel"))) {
-						l.setText("");
-					}
-				}
+	public void HandleHandScorePokerSummary(HandScorePokerSummary HSPS) {
 
-				// Update the Player Label
-				for (Player p : currentTable.getTablePlayers()) {
-					String strLabel = "PlayerLabel" + p.getiPlayerPosition();
-					SetLabelText(strLabel, p.getPlayerName());
-				}
+		for (Node n : getAllControls(parentNode, new Label())) {
+			Label l = (Label) n;
+			if ((l.getId() != null) && (l.getId().contains("PlayerBestMadeHand"))) {
+				l.setText(HSPS.getBestMadeHands().get(0).toString());
+			}
+		}
+
 	}
+
 	/**
 	 * @author BRG
 	 * @version Lab #7
@@ -214,7 +209,7 @@ public class TexasHoldemController implements Initializable {
 	 * @param iCardNbr
 	 * @return
 	 * 
-	 * SequentialTransition - Create a giant transition for dealing the card
+	 *         SequentialTransition - Create a giant transition for dealing the card
 	 */
 	private SequentialTransition DealCard(HBox HBoxTarget, ImageView iCardImg, int iCardNbr) {
 
@@ -231,7 +226,7 @@ public class TexasHoldemController implements Initializable {
 		Point2D pntCardDealt = FindPoint(HBoxTarget, iCardNbr);
 
 		// Transition should be... two parallel transitions in sequence
-		
+
 		// First parallel is transition/rotate card
 		// Second parallel is to fade in/out
 
@@ -242,7 +237,7 @@ public class TexasHoldemController implements Initializable {
 		RotateTransition rotT = CreateRotateTransition(img);
 		// Create a Scale transition (we're not using it, but this is how you do it)
 		// ScaleTransition scaleT = CreateScaleTransition(iCardImg);
-		
+
 		// Create a Path transition (we're not using it, but this is how you do it)
 		// PathTransition pathT = CreatePathTransition(pntDeck, pntCardDealt, img);
 
@@ -375,7 +370,7 @@ public class TexasHoldemController implements Initializable {
 	 * @version Lab #7
 	 * @since Lab #7
 	 * 
-	 * btnDraw_onAction - handle the draw action
+	 *        btnDraw_onAction - handle the draw action
 	 */
 	@FXML
 	private void btnDraw_onAction() {
@@ -447,7 +442,7 @@ public class TexasHoldemController implements Initializable {
 	 * @version Lab #7
 	 * @since Lab #7
 	 * 
-	 * getSpecificControl - Find a specific control by ID
+	 *        getSpecificControl - Find a specific control by ID
 	 * 
 	 * @param root  - the outer/parent container
 	 * @param strID - the ID of the control
@@ -536,7 +531,6 @@ public class TexasHoldemController implements Initializable {
 		}
 	}
 
-
 	private Point2D FindPoint(HBox hBoxCard, int iCardNbr) {
 
 		ImageView imgvCardFaceDown = (ImageView) hBoxCard.getChildren().get(iCardNbr);
@@ -552,13 +546,13 @@ public class TexasHoldemController implements Initializable {
 	 * @since Lab #6
 	 * @param event
 	 * 
-	 * btnCheck - temporary... have this event to check where I am
+	 *              btnCheck - temporary... have this event to check where I am
 	 */
 	@FXML
 	private void btnCheck(ActionEvent event) {
 
-		//	I'm using this method to figure out where points are on the screen
-		
+		// I'm using this method to figure out where points are on the screen
+
 		Point2D p2d = FindPoint(HBoxCardsp4, 0);
 		Point2D p2dDealer = FindPoint(HBoxCommon, 0);
 		Point2D p2dDeck = FindPoint(HBoxDeck, 0);
