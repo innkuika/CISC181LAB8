@@ -242,7 +242,12 @@ public class Poker extends Application {
 				}
 				else if (message instanceof ArrayList)
 				{
+					if(((ArrayList) message).get(0) instanceof DrawResult)
 					PokerController.HandleDraw((ArrayList<DrawResult>) message);
+					
+					if(((ArrayList) message).get(0) instanceof Player)
+						PokerController.DisplayWinner((ArrayList<Player>) message);
+					
 				}
 				else if (message instanceof HandScorePokerSummary) {
 					PokerController.HandleHandScorePokerSummary((HandScorePokerSummary)message);

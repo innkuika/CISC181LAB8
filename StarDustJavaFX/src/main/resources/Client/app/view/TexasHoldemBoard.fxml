@@ -229,6 +229,7 @@
                         </ImageView>
                      </children>
                   </HBox>
+                  <Label id="Winner" fx:id="Winner" alignment="TOP_CENTER" contentDisplay="CENTER" GridPane.rowIndex="2" />
                </children>
             </GridPane>
          </children>

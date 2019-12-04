@@ -82,6 +82,10 @@ public class TexasHoldemController implements Initializable {
 	private Label PlayerBestMadeHand5;
 	@FXML
 	private Label PlayerBestMadeHand6;
+	
+	@FXML
+	private Label Winner;
+	
 
 
 
@@ -289,8 +293,8 @@ public class TexasHoldemController implements Initializable {
 		for (Node n : getAllControls(parentNode, new Label())) {
 			Label l = (Label) n;
 			if ((l.getId() != null) && (l.getId().contains("PlayerBestMadeHand"+HSPS.getiPlayer().getiPlayerPosition()))) {
-				l.setText("Best Made Hand: "+HSPS.getBestMadeHands().get(0).getHandScorePoker().geteHandStrength().toString()+
-						"Best Possible Hand: "+HSPS.getBestPossibleHands().get(0).getHandScorePoker().geteHandStrength().toString());
+				l.setText("Best Made Hand: "+HSPS.getBestMadeHands().get(0).getHandScorePoker().geteHandStrength().getEvalMethod()+
+						"Best Possible Hand: "+HSPS.getBestPossibleHands().get(0).getHandScorePoker().geteHandStrength().getEvalMethod());
 			}
 		}
 
@@ -665,5 +669,14 @@ public class TexasHoldemController implements Initializable {
 		ParallelTransition parallelTransition = new ParallelTransition();
 		parallelTransition.getChildren().addAll(fadeOutTransition, fadeInTransition);
 		return parallelTransition;
+	}
+
+	public void DisplayWinner(ArrayList<Player> message) {
+		String StrWinner = null;
+		for(Player p: message) {
+			StrWinner += p.getPlayerName();
+		}
+		SetLabelText("Winner", StrWinner);
+		
 	}
 }

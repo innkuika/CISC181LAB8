@@ -111,6 +111,21 @@ public class GameHub extends Hub {
 						}
 					}		
 				}
+			case Winner:
+				if (HubGamePlay.getCommonCards().stream().filter(x -> x.geteSuit().equals(eSuit.JOKER)).collect(Collectors.toList()).size() ==0) {
+					
+					
+					try {
+						ArrayList<Player> Winners = HubGamePlay.GetGameWinners();
+						sendToAll(Winners);
+					} catch (HandException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					
+				}
+				
 				
 				
 				break;
