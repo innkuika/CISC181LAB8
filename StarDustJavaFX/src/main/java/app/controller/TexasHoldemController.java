@@ -190,7 +190,19 @@ public class TexasHoldemController implements Initializable {
 
 	public void HandleHandScorePokerSummary(HandScorePokerSummary HSPS)
 	{
-		
+		// Blank out all the player labels
+				for (Node n : getAllControls(parentNode, new Label())) {
+					Label l = (Label) n;
+					if ((l.getId() != null) && (l.getId().contains("PlayerLabel"))) {
+						l.setText("");
+					}
+				}
+
+				// Update the Player Label
+				for (Player p : currentTable.getTablePlayers()) {
+					String strLabel = "PlayerLabel" + p.getiPlayerPosition();
+					SetLabelText(strLabel, p.getPlayerName());
+				}
 	}
 	/**
 	 * @author BRG
