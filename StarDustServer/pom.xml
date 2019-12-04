@@ -71,13 +71,7 @@
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-controls</artifactId>
 			<version>12</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.openjfx</groupId>
-			<artifactId>javafx-media</artifactId>
-			<version>12</version>
-			<classifier>win</classifier>
+			<classifier>mac</classifier> 
 		</dependency>
 
 		<dependency>
@@ -87,32 +81,12 @@
 			<classifier>mac</classifier>
 		</dependency>
 
-		<dependency>
-			<groupId>org.openjfx</groupId>
-			<artifactId>javafx-media</artifactId>
-			<version>12</version>
-			<classifier>linux</classifier>
-		</dependency>
-
-		<dependency>
-			<groupId>org.openjfx</groupId>
-			<artifactId>javafx-graphics</artifactId>
-			<version>12</version>
-			<classifier>win</classifier>
-		</dependency>
 
 		<dependency>
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-graphics</artifactId>
 			<version>12</version>
 			<classifier>mac</classifier>
-		</dependency>
-
-		<dependency>
-			<groupId>org.openjfx</groupId>
-			<artifactId>javafx-graphics</artifactId>
-			<version>12</version>
-			<classifier>linux</classifier>
 		</dependency>
 
 		<dependency>

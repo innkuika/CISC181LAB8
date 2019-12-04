@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane fx:id="parentNode" prefHeight="600.0" prefWidth="779.0" stylesheets="@GameTheme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.TexasHoldemController">
+<BorderPane fx:id="parentNode" prefHeight="600.0" prefWidth="779.0" stylesheets="@GameTheme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.TexasHoldemController">
    <bottom>
       <HBox alignment="CENTER" prefHeight="173.0" prefWidth="685.0" spacing="25.0" BorderPane.alignment="CENTER">
          <BorderPane.margin>
@@ -30,7 +30,7 @@
                       <RowConstraints maxHeight="41.11113823784723" minHeight="10.0" prefHeight="41.11113823784723" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <HBox id="HBoxCardsp4" fx:id="HBoxCardsp4" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                        <HBox id="HBoxCardsp4" fx:id="HBoxCardsp4" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin></HBox>
@@ -60,7 +60,7 @@
                         <RowConstraints maxHeight="41.11113823784723" minHeight="10.0" prefHeight="41.11113823784723" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <HBox id="HBoxCardsp5" fx:id="HBoxCardsp5" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1" />
+                        <HBox id="HBoxCardsp5" fx:id="HBoxCardsp5" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.rowIndex="2">
                            <children>
                               <Button id="btnSit5" mnemonicParsing="false" onAction="#btnSitLeave" text="Sit" />
@@ -86,7 +86,7 @@
                         <RowConstraints maxHeight="41.11113823784723" minHeight="10.0" prefHeight="41.11113823784723" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <HBox id="HBoxCardsp6" fx:id="HBoxCardsp6" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1" />
+                        <HBox id="HBoxCardsp6" fx:id="HBoxCardsp6" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.rowIndex="2">
                            <children>
                               <Button id="btnSit6" mnemonicParsing="false" onAction="#btnSitLeave" text="Sit" />
@@ -121,7 +121,7 @@
                         <RowConstraints maxHeight="41.11113823784723" minHeight="10.0" prefHeight="41.11113823784723" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <HBox id="HBoxCardsp1" fx:id="HBoxCardsp1" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1" />
+                        <HBox id="HBoxCardsp1" fx:id="HBoxCardsp1" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.rowIndex="2">
                            <children>
                               <Button id="btnSit1" mnemonicParsing="false" onAction="#btnSitLeave" text="Sit" />
@@ -148,7 +148,7 @@
                         <RowConstraints maxHeight="41.11113823784723" minHeight="10.0" prefHeight="41.11113823784723" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <HBox id="HBoxCardsp2" fx:id="HBoxCardsp2" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1" />
+                        <HBox id="HBoxCardsp2" fx:id="HBoxCardsp2" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.rowIndex="2">
                            <children>
                               <Button id="btnSit2" mnemonicParsing="false" onAction="#btnSitLeave" text="Sit" />
@@ -175,7 +175,7 @@
                         <RowConstraints maxHeight="41.11113823784723" minHeight="10.0" prefHeight="41.11113823784723" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <HBox id="HBoxCardsp3" fx:id="HBoxCardsp3" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1" />
+                        <HBox id="HBoxCardsp3" fx:id="HBoxCardsp3" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.rowIndex="2">
                            <children>
                               <Button id="btnSit3" mnemonicParsing="false" onAction="#btnSitLeave" text="Sit" />
